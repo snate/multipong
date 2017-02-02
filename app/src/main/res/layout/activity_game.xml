@@ -22,4 +22,12 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:background="#FFFFFF"/>
+
+    <SeekBar
+        android:id="@+id/paletteScroll"
+        android:layout_width="250sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="35dp"/>
 </RelativeLayout>

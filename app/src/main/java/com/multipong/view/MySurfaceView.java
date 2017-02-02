@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.SurfaceView;
 
 public class MySurfaceView extends SurfaceView {
+
     public MySurfaceView(Context context) {
         super(context);
     }
@@ -24,12 +25,12 @@ public class MySurfaceView extends SurfaceView {
     protected void onDraw(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(Color.GRAY);
-        canvas.drawRect(
-                getLeft(),
-                getTop()+(getBottom()-getTop())*4/5,
-                getRight(),
-                getBottom(),
-                paint);
+        canvas.drawRect(left(),scrollTop(),right(),scrollBottom(),paint);
         super.onDraw(canvas);
     }
+
+    public int left()         { return getLeft(); }
+    public int right()        { return getRight(); }
+    public int scrollTop ()   { return getTop()+(getBottom()-getTop())*4/5; }
+    public int scrollBottom() { return getBottom(); }
 }

@@ -19,17 +19,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        setContentView(R.layout.activity_main);
         bouncingBall();
     }
 
     private void bouncingBall() {
         final ImageView bounceBallImage = (ImageView) findViewById(R.id.bouncing_ball);
         bounceBallImage.clearAnimation();
-        final int left = bounceBallImage.getLeft();
-        final int top = bounceBallImage.getTop()-110;
-        final int right = bounceBallImage.getRight();
-        final int bottom = bounceBallImage.getBottom()-110;
-        bounceBallImage.layout(left, top, right, bottom);
         TranslateAnimation transAnim = new TranslateAnimation(0, 0, 0, 110);
         transAnim.setStartOffset(500);
         transAnim.setDuration(4000);

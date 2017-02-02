@@ -29,7 +29,8 @@
         android:layout_height="15sp"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/play_button"
-        android:layout_alignEnd="@+id/play_button" />
+        android:layout_alignEnd="@+id/play_button"
+        android:contentDescription="@string/bounce_descr"/>
 
     <EditText
         android:id="@+id/player_name"
@@ -37,14 +38,14 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:hint="Write your name here"
+        android:hint="@string/name_placeholder"
         android:layout_above="@+id/play_button"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp" />
 
     <Button
         android:id="@+id/play_button"
-        android:text="PLAY"
+        android:text="@string/play_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -52,7 +53,7 @@
         android:clickable="false"/>
 
     <TextView
-        android:text="Credits"
+        android:text="@string/credits"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

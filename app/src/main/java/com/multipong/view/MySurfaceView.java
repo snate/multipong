@@ -12,6 +12,8 @@ import android.view.SurfaceView;
 public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Paint paint = new Paint();
+    private int paletteWidth = 200;
+    private int paletteHeight = 40;
 
     public MySurfaceView(Context context) {
         super(context);
@@ -33,13 +35,18 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         canvas.drawRect(left(), scrollTop(), right(), scrollBottom(), paint);
     }
 
-    public void movePalette() {
+    public void movePalette(double relativePos) {
+        if (relativePos < 0.0) relativePos = 0.0;
         SurfaceHolder holder = getHolder();
         Canvas canvas = holder.lockCanvas();
         if (canvas != null) {
             doDraw(canvas);
-            paint.setColor(Color.BLUE);
-            canvas.drawRect(new Rect(getLeft(), getTop(), getLeft()+100, getTop()+100), paint);
+            paint.setColor(Color.BLACK);
+            int startH = (int) (left() + (right() - paletteWidth - left()) * relativePos);
+            int endH   = startH + paletteWidth;
+            int startV = scrollTop() - paletteHeight - 20;
+            int endV   = startV + paletteHeight;
+            canvas.drawRect(new Rect(startH, startV, endH, endV), paint);
         }
         holder.unlockCanvasAndPost(canvas);
     }

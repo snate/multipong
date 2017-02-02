@@ -34,21 +34,16 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // TODO: Move palette
+                int max = seekBar.getMax();
+                double percentProgress = (double) (seekBar.getProgress() - 1) / (double) max;
+                mSurfaceView.movePalette(percentProgress);
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) { }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                mSurfaceView.movePalette();
-                Context context = getApplicationContext();
-                String text = String.valueOf(seekBar.getProgress());
-                int duration = Toast.LENGTH_SHORT;
-                Toast.makeText(context, text, duration).show();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) { }
         });
     }
 

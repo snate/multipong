@@ -11,7 +11,7 @@
     android:background="#FFFFFF"
     tools:context="com.multipong.GameActivity">
 
-    <SurfaceView
+    <com.multipong.view.MySurfaceView
         android:id="@+id/game_surface"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 showShortToast("Play button clicked!");
+                Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                startActivity(intent);
             }
         });
 

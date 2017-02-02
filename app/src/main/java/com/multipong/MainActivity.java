@@ -28,25 +28,17 @@ public class MainActivity extends AppCompatActivity {
         final TextView mNameTextView = (TextView) findViewById(R.id.player_name_tv);
         final Button mPlayButton = (Button) findViewById(R.id.play_button);
 
+        mCredits.setOnClickListener(new CreditsListener());
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mNameTextView.getText().length() == 0) {
-                    Context context = getApplicationContext();
-                    CharSequence text = "Please insert your name";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast.makeText(context, text, duration).show();
+                    showShortToast("Please insert your name");
                     return;
                 }
-                Context context = getApplicationContext();
-                CharSequence text = "Play button clicked!";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+                showShortToast("Play button clicked!");
             }
         });
-        mCredits.setOnClickListener(new CreditsListener());
 
         bouncingBall();
     }
@@ -60,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
         transAnim.setFillAfter(true);
         transAnim.setInterpolator(new BounceInterpolator());
         bounceBallImage.startAnimation(transAnim);
+    }
+
+    private void showShortToast(String toastText) {
+        Context context = getApplicationContext();
+        CharSequence text = toastText;
+        int duration = Toast.LENGTH_SHORT;
+        Toast.makeText(context, text, duration).show();
     }
 
     private class CreditsListener implements View.OnClickListener {

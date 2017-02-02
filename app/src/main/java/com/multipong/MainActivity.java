@@ -64,9 +64,7 @@ public class MainActivity extends AppCompatActivity {
         public void beforeTextChanged(CharSequence s, int st, int c, int a) { }
 
         @Override
-        public void onTextChanged(CharSequence s, int st, int bef, int c) {
-            mButton.setText("a");
-        }
+        public void onTextChanged(CharSequence s, int st, int bef, int c) { }
 
         @Override
         public void afterTextChanged(Editable s) {

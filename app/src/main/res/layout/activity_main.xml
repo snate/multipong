@@ -60,5 +60,5 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="27dp"
-        android:clickable="false"/>
+        android:clickable="true"/>
 </RelativeLayout>

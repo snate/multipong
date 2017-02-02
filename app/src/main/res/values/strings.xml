@@ -5,4 +5,9 @@
     <string name="name_placeholder">Write your name here</string>
     <string name="play_btn">PLAY</string>
     <string name="welcome_statement">Ready to have fun?</string>
+
+    <string name="auths">Authors</string>
+    <string name="auth_beg">Marco Begolo</string>
+    <string name="auth_val">Sebastiano Valle</string>
+    <string name="auth_zan">Marco Zanella</string>
 </resources>

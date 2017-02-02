@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bouncingBall() {
+        setContentView(R.layout.activity_main);
         final ImageView bounceBallImage = (ImageView) findViewById(R.id.bouncing_ball);
         bounceBallImage.clearAnimation();
         TranslateAnimation transAnim = new TranslateAnimation(0, 0, 0, 110);
@@ -54,23 +55,6 @@ public class MainActivity extends AppCompatActivity {
         transAnim.setDuration(4000);
         transAnim.setFillAfter(true);
         transAnim.setInterpolator(new BounceInterpolator());
-        transAnim.setAnimationListener(new Animation.AnimationListener() {
-
-            @Override
-            public void onAnimationStart(Animation animation) {
-                Log.i("bounce", "Starting button dropdown animation");
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-            }
-        });
         bounceBallImage.startAnimation(transAnim);
     }
 

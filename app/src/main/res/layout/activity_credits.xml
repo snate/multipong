@@ -11,28 +11,10 @@
     tools:context="com.multipong.CreditsActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:text="@string/auth_val"
-        android:layout_above="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="52dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:text="@string/auth_beg"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="59dp" />
-
-    <TextView
         android:text="@string/auths"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView4"
+        android:id="@+id/authors_tv"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="27dp"
@@ -41,9 +23,26 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:text="@string/auth_zan"
-        android:layout_marginBottom="141dp"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/val_tv"
+        android:text="@string/auth_val"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/beg_tv"
+        android:text="@string/auth_beg"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/val_tv"
+        android:layout_marginBottom="35sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/zan_tv"
+        android:text="@string/auth_zan"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/val_tv"
+        android:layout_marginTop="35sp"/>
 </RelativeLayout>

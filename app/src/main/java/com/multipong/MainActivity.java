@@ -42,13 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 toast.show();
             }
         });
-        mCredits.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CreditsActivity.class);
-                startActivity(intent);
-            }
-        });
+        mCredits.setOnClickListener(new CreditsListener());
 
         bouncingBall();
     }
@@ -81,6 +75,15 @@ public class MainActivity extends AppCompatActivity {
                 mButton.setClickable(false);
             else
                 mButton.setClickable(true);
+        }
+    }
+
+    private class CreditsListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getApplicationContext(), CreditsActivity.class);
+            startActivity(intent);
         }
     }
 }

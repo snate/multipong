@@ -3,6 +3,7 @@ package com.multipong;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.SurfaceHolder;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -11,9 +12,10 @@ import android.widget.Toast;
 
 import com.multipong.view.MySurfaceView;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements SurfaceHolder.Callback {
 
     private MySurfaceView mSurfaceView;
+    private SeekBar mBar;
     private RelativeLayout mLayout;
 
     @Override
@@ -27,8 +29,44 @@ public class GameActivity extends AppCompatActivity {
 
         mSurfaceView = (MySurfaceView) findViewById(R.id.game_surface);
         mLayout = (RelativeLayout) findViewById(R.id.activity_game);
+        mBar = (SeekBar) findViewById(R.id.paletteScroll);
+        mBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // TODO: Move palette
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mSurfaceView.movePalette();
+                Context context = getApplicationContext();
+                String text = String.valueOf(seekBar.getProgress());
+                int duration = Toast.LENGTH_SHORT;
+                Toast.makeText(context, text, duration).show();
+            }
+        });
     }
 
     @Override
     public void onBackPressed() { }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+
+    }
 }

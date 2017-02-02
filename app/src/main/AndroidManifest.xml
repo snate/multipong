@@ -16,11 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreditsActivity" />
-        <activity
-            android:name=".GameActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_game"
-            android:theme="@style/FullscreenTheme"></activity>
+        <activity android:name=".GameActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 </manifest>

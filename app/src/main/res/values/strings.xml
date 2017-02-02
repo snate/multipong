@@ -11,7 +11,7 @@
     <string name="auth_val">Sebastiano Valle</string>
     <string name="auth_zan">Marco Zanella</string>
 
-    <string name="title_activity_game">GameActivity</string>
+    <string name="title_activity_game">Multipong</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.multipong;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -25,10 +26,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        final TextView mCredits = (TextView) findViewById(R.id.credits_tv);
         final TextView mNameTextView = (TextView) findViewById(R.id.player_name_tv);
         final Button mPlayButton = (Button) findViewById(R.id.play_button);
-        mNameTextView.addTextChangedListener(new InputTextWatcher(mPlayButton));
 
+        mNameTextView.addTextChangedListener(new InputTextWatcher(mPlayButton));
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
+            }
+        });
+        mCredits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CreditsActivity.class);
+                startActivity(intent);
             }
         });
 

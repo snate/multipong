@@ -5,9 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
@@ -27,10 +25,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        final TextView mNameTextView = (TextView) findViewById(R.id.player_name);
+        final TextView mNameTextView = (TextView) findViewById(R.id.player_name_tv);
         final Button mPlayButton = (Button) findViewById(R.id.play_button);
-
-        bouncingBall();
         mNameTextView.addTextChangedListener(new InputTextWatcher(mPlayButton));
 
         mPlayButton.setOnClickListener(new View.OnClickListener() {
@@ -44,10 +40,11 @@ public class MainActivity extends AppCompatActivity {
                 toast.show();
             }
         });
+
+        bouncingBall();
     }
 
     private void bouncingBall() {
-        setContentView(R.layout.activity_main);
         final ImageView bounceBallImage = (ImageView) findViewById(R.id.bouncing_ball);
         bounceBallImage.clearAnimation();
         TranslateAnimation transAnim = new TranslateAnimation(0, 0, 0, 110);
@@ -67,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
         public void beforeTextChanged(CharSequence s, int st, int c, int a) { }
 
         @Override
-        public void onTextChanged(CharSequence s, int st, int bef, int c) { }
+        public void onTextChanged(CharSequence s, int st, int bef, int c) {
+            mButton.setText("a");
+        }
 
         @Override
         public void afterTextChanged(Editable s) {

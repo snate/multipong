@@ -33,7 +33,7 @@
         android:contentDescription="@string/bounce_descr"/>
 
     <EditText
-        android:id="@+id/player_name"
+        android:id="@+id/player_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
@@ -53,11 +53,12 @@
         android:clickable="false"/>
 
     <TextView
+        android:id="@+id/credits_tv"
         android:text="@string/credits"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="27dp"
-        android:id="@+id/textView2" />
+        android:clickable="false"/>
 </RelativeLayout>

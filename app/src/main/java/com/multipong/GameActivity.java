@@ -33,7 +33,6 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         mBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // TODO: Move palette
                 int max = seekBar.getMax();
                 double percentProgress = (double) (seekBar.getProgress() - 1) / (double) max;
                 mSurfaceView.movePalette(percentProgress);

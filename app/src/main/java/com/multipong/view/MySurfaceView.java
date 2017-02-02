@@ -36,13 +36,14 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void movePalette(double relativePos) {
-        if (relativePos < 0.0) relativePos = 0.0;
         SurfaceHolder holder = getHolder();
         Canvas canvas = holder.lockCanvas();
         if (canvas != null) {
             doDraw(canvas);
             paint.setColor(Color.BLACK);
             int startH = (int) (left() + (right() - paletteWidth - left()) * relativePos);
+            if (startH < left()) startH = left();
+            if (startH > right() - paletteWidth) startH = right() - paletteWidth;
             int endH   = startH + paletteWidth;
             int startV = scrollTop() - paletteHeight - 20;
             int endV   = startV + paletteHeight;
@@ -53,9 +54,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Canvas canvas = holder.lockCanvas();
-        doDraw(canvas);
-        holder.unlockCanvasAndPost(canvas);
+        movePalette(0);
     }
 
     @Override

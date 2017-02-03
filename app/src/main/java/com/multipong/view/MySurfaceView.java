@@ -14,6 +14,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     private Paint paint = new Paint();
     private int paletteWidth = 200;
     private int paletteHeight = 40;
+    private int borderSize = 5;
 
     public MySurfaceView(Context context) {
         super(context);
@@ -33,6 +34,9 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         canvas.drawRGB(255,255,255);
         paint.setColor(Color.GRAY);
         canvas.drawRect(left(), scrollTop(), right(), scrollBottom(), paint);
+        canvas.drawRect(left(), getTop(), left()+borderSize, scrollBottom(), paint);
+        canvas.drawRect(right()-borderSize, getTop(), right(), scrollBottom(), paint);
+        canvas.drawRect(left(), getTop(), right(), getTop()+borderSize, paint);
     }
 
     public void movePalette(double relativePos) {
@@ -41,8 +45,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         if (canvas != null) {
             doDraw(canvas);
             paint.setColor(Color.BLACK);
-            int startH = (int) (left() + (right() - paletteWidth - left()) * relativePos);
-            if (startH < left()) startH = left();
+            int startH = (int) (left() + (right() - paletteWidth - left()) * relativePos) + borderSize;
+            if (startH < left()) startH = left() + borderSize;
             if (startH > right() - paletteWidth) startH = right() - paletteWidth;
             int endH   = startH + paletteWidth;
             int startV = scrollTop() - paletteHeight - 20;
@@ -58,17 +62,13 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-    }
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) { }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-
-    }
+    public void surfaceDestroyed(SurfaceHolder holder) { }
 
     public int left()         { return getLeft(); }
-    public int right()        { return getRight(); }
+    public int right()        { return getWidth(); }
     public int scrollTop ()   { return getTop()+(getBottom()-getTop())*4/5; }
     public int scrollBottom() { return getBottom(); }
 }

@@ -6,6 +6,7 @@ public class SingleGame implements Game {
 
     private GameActivity activity;
     private String playerName;
+    private GameThread currentGame = null;
 
     public SingleGame(GameActivity activity) {
         this.activity = activity;
@@ -14,16 +15,20 @@ public class SingleGame implements Game {
     @Override
     public void start(String playerName) {
         this.playerName = playerName;
-        new Thread(new GameThread()).start();
+        if (currentGame == null) {
+            currentGame = new GameThread();
+            new Thread(currentGame).start();
+        }
     }
 
     private class GameThread implements Runnable {
 
-        private double a = 0;
-        private double b = 0;
-        private double range = 40;
-        private double xFactor = 1.0;
-        private double yFactor = 1.0;
+        private double x = 0;
+        private double y = 0;
+        private double range = 40;    // see the game frame as a square of range x range
+        private double xFactor = 1.0; // ball horizontal multiplier
+        private double yFactor = 1.0; // ball vertical multiplier
+
         // TODO: Find out more about 0.90 hard-coded value
         // TODO  -> that is, when the ball impacts with the palette
         private double paletteHeight = 0.14;
@@ -32,24 +37,24 @@ public class SingleGame implements Game {
         @Override
         public void run() {
             activity.showPlayerName(playerName);
-            a = Math.random();
+            x = Math.random();
             while (true) {
-                a += xFactor / range;
-                b += yFactor / range;
-                if (a <= 0.0 || a >= 1.0)
+                x += xFactor / range;
+                y += yFactor / range;
+                if (x <= 0.0 || x >= 1.0)
                     xFactor *= -1;
-                if (b <= 0.0) yFactor *= -1;
-                if (!lose && b >= (1.0 - paletteHeight)) {
+                if (y <= 0.0) yFactor *= -1;
+                if (!lose && y >= (1.0 - paletteHeight)) {
                     // TODO: Check impact with palette
                     // TODO  -> if yes, multiply yFactor by -1
                     // TODO  -> otw, set a variable like `lose or something similar to true
                     yFactor *= -1;
                 }
-                if (lose && b >= 1.0) {
+                if (lose && y >= 1.0) {
                     // game ends when b >= 1.0 so that the player can see
                     activity.endGame();
                 }
-                activity.moveBall(a, b);
+                activity.moveBall(x, y);
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {

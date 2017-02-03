@@ -35,7 +35,10 @@ public class SingleGame implements Game {
                 if (a <= 0.0 || a >= 1.0)
                     xFactor *= -1;
                 if (b <= 0 || b >= 1.0) {
+                // TODO  -> that is, when the ball impacts with the palette
                     // TODO: Check impact with palette
+                    // TODO  -> if yes, multiply yFactor by -1
+                    // TODO  -> otw, set a variable like `lose or something similar to true
                     yFactor *= -1;
                 }
                 activity.moveBall(a, b);

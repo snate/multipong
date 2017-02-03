@@ -1,6 +1,8 @@
 package com.multipong.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +10,8 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.multipong.R;
 
 public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -48,6 +52,7 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawRGB(255,255,255);
         drawFrame(canvas);
         drawPalette(canvas);
+        drawBall(canvas);
     }
 
     private void drawFrame(Canvas canvas) {
@@ -67,6 +72,12 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
         int startV = scrollTop() - paletteHeight - 20;
         int endV   = startV + paletteHeight;
         canvas.drawRect(new Rect(startH, startV, endH, endV), paint);
+    }
+
+    private void drawBall(Canvas canvas) {
+        Bitmap ball = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
+        Bitmap drawnBall = Bitmap.createScaledBitmap(ball, 50, 50, true);
+        canvas.drawBitmap(drawnBall, right()/2, scrollBottom()/2, paint);
     }
 
     @Override

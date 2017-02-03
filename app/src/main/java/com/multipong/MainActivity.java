@@ -14,6 +14,12 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String PLAYER_NAME = "com.multipong.PLAYER_NAME";
+
+    private TextView mCredits;
+    private TextView mNameTextView;
+    private Button mPlayButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,23 +30,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        final TextView mCredits = (TextView) findViewById(R.id.credits_tv);
-        final TextView mNameTextView = (TextView) findViewById(R.id.player_name_tv);
-        final Button mPlayButton = (Button) findViewById(R.id.play_button);
+        mCredits = (TextView) findViewById(R.id.credits_tv);
+        mNameTextView = (TextView) findViewById(R.id.player_name_tv);
+        mPlayButton = (Button) findViewById(R.id.play_button);
 
         mCredits.setOnClickListener(new CreditsListener());
-        mPlayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mNameTextView.getText().length() == 0) {
-                    showShortToast("Please insert your name");
-                    return;
-                }
-                showShortToast("Play button clicked!");
-                Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-                startActivity(intent);
-            }
-        });
+        mPlayButton.setOnClickListener(new SinglePlayerListener());
 
         bouncingBall();
     }
@@ -61,6 +56,22 @@ public class MainActivity extends AppCompatActivity {
         CharSequence text = toastText;
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(context, text, duration).show();
+    }
+
+    private class SinglePlayerListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            CharSequence playerName = mNameTextView.getText();
+            if(playerName.length() == 0) {
+                showShortToast("Please insert your name");
+                return;
+            }
+            showShortToast("Play button clicked!");
+            Intent intent = new Intent(getApplicationContext(), GameActivity.class)
+                            .putExtra(PLAYER_NAME, playerName);
+            startActivity(intent);
+        }
     }
 
     private class CreditsListener implements View.OnClickListener {

@@ -12,9 +12,10 @@ import android.view.SurfaceView;
 public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Paint paint = new Paint();
+    private int borderSize = 5;
     private int paletteWidth = 200;
     private int paletteHeight = 40;
-    private int borderSize = 5;
+    private int paletteH = 0;
 
     public MySurfaceView(Context context) {
         super(context);
@@ -30,8 +31,26 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         super(context, attrs, defStyle);
     }
 
-    public void doDraw(Canvas canvas) {
+    public void movePalette(double relativePosition) {
+        setPaletteH(relativePosition);
+        SurfaceHolder holder = getHolder();
+        Canvas canvas = holder.lockCanvas();
+        if (canvas != null)
+            doDraw(canvas);
+        holder.unlockCanvasAndPost(canvas);
+    }
+
+    private void setPaletteH(double relativePosition) {
+        paletteH = (int) (left() + (right() - paletteWidth - left()) * relativePosition) + borderSize;
+    }
+
+    private void doDraw(Canvas canvas) {
         canvas.drawRGB(255,255,255);
+        drawFrame(canvas);
+        drawPalette(canvas);
+    }
+
+    private void drawFrame(Canvas canvas) {
         paint.setColor(Color.GRAY);
         canvas.drawRect(left(), scrollTop(), right(), scrollBottom(), paint);
         canvas.drawRect(left(), getTop(), left()+borderSize, scrollBottom(), paint);
@@ -39,21 +58,15 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         canvas.drawRect(left(), getTop(), right(), getTop()+borderSize, paint);
     }
 
-    public void movePalette(double relativePos) {
-        SurfaceHolder holder = getHolder();
-        Canvas canvas = holder.lockCanvas();
-        if (canvas != null) {
-            doDraw(canvas);
-            paint.setColor(Color.BLACK);
-            int startH = (int) (left() + (right() - paletteWidth - left()) * relativePos) + borderSize;
-            if (startH < left()) startH = left() + borderSize;
-            if (startH > right() - paletteWidth) startH = right() - paletteWidth;
-            int endH   = startH + paletteWidth;
-            int startV = scrollTop() - paletteHeight - 20;
-            int endV   = startV + paletteHeight;
-            canvas.drawRect(new Rect(startH, startV, endH, endV), paint);
-        }
-        holder.unlockCanvasAndPost(canvas);
+    private void drawPalette(Canvas canvas) {
+        paint.setColor(Color.BLACK);
+        int startH = paletteH;
+        if (startH < left()) startH = left() + borderSize;
+        if (startH > right() - paletteWidth) startH = right() - paletteWidth;
+        int endH   = startH + paletteWidth;
+        int startV = scrollTop() - paletteHeight - 20;
+        int endV   = startV + paletteHeight;
+        canvas.drawRect(new Rect(startH, startV, endH, endV), paint);
     }
 
     @Override

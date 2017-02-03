@@ -22,14 +22,17 @@ public class SingleGame implements Game {
         private double a = 0;
         private double b = 0;
         private double range = 40;
+        private double xFactor = 1.0;
 
         @Override
         public void run() {
             activity.showPlayerName(playerName);
+            a = Math.random();
             while (true) {
-                a += 1 / range;
+                a += xFactor / range;
                 b += 1 / range;
-                if (a > 1.0) a = 0.0;
+                if (a <= 0.0 || a >= 1.0)
+                    xFactor *= -1;
                 if (b > 1.0) b = 0.0;
                 activity.moveBall(a, b);
                 try {

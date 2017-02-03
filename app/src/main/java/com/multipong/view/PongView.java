@@ -80,8 +80,8 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) { }
 
-    public int left()         { return getLeft(); }
-    public int right()        { return getWidth(); }
-    public int scrollTop ()   { return getTop()+(getBottom()-getTop())*4/5; }
-    public int scrollBottom() { return getBottom(); }
+    private int left()         { return getLeft(); }
+    private int right()        { return getWidth(); }
+    private int scrollTop ()   { return getTop()+(getBottom()-getTop())*4/5; }
+    private int scrollBottom() { return getBottom(); }
 }

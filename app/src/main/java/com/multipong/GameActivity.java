@@ -19,6 +19,7 @@ public class GameActivity extends AppCompatActivity {
     private SeekBar mBar;
     private RelativeLayout mLayout;
     private CharSequence playerName;
+    private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,10 @@ public class GameActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // TODO: parameterize single game or multiplayer game choice
-        Game game = new SingleGame(this);
-        game.start(playerName.toString());
+        if(game == null) {
+            game = new SingleGame(this);
+            game.start(playerName.toString());
+        }
     }
 
     @Override

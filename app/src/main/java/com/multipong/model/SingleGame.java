@@ -23,6 +23,7 @@ public class SingleGame implements Game {
         private double b = 0;
         private double range = 40;
         private double xFactor = 1.0;
+        private double yFactor = 1.0;
 
         @Override
         public void run() {
@@ -30,10 +31,13 @@ public class SingleGame implements Game {
             a = Math.random();
             while (true) {
                 a += xFactor / range;
-                b += 1 / range;
+                b += yFactor / range;
                 if (a <= 0.0 || a >= 1.0)
                     xFactor *= -1;
-                if (b > 1.0) b = 0.0;
+                if (b <= 0 || b >= 1.0) {
+                    // TODO: Check impact with palette
+                    yFactor *= -1;
+                }
                 activity.moveBall(a, b);
                 try {
                     Thread.sleep(100);

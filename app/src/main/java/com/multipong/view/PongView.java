@@ -18,7 +18,7 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
     private Paint paint = new Paint();
     private int borderSize = 5;
 
-    private int paletteWidth = 200;
+    private double paletteWidthPerc = 200; // was: 200
     private int paletteHeight = 40;
     private int paletteH = 0;
 
@@ -42,13 +42,22 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
         super(context, attrs, defStyle);
     }
 
+    public void setPaletteWidth(double percentage) {
+        paletteWidthPerc = percentage;
+    }
+
+    private int getPaletteWidth() {
+        return (int) (paletteWidthPerc * right());
+    }
+
     public void movePalette(double relativePosition) {
         setPaletteH(relativePosition);
         doDraw();
     }
 
     private void setPaletteH(double relativePosition) {
-        paletteH = (int) (left() + (right() - paletteWidth - left()) * relativePosition) + borderSize;
+        int pWidth = getPaletteWidth();
+        paletteH = (int) (left() + (right() - pWidth - left()) * relativePosition) + borderSize;
     }
 
     public void moveBall(double relX, double relY) {
@@ -88,7 +97,7 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawRGB(255,255,255);
         drawFrame(canvas);
         drawPalette(canvas);
-        if (ballX != null && ballY != null) drawBall(canvas);
+        drawBall(canvas);
         holder.unlockCanvasAndPost(canvas);
         synchronized (canvasLock) {
             canvasLock.notifyAll();
@@ -98,23 +107,24 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
     private void drawFrame(Canvas canvas) {
         paint.setColor(Color.GRAY);
         canvas.drawRect(left(), scrollTop(), right(), scrollBottom(), paint);
-        canvas.drawRect(left(), getTop(), left()+borderSize, scrollBottom(), paint);
-        canvas.drawRect(right()-borderSize, getTop(), right(), scrollBottom(), paint);
-        canvas.drawRect(left(), getTop(), right(), getTop()+borderSize, paint);
+        canvas.drawRect(left(), getTop(), left() + borderSize, scrollBottom(), paint);
+        canvas.drawRect(right() - borderSize, getTop(), right(), scrollBottom(), paint);
+        canvas.drawRect(left(), getTop(), right(), getTop() + borderSize, paint);
     }
 
     private void drawPalette(Canvas canvas) {
         paint.setColor(Color.BLACK);
         int startH = paletteH;
         if (startH < left()) startH = left() + borderSize;
-        if (startH > right() - paletteWidth) startH = right() - paletteWidth;
-        int endH   = startH + paletteWidth;
+        if (startH > right() - getPaletteWidth()) startH = right() - getPaletteWidth();
+        int endH   = startH + getPaletteWidth();
         int startV = scrollTop() - paletteHeight - 20;
         int endV   = startV + paletteHeight;
         canvas.drawRect(new Rect(startH, startV, endH, endV), paint);
     }
 
     private void drawBall(Canvas canvas) {
+        if (ballX == null || ballY == null) return;
         Bitmap ball = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
         Bitmap drawnBall = Bitmap.createScaledBitmap(ball, ballSize, ballSize, true);
         canvas.drawBitmap(drawnBall, ballX, ballY, paint);

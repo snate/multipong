@@ -21,6 +21,9 @@ public class GameActivity extends AppCompatActivity {
     private CharSequence playerName;
     private Game game;
 
+
+    private final double PALETTE_WIDTH = 0.2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,7 @@ public class GameActivity extends AppCompatActivity {
         mLayout = (RelativeLayout) findViewById(R.id.activity_game);
         mBar = (SeekBar) findViewById(R.id.paletteScroll);
         mBar.setOnSeekBarChangeListener(new PaletteListener());
+        mSurfaceView.setPaletteWidth(PALETTE_WIDTH);
     }
 
     @Override
@@ -46,6 +50,7 @@ public class GameActivity extends AppCompatActivity {
         if(game == null) {
             game = new SingleGame(this);
             game.start(playerName.toString());
+            game.setPaletteWidth(PALETTE_WIDTH);
         }
     }
 
@@ -72,6 +77,7 @@ public class GameActivity extends AppCompatActivity {
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             int max = seekBar.getMax();
             double percentProgress = (double) (seekBar.getProgress() - 1) / (double) max;
+            game.providePalettePosition(percentProgress);
             mSurfaceView.movePalette(percentProgress);
         }
 

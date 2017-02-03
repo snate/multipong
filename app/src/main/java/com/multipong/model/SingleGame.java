@@ -21,10 +21,20 @@ public class SingleGame implements Game {
         }
     }
 
+    @Override
+    public void setPaletteWidth(double width) {
+        currentGame.setPaletteWidth(width);
+    }
+
+    @Override
+    public void providePalettePosition(double position) {
+        currentGame.setPalettePosition(position);
+    }
+
     private class GameThread implements Runnable {
 
-        private double x = 0;
-        private double y = 0;
+        private double x = 0;         // ball x position
+        private double y = 0;         // ball y position
         private double range = 40;    // see the game frame as a square of range x range
         private double xFactor = 1.0; // ball horizontal multiplier
         private double yFactor = 1.0; // ball vertical multiplier
@@ -34,26 +44,27 @@ public class SingleGame implements Game {
         private double paletteHeight = 0.14;
         private boolean lose = false;
 
+        private double palettePosition = 0.0;
+        private double paletteWidth = 0;
+
+        public void setPaletteWidth(double paletteWidth) {
+            this.paletteWidth = paletteWidth;
+        }
+
         @Override
         public void run() {
             activity.showPlayerName(playerName);
             x = Math.random();
-            while (true) {
+            while (!lose && y < 1.0) {
                 x += xFactor / range;
                 y += yFactor / range;
-                if (x <= 0.0 || x >= 1.0)
-                    xFactor *= -1;
-                if (y <= 0.0) yFactor *= -1;
-                if (!lose && y >= (1.0 - paletteHeight)) {
-                    // TODO: Check impact with palette
-                    // TODO  -> if yes, multiply yFactor by -1
-                    // TODO  -> otw, set a variable like `lose or something similar to true
-                    yFactor *= -1;
-                }
-                if (lose && y >= 1.0) {
-                    // game ends when b >= 1.0 so that the player can see
-                    activity.endGame();
-                }
+                if (x <= 0.0 || x >= 1.0) xFactor *= -1;
+                if (y <= 0.0)             yFactor *= -1;
+                if (!lose && y >= (1.0 - paletteHeight))
+                    if (isColliding())
+                        yFactor *= -1;
+                    else
+                        lose = true;
                 activity.moveBall(x, y);
                 try {
                     Thread.sleep(100);
@@ -61,6 +72,16 @@ public class SingleGame implements Game {
                     e.printStackTrace();
                 }
             }
+            activity.endGame();
+        }
+
+        public void setPalettePosition(double palettePosition) {
+            this.palettePosition = palettePosition;
+        }
+
+        private boolean isColliding() {
+            return x >= palettePosition - paletteWidth/2 &&
+                   x <= palettePosition + paletteWidth/2;
         }
     }
 }

@@ -61,6 +61,11 @@ public class GameActivity extends AppCompatActivity {
         mSurfaceView.moveBall(relX, relY);
     }
 
+    public void endGame() {
+        mSurfaceView.removeBall();
+        // TODO: Add code to end game
+    }
+
     private class PaletteListener implements SeekBar.OnSeekBarChangeListener {
 
         @Override

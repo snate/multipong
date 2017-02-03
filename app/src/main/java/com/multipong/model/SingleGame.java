@@ -24,6 +24,10 @@ public class SingleGame implements Game {
         private double range = 40;
         private double xFactor = 1.0;
         private double yFactor = 1.0;
+        // TODO: Find out more about 0.90 hard-coded value
+        // TODO  -> that is, when the ball impacts with the palette
+        private double paletteHeight = 0.14;
+        private boolean lose = false;
 
         @Override
         public void run() {
@@ -34,12 +38,16 @@ public class SingleGame implements Game {
                 b += yFactor / range;
                 if (a <= 0.0 || a >= 1.0)
                     xFactor *= -1;
-                if (b <= 0 || b >= 1.0) {
-                // TODO  -> that is, when the ball impacts with the palette
+                if (b <= 0.0) yFactor *= -1;
+                if (!lose && b >= (1.0 - paletteHeight)) {
                     // TODO: Check impact with palette
                     // TODO  -> if yes, multiply yFactor by -1
                     // TODO  -> otw, set a variable like `lose or something similar to true
                     yFactor *= -1;
+                }
+                if (lose && b >= 1.0) {
+                    // game ends when b >= 1.0 so that the player can see
+                    activity.endGame();
                 }
                 activity.moveBall(a, b);
                 try {

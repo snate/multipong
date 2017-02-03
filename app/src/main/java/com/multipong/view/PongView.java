@@ -62,7 +62,14 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void setBallY(double relY) {
-        ballY = (int) ((getTop() + scrollTop()) * relY);
+        if (relY <= 0.0) relY = 0.0;
+        ballY = getTop() + (int) ((getTop() + scrollTop()) * relY);
+    }
+
+    public void removeBall() {
+        ballX = null;
+        ballY = null;
+        doDraw();
     }
 
     private void doDraw() {

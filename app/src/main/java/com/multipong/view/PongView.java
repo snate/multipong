@@ -17,9 +17,16 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Paint paint = new Paint();
     private int borderSize = 5;
+
     private int paletteWidth = 200;
     private int paletteHeight = 40;
     private int paletteH = 0;
+
+    private Integer ballX = null;
+    private Integer ballY = null;
+    private int ballSize = 50;
+
+    private Object canvasLock = new Object();
 
     public PongView(Context context) {
         super(context);
@@ -37,22 +44,48 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void movePalette(double relativePosition) {
         setPaletteH(relativePosition);
-        SurfaceHolder holder = getHolder();
-        Canvas canvas = holder.lockCanvas();
-        if (canvas != null)
-            doDraw(canvas);
-        holder.unlockCanvasAndPost(canvas);
+        doDraw();
     }
 
     private void setPaletteH(double relativePosition) {
         paletteH = (int) (left() + (right() - paletteWidth - left()) * relativePosition) + borderSize;
     }
 
-    private void doDraw(Canvas canvas) {
+    public void moveBall(double relX, double relY) {
+        setBallX(relX);
+        setBallY(relY);
+        doDraw();
+    }
+
+    private void setBallX(double relX) {
+        ballX = (int) (left() + (right() - ballSize - left()) * relX) + borderSize;
+    }
+
+    private void setBallY(double relY) {
+        ballY = (int) ((getTop() + scrollTop()) * relY);
+    }
+
+    private void doDraw() {
+        SurfaceHolder holder = getHolder();
+        Canvas canvas = holder.lockCanvas();
+        synchronized (canvasLock) {
+            while (canvas == null) {
+                try {
+                    canvasLock.wait();
+                    canvas = holder.lockCanvas();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         canvas.drawRGB(255,255,255);
         drawFrame(canvas);
         drawPalette(canvas);
-        drawBall(canvas);
+        if (ballX != null && ballY != null) drawBall(canvas);
+        holder.unlockCanvasAndPost(canvas);
+        synchronized (canvasLock) {
+            canvasLock.notifyAll();
+        }
     }
 
     private void drawFrame(Canvas canvas) {
@@ -76,8 +109,8 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void drawBall(Canvas canvas) {
         Bitmap ball = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
-        Bitmap drawnBall = Bitmap.createScaledBitmap(ball, 50, 50, true);
-        canvas.drawBitmap(drawnBall, right()/2, scrollBottom()/2, paint);
+        Bitmap drawnBall = Bitmap.createScaledBitmap(ball, ballSize, ballSize, true);
+        canvas.drawBitmap(drawnBall, ballX, ballY, paint);
     }
 
     @Override

@@ -57,6 +57,10 @@ public class GameActivity extends AppCompatActivity {
         mDebugTextView.setText("Welcome " + name);
     }
 
+    public void moveBall(double relX, double relY) {
+        mSurfaceView.moveBall(relX, relY);
+    }
+
     private class PaletteListener implements SeekBar.OnSeekBarChangeListener {
 
         @Override

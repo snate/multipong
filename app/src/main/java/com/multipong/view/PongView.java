@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
+public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Paint paint = new Paint();
     private int borderSize = 5;
@@ -17,17 +17,17 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     private int paletteHeight = 40;
     private int paletteH = 0;
 
-    public MySurfaceView(Context context) {
+    public PongView(Context context) {
         super(context);
     }
 
-    public MySurfaceView(Context context, AttributeSet attrs) {
+    public PongView(Context context, AttributeSet attrs) {
         super(context, attrs);
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
     }
 
-    public MySurfaceView(Context context, AttributeSet attrs, int defStyle) {
+    public PongView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

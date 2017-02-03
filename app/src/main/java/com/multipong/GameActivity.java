@@ -1,6 +1,5 @@
 package com.multipong;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
@@ -8,13 +7,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
-import com.multipong.view.MySurfaceView;
+import com.multipong.view.PongView;
 
 public class GameActivity extends AppCompatActivity implements SurfaceHolder.Callback {
 
-    private MySurfaceView mSurfaceView;
+    private PongView mSurfaceView;
     private SeekBar mBar;
     private RelativeLayout mLayout;
 
@@ -27,7 +25,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
 
-        mSurfaceView = (MySurfaceView) findViewById(R.id.game_surface);
+        mSurfaceView = (PongView) findViewById(R.id.game_surface);
         mLayout = (RelativeLayout) findViewById(R.id.activity_game);
         mBar = (SeekBar) findViewById(R.id.paletteScroll);
         mBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

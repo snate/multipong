@@ -47,6 +47,8 @@ public class SingleGame implements Game {
         private double palettePosition = 0.0;
         private double paletteWidth = 0;
 
+        private int score = 0;
+
         public void setPaletteWidth(double paletteWidth) {
             this.paletteWidth = paletteWidth;
         }
@@ -61,8 +63,10 @@ public class SingleGame implements Game {
                 if (x <= 0.0 || x >= 1.0) xFactor *= -1;
                 if (y <= 0.0)             yFactor *= -1;
                 if (!lose && y >= (1.0 - paletteHeight))
-                    if (isColliding())
+                    if (isColliding()) {
                         yFactor *= -1;
+                        activity.updateScore(++score);
+                    }
                     else
                         lose = true;
                 activity.moveBall(x, y);

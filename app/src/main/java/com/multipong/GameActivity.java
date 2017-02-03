@@ -17,6 +17,7 @@ public class GameActivity extends AppCompatActivity {
 
     private PongView mSurfaceView;
     private SeekBar mBar;
+    private TextView mScore;
     private RelativeLayout mLayout;
     private CharSequence playerName;
     private Game game;
@@ -39,8 +40,11 @@ public class GameActivity extends AppCompatActivity {
         mSurfaceView = (PongView) findViewById(R.id.game_surface);
         mLayout = (RelativeLayout) findViewById(R.id.activity_game);
         mBar = (SeekBar) findViewById(R.id.paletteScroll);
+        mScore = (TextView) findViewById(R.id.score_tv);
+
         mBar.setOnSeekBarChangeListener(new PaletteListener());
         mSurfaceView.setPaletteWidth(PALETTE_WIDTH);
+        mScore.setText("0");
     }
 
     @Override
@@ -64,6 +68,15 @@ public class GameActivity extends AppCompatActivity {
 
     public void moveBall(double relX, double relY) {
         mSurfaceView.moveBall(relX, relY);
+    }
+
+    public void updateScore(final int score) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mScore.setText(String.valueOf(score));
+            }
+        });
     }
 
     public void endGame() {

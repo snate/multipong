@@ -35,7 +35,7 @@ public class SingleGame implements Game {
 
         private double x = 0;         // ball x position
         private double y = 0;         // ball y position
-        private double range = 40;    // see the game frame as a square of range x range
+        private double range = 25;    // see the game frame as a square of range x range
         private double xFactor = 1.0; // ball horizontal multiplier
         private double yFactor = 1.0; // ball vertical multiplier
 
@@ -47,6 +47,7 @@ public class SingleGame implements Game {
         private double palettePosition = 0.0;
         private double paletteWidth = 0;
 
+        private int delay = 150;
         private int score = 0;
 
         public void setPaletteWidth(double paletteWidth) {
@@ -64,6 +65,8 @@ public class SingleGame implements Game {
                 if (y <= 0.0)             yFactor *= -1;
                 if (!lose && y >= (1.0 - paletteHeight))
                     if (isColliding()) {
+                        if (delay > 11) delay -= 10;
+                        // TODO: compute bounce direction
                         yFactor *= -1;
                         activity.updateScore(++score);
                     }
@@ -71,7 +74,7 @@ public class SingleGame implements Game {
                         lose = true;
                 activity.moveBall(x, y);
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(delay);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -84,6 +87,7 @@ public class SingleGame implements Game {
         }
 
         private boolean isColliding() {
+            // TODO: Fix bug when ball is near to the right edge: collision not detected
             return x >= palettePosition - paletteWidth/2 &&
                    x <= palettePosition + paletteWidth/2;
         }

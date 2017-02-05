@@ -21,15 +21,14 @@ public class StatsSaver {
         int score = stats.getScore();
 
         SQLiteDatabase db = multipongDatabase.getWritableDatabase();
-        String countQuery = "SELECT " + MultipongDatabase.STATS_KEY_SCORE
+        String countQuery = "SELECT * "
                 + " FROM " + MultipongDatabase.STATS_TABLE
                 + " WHERE "
                     + MultipongDatabase.STATS_KEY_NAME + " = ? AND "
                     + MultipongDatabase.STATS_KEY_MODALITY + " = ?";
         String[] whereArgs = new String[] { name, modality };
         Cursor cursor = db.rawQuery(countQuery, whereArgs);
-        boolean playerAlreadyPresent = cursor.getCount() > 0;
-        if(playerAlreadyPresent) {
+        if(cursor.moveToFirst()) {
             int id = cursor.getInt(cursor.getColumnIndex(MultipongDatabase.STATS_KEY_ID));
             int oldScore = cursor.getInt(cursor.getColumnIndex(MultipongDatabase.STATS_KEY_SCORE));
             if (score > oldScore) {

@@ -1,5 +1,6 @@
 package com.multipong;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,11 +9,13 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.multipong.model.Game;
 import com.multipong.model.SingleGame;
 import com.multipong.persistence.MultipongDatabase;
 import com.multipong.persistence.pojos.Stats;
+import com.multipong.persistence.read.StatsReader;
 import com.multipong.persistence.save.StatsSaver;
 import com.multipong.view.PongView;
 
@@ -51,6 +54,11 @@ public class GameActivity extends AppCompatActivity {
         mScore.setText("0");
         MultipongDatabase database = new MultipongDatabase(this);
         saver = new StatsSaver(database);
+        Stats best = new StatsReader(database).getBestScoreFor(Stats.Modality.SINGLE_PLAYER);
+        if(best == null)
+            showShortToast("No best score available");
+        else
+            showShortToast("BEST: " + best.getName() + " with score " + best.getScore());
     }
 
     @Override
@@ -87,10 +95,16 @@ public class GameActivity extends AppCompatActivity {
 
     public void endGame(int score) {
         mSurfaceView.removeBall();
-        Stats stats = new Stats().withMode(Stats.Modality.SINGLE_PLAYER)
+        Stats stats = new Stats().withModality(Stats.Modality.SINGLE_PLAYER)
                                  .withName(playerName)
                                  .withScore(score);
         saver.save(stats);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showShortToast("DONE");
+            }
+        });
         // TODO: Add code to end game
     }
 
@@ -109,5 +123,12 @@ public class GameActivity extends AppCompatActivity {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) { }
+    }
+
+    private void showShortToast(String toastText) {
+        Context context = getApplicationContext();
+        CharSequence text = toastText;
+        int duration = Toast.LENGTH_SHORT;
+        Toast.makeText(context, text, duration).show();
     }
 }

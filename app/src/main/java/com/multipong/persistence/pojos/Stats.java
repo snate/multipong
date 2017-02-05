@@ -15,7 +15,7 @@ public class Stats {
         return modality;
     }
 
-    public Stats withMode(Modality modality) { this.modality = modality; return this; }
+    public Stats withModality(Modality modality) { this.modality = modality; return this; }
 
     public int getScore() {
         return score;

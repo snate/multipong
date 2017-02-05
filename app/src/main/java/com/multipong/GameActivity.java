@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.multipong.model.Game;
 import com.multipong.model.SingleGame;
+import com.multipong.persistence.MultipongDatabase;
+import com.multipong.persistence.pojos.Stats;
+import com.multipong.persistence.save.StatsSaver;
 import com.multipong.view.PongView;
 
 public class GameActivity extends AppCompatActivity {
@@ -19,9 +22,10 @@ public class GameActivity extends AppCompatActivity {
     private SeekBar mBar;
     private TextView mScore;
     private RelativeLayout mLayout;
-    private CharSequence playerName;
-    private Game game;
 
+    private String playerName;
+    private Game game;
+    private StatsSaver saver;
 
     private final double PALETTE_WIDTH = 0.2;
 
@@ -35,7 +39,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         Intent intent = getIntent();
-        playerName = intent.getCharSequenceExtra(MainActivity.PLAYER_NAME);
+        playerName = intent.getCharSequenceExtra(MainActivity.PLAYER_NAME).toString();
 
         mSurfaceView = (PongView) findViewById(R.id.game_surface);
         mLayout = (RelativeLayout) findViewById(R.id.activity_game);
@@ -45,6 +49,8 @@ public class GameActivity extends AppCompatActivity {
         mBar.setOnSeekBarChangeListener(new PaletteListener());
         mSurfaceView.setPaletteWidth(PALETTE_WIDTH);
         mScore.setText("0");
+        MultipongDatabase database = new MultipongDatabase(this);
+        saver = new StatsSaver(database);
     }
 
     @Override
@@ -53,7 +59,7 @@ public class GameActivity extends AppCompatActivity {
         // TODO: parameterize single game or multiplayer game choice
         if(game == null) {
             game = new SingleGame(this);
-            game.start(playerName.toString());
+            game.start(playerName);
             game.setPaletteWidth(PALETTE_WIDTH);
         }
     }
@@ -79,8 +85,12 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    public void endGame() {
+    public void endGame(int score) {
         mSurfaceView.removeBall();
+        Stats stats = new Stats().withMode(Stats.Modality.SINGLE_PLAYER)
+                                 .withName(playerName)
+                                 .withScore(score);
+        saver.save(stats);
         // TODO: Add code to end game
     }
 

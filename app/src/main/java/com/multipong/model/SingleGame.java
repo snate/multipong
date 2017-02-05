@@ -1,12 +1,14 @@
 package com.multipong.model;
 
 import com.multipong.GameActivity;
+import com.multipong.persistence.MultipongDatabase;
 
 public class SingleGame implements Game {
 
     private GameActivity activity;
     private String playerName;
     private GameThread currentGame = null;
+    private MultipongDatabase database;
 
     public SingleGame(GameActivity activity) {
         this.activity = activity;
@@ -79,7 +81,7 @@ public class SingleGame implements Game {
                     e.printStackTrace();
                 }
             }
-            activity.endGame();
+            activity.endGame(score);
         }
 
         public void setPalettePosition(double palettePosition) {

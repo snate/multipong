@@ -38,6 +38,9 @@ public class MultiplayerGame extends AbsGame {
             super(playerName, activity);
         }
 
+        /*
+        TODO modify to implement multiplayer logic
+         */
         @Override
         public void ballOnTopOfTheField() {
             myTurn = false;

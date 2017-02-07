@@ -7,7 +7,6 @@ public class SingleGame extends Game {
 
     private GameActivity activity;
     private String playerName;
-    private SingleGameThread currentGame = null;
     private MultipongDatabase database;
 
     public SingleGame(GameActivity activity) {

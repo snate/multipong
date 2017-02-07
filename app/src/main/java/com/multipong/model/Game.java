@@ -6,7 +6,7 @@ package com.multipong.model;
  * @since 0.01
  */
 public abstract class Game {
-    AbsGameThread currentGame = null;
+    protected AbsGameThread currentGame = null;
 
     public abstract void start(String playerName);
 

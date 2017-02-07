@@ -28,7 +28,7 @@ public class SingleGame extends Game {
     }
 
     private class SingleGameThread extends AbsGameThread {
-        private volatile boolean started = true;
+        private volatile boolean notStartedYet = true;
 
         public SingleGameThread(String playerName, GameActivity activity) {
             super(playerName, activity);
@@ -41,9 +41,9 @@ public class SingleGame extends Game {
 
         @Override
         public void initialBallPosition() {
-            if (started) {
+            if (notStartedYet) {
                 setX(Math.random());
-                started = false;
+                notStartedYet = false;
             }
         }
 

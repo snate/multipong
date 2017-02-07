@@ -16,49 +16,85 @@
         android:layout_height="wrap_content"
         android:text="@string/welcome_statement"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:layout_marginTop="31dp"
         android:textSize="18sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/textView"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/bouncing_ball" android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
     <ImageView
-        android:layout_width="15sp"
-        app:srcCompat="@drawable/ball"
-        android:id="@+id/bouncing_ball"
-        android:layout_height="15sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/play_button"
-        android:layout_alignEnd="@+id/play_button"
-        android:contentDescription="@string/bounce_descr"/>
+
+            android:layout_width="15sp"
+            app:srcCompat="@drawable/ball"
+            android:id="@+id/bouncing_ball"
+            android:layout_height="15sp"
+            android:contentDescription="@string/bounce_descr"
+            android:layout_centerHorizontal="true" android:layout_alignParentTop="true"/>
+
+    <TextView
+            android:id="@+id/username_label"
+            android:text="@string/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:layout_marginTop="122dp"
+            android:layout_below="@+id/textView" android:layout_alignLeft="@+id/player_name_tv"
+            android:layout_alignStart="@+id/player_name_tv"/>
 
     <EditText
-        android:id="@+id/player_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:hint="@string/name_placeholder"
-        android:layout_above="@+id/play_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp" />
+            android:id="@+id/player_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:hint="@string/name_placeholder"
+            android:layout_below="@+id/username_label"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="30dp" />
 
-    <Button
-        android:id="@+id/play_button"
-        android:text="@string/play_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:clickable="false"/>
+    <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/username_label" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginTop="100dp">
+
+        <android.support.design.widget.FloatingActionButton
+                android:id="@+id/multi_player_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_multiplayer"
+                app:backgroundTint="@color/black"/>
+
+        <View
+                android:id="@+id/dummy"
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                app:layout_anchor="@id/multi_player_button"
+                app:layout_anchorGravity="top|right|end" />
+
+        <android.support.design.widget.FloatingActionButton
+                android:id="@+id/single_player_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|top"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_singleplayer"
+                app:layout_anchor="@id/dummy"
+                app:layout_anchorGravity="top|right|end"
+                app:backgroundTint="@color/black"/>
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <TextView
         android:id="@+id/credits_tv"
         android:text="@string/credits"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="27dp"
-        android:clickable="true"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 </RelativeLayout>

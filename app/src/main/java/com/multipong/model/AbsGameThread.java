@@ -45,7 +45,7 @@ public abstract class AbsGameThread implements Runnable {
     @Override
     public void run() {
         activity.showPlayerName(playerName);
-        while (!lose && y < 1.0) {
+        while (!lose) {
             initialBallPosition();
             x += xFactor / range;
             y += yFactor / range;

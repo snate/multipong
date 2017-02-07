@@ -3,7 +3,6 @@
 *.fls
 *.log
 *.pdf
-*.gz
 bare_ieee/*
 
 !util/*.pdf

@@ -34,7 +34,7 @@ public class StatsSaver {
             if (score > oldScore) {
                 String updateQuery = "UPDATE " + MultipongDatabase.STATS_TABLE
                         + " SET " + MultipongDatabase.STATS_KEY_SCORE + "=" + score
-                        + "WHERE "
+                        + " WHERE "
                         + MultipongDatabase.STATS_KEY_ID + " = " + id;
                 db.execSQL(updateQuery);
             }

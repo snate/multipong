@@ -3,9 +3,10 @@ package com.multipong.model;
 import android.util.Log;
 
 import com.multipong.activity.GameActivity;
+import com.multipong.model.multiplayer.MultiplayerStateManager;
 import com.multipong.persistence.MultipongDatabase;
 
-import com.multipong.model.MultiplayerStateManager.BallInfo;
+import com.multipong.model.multiplayer.MultiplayerStateManager.BallInfo;
 
 /**
  * @author Marco Zanella

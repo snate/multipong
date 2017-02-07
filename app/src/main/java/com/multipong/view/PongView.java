@@ -13,6 +13,8 @@ import android.view.SurfaceView;
 
 import com.multipong.R;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Paint paint = new Paint();
@@ -22,11 +24,12 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
     private int paletteHeight = 40;
     private int paletteH = 0;
 
-    private Integer ballX = null;
-    private Integer ballY = null;
+    private AtomicInteger ballX = new AtomicInteger(50);
+    private AtomicInteger ballY = new AtomicInteger(50);
     private int ballSize = 50;
 
     private Object canvasLock = new Object();
+    private Object ball = new Object();
 
     public PongView(Context context) {
         super(context);
@@ -67,17 +70,17 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void setBallX(double relX) {
-        ballX = (int) (left() + (right() - ballSize - left()) * relX) + borderSize;
+        ballX.set((int) (left() + (right() - ballSize - left()) * relX) + borderSize);
     }
 
     private void setBallY(double relY) {
         if (relY <= 0.0) relY = 0.0;
-        ballY = getTop() + (int) ((getTop() + scrollTop()) * relY);
+        ballY.set(getTop() + (int) ((getTop() + scrollTop()) * relY));
     }
 
     public void removeBall() {
-        ballX = null;
-        ballY = null;
+        ballX.getAndSet(-100);
+        ballY.getAndSet(-100);
         doDraw();
     }
 
@@ -127,7 +130,7 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
         if (ballX == null || ballY == null) return;
         Bitmap ball = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
         Bitmap drawnBall = Bitmap.createScaledBitmap(ball, ballSize, ballSize, true);
-        canvas.drawBitmap(drawnBall, ballX, ballY, paint);
+        canvas.drawBitmap(drawnBall, ballX.get(), ballY.get(), paint);
     }
 
     @Override

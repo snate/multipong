@@ -5,15 +5,15 @@ package com.multipong.model;
  * @version 0.01
  * @since 0.01
  */
-public abstract class AbsGame implements Game {
+public abstract class AbsGame{
     AbsGameThread currentGame = null;
 
-    @Override
+    public abstract void start(String playerName);
+
     public void setPaletteWidth(double width) {
         currentGame.setPaletteWidth(width);
     }
 
-    @Override
     public void providePalettePosition(double position) {
         currentGame.setPalettePosition(position);
     }

@@ -1,4 +1,4 @@
-package com.multipong;
+package com.multipong.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.multipong.R;
 
 public class MainActivity extends AppCompatActivity {
 

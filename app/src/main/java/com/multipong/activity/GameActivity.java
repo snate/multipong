@@ -1,4 +1,4 @@
-package com.multipong;
+package com.multipong.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.multipong.R;
 import com.multipong.model.Game;
 import com.multipong.model.SingleGame;
 import com.multipong.persistence.MultipongDatabase;

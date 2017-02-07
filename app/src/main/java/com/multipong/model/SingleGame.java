@@ -43,8 +43,8 @@ public class SingleGame implements Game {
 
         private boolean lose = false;
 
-        private double palettePosition = 0.0;
-        private double paletteWidth = 0;
+        private volatile double palettePosition = 0.0;
+        private volatile double paletteWidth = 0;
 
         private int delay = 150;
         private int score = 0;

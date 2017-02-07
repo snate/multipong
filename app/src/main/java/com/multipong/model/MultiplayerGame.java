@@ -5,6 +5,8 @@ import android.util.Log;
 import com.multipong.activity.GameActivity;
 import com.multipong.persistence.MultipongDatabase;
 
+import com.multipong.model.MultiplayerStateManager.BallInfo;
+
 /**
  * @author Marco Zanella
  * @version 0.01
@@ -37,8 +39,11 @@ public class MultiplayerGame extends Game {
         private volatile boolean myTurn = false;
         private double newX;
 
+        private Object forBallToComeBack = new Object();
+
         public MultiplayerGameThread(String playerName, GameActivity activity) {
             super(playerName, activity);
+            MultiplayerStateManager msm = new MultiplayerStateManager();
         }
 
         /*
@@ -47,6 +52,19 @@ public class MultiplayerGame extends Game {
         @Override
         public void ballOnTopOfTheField() {
             myTurn = false;
+            activity.makeBallDisappear();
+            double newSpeedX = getXFactor() * - 1;
+            double newSpeedY = getYFactor() * - 1;
+            double newPos = 1 - getFinalX();
+            BallInfo info = MultiplayerStateManager.createBallInfo(newSpeedX, newSpeedY, newPos);
+            // TODO: Send ball out to MSM
+            synchronized (forBallToComeBack) {
+                try {
+                    forBallToComeBack.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         @Override

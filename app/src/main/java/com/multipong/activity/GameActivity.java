@@ -144,8 +144,12 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    public void endGame(final int score) {
+    public void makeBallDisappear() {
         mSurfaceView.removeBall();
+    }
+
+    public void endGame(final int score) {
+        makeBallDisappear();
         Stats stats = new Stats().withModality(Stats.Modality.SINGLE_PLAYER)
                                  .withName(playerName)
                                  .withScore(score);

@@ -2,10 +2,14 @@ package com.multipong.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -26,6 +30,8 @@ public class GameActivity extends AppCompatActivity {
     private SeekBar mBar;
     private TextView mScore;
     private RelativeLayout mLayout;
+    private TextView mEndTextView;
+    private Button mEndButton;
 
     private String playerName;
     private Game game;
@@ -49,6 +55,8 @@ public class GameActivity extends AppCompatActivity {
         mLayout = (RelativeLayout) findViewById(R.id.activity_game);
         mBar = (SeekBar) findViewById(R.id.paletteScroll);
         mScore = (TextView) findViewById(R.id.score_tv);
+        mEndTextView = (TextView) findViewById(R.id.end_tv);
+        mEndButton = (Button) findViewById(R.id.end_bt);
 
         mBar.setOnSeekBarChangeListener(new PaletteListener());
         mSurfaceView.setPaletteWidth(PALETTE_WIDTH);
@@ -60,6 +68,12 @@ public class GameActivity extends AppCompatActivity {
             showShortToast("No best score available");
         else
             showShortToast("BEST: " + best.getName() + " with score " + best.getScore());
+        mEndButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -94,7 +108,7 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    public void endGame(int score) {
+    public void endGame(final int score) {
         mSurfaceView.removeBall();
         Stats stats = new Stats().withModality(Stats.Modality.SINGLE_PLAYER)
                                  .withName(playerName)
@@ -104,6 +118,10 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void run() {
                 showShortToast("DONE");
+                mEndTextView.setVisibility(View.VISIBLE);
+                mEndTextView.setText(playerName + ", your score is " + score);
+                mEndButton.setVisibility(View.VISIBLE);
+                mEndButton.setClickable(true);
             }
         });
         // TODO: Add code to end game

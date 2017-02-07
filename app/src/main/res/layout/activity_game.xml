@@ -31,6 +31,7 @@
 
     <TextView
         android:text="debug_tv"
+        android:layout_below="@id/game_surface"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -50,4 +51,27 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:id="@+id/end_tv"
+        android:text=""
+        android:visibility="invisible"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/score_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="129dp" />
+
+    <Button
+        android:id="@+id/end_bt"
+        android:text="Go back"
+        android:clickable="false"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/end_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp" />
+
 </RelativeLayout>

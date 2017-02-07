@@ -1,8 +1,21 @@
 package com.multipong.model;
 
 public class MultiplayerStateManager {
+
+    private MultiplayerGame game;
+
+    public MultiplayerStateManager(MultiplayerGame multiplayerGameThread) {
+        game = multiplayerGameThread;
+    }
+
     public void sendBallToNext(BallInfo ballInfo){
         // TODO: Send ball info to coordinator via net
+        // TODO: Remove the following stub call
+        receiveData(ballInfo);
+    }
+
+    public void receiveData(BallInfo info) {
+        game.newTurn(info);
     }
 
     public static BallInfo createBallInfo(double speedX, double speedY, double position) {

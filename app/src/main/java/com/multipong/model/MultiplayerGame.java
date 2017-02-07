@@ -16,6 +16,11 @@ public class MultiplayerGame extends Game {
     private GameActivity activity;
     private String playerName;
     private MultipongDatabase database;
+    private MultiplayerStateManager msm;
+
+    public MultiplayerGame() {
+        msm = new MultiplayerStateManager(this);
+    }
 
     //TODO invoke setNumberOfLives before start on MultiGame to have a game with more than one live
     @Override
@@ -28,36 +33,28 @@ public class MultiplayerGame extends Game {
 
     }
 
-    /*
-    TODO call this method when is the turn of the player
-     */
-    public void newTurn(double x){
-        ((MultiplayerGameThread)currentGame).newPlayerTurn(x);
+    public void newTurn(BallInfo info){
+        ((MultiplayerGameThread)currentGame).newPlayerTurn(info);
     }
 
     private class MultiplayerGameThread extends AbsGameThread {
-        private volatile boolean myTurn = false;
         private double newX;
+        private double newY = -100; // big enough to make it wait
 
         private Object forBallToComeBack = new Object();
 
         public MultiplayerGameThread(String playerName, GameActivity activity) {
             super(playerName, activity);
-            MultiplayerStateManager msm = new MultiplayerStateManager();
         }
 
-        /*
-        TODO modify to implement multiplayer logic
-         */
         @Override
         public void ballOnTopOfTheField() {
-            myTurn = false;
             activity.makeBallDisappear();
             double newSpeedX = getXFactor() * - 1;
             double newSpeedY = getYFactor() * - 1;
             double newPos = 1 - getFinalX();
             BallInfo info = MultiplayerStateManager.createBallInfo(newSpeedX, newSpeedY, newPos);
-            // TODO: Send ball out to MSM
+            msm.sendBallToNext(info);
             synchronized (forBallToComeBack) {
                 try {
                     forBallToComeBack.wait();
@@ -67,15 +64,23 @@ public class MultiplayerGame extends Game {
             }
         }
 
+        // TODO: Before starting the game, be careful to set newY to 0.0 in the starting node
+        //       (See #21)
         @Override
         public void initialBallPosition() {
-            if (myTurn)
-                setX(newX);
+            setX(newX);
+            setY(newY);
         }
 
-        public void newPlayerTurn(double x) {
-            newX = x;
-            myTurn = true;
+        public void newPlayerTurn(BallInfo info) {
+            newX = info.getPosition();
+            newY = 0.0;
+            setXFactor(info.getBallSpeedX());
+            setYFactor(info.getBallSpeedY());
+            initialBallPosition();
+            synchronized (forBallToComeBack) {
+                forBallToComeBack.notifyAll();
+            }
         }
 
         @Override

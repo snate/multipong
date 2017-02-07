@@ -3,11 +3,11 @@ package com.multipong.model;
 import com.multipong.activity.GameActivity;
 import com.multipong.persistence.MultipongDatabase;
 
-public class SingleGame implements Game {
+public class SingleGame extends AbsGame {
 
     private GameActivity activity;
     private String playerName;
-    private GameThread currentGame = null;
+    private SingleGameThread currentGame = null;
     private MultipongDatabase database;
 
     public SingleGame(GameActivity activity) {
@@ -18,77 +18,30 @@ public class SingleGame implements Game {
     public void start(String playerName) {
         this.playerName = playerName;
         if (currentGame == null) {
-            currentGame = new GameThread();
+            currentGame = new SingleGameThread(playerName, activity);
             new Thread(currentGame).start();
         }
+
     }
 
-    @Override
-    public void setPaletteWidth(double width) {
-        currentGame.setPaletteWidth(width);
-    }
+    private class SingleGameThread extends AbsGameThread {
+        private volatile boolean isStart = true;
 
-    @Override
-    public void providePalettePosition(double position) {
-        currentGame.setPalettePosition(position);
-    }
-
-    private class GameThread implements Runnable {
-
-        private double x = 0;         // ball x position
-        private double y = 0;         // ball y position
-        private double range = 25;    // see the game frame as a square of range x range
-        private double xFactor = 1.0; // ball horizontal multiplier
-        private double yFactor = 1.0; // ball vertical multiplier
-
-        private boolean lose = false;
-
-        private volatile double palettePosition = 0.0;
-        private volatile double paletteWidth = 0;
-
-        private int delay = 150;
-        private int score = 0;
-
-        public void setPaletteWidth(double paletteWidth) {
-            this.paletteWidth = paletteWidth;
+        public SingleGameThread(String playerName, GameActivity activity) {
+            super(playerName, activity);
         }
 
         @Override
-        public void run() {
-            activity.showPlayerName(playerName);
-            x = Math.random();
-            while (!lose && y < 1.0) {
-                x += xFactor / range;
-                y += yFactor / range;
-                if (x <= 0.0 || x >= 1.0) xFactor *= -1;
-                if (y <= 0.0)             yFactor *= -1;
-                if (!lose && y >= 1.0)
-                    if (isColliding()) {
-                        if (delay > 11) delay -= 10;
-                        // TODO: compute bounce direction
-                        yFactor *= -1;
-                        activity.updateScore(++score);
-                    }
-                    else
-                        lose = true;
-                activity.moveBall(x, y);
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        public void ballOnTopOfTheField() {
+            setXFactor(-1 * getYFactor());
+        }
+
+        @Override
+        public void initialBallPosition() {
+            if (isStart) {
+                setX(Math.random());
+                isStart = false;
             }
-            activity.endGame(score);
-        }
-
-        public void setPalettePosition(double palettePosition) {
-            this.palettePosition = palettePosition;
-        }
-
-        private boolean isColliding() {
-            // TODO: Fix bug when ball is near to the right edge: collision not detected
-            return x >= palettePosition - paletteWidth/2 &&
-                   x <= palettePosition + paletteWidth/2;
         }
     }
 }

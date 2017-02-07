@@ -1,11 +1,15 @@
 package com.multipong.model;
 
+import java.util.ArrayList;
+
 public class MultiplayerStateManager {
 
     private MultiplayerGame game;
+    private State state;
 
     public MultiplayerStateManager(MultiplayerGame multiplayerGameThread) {
         game = multiplayerGameThread;
+        state = new State();
     }
 
     public void sendBallToNext(BallInfo ballInfo){
@@ -22,6 +26,44 @@ public class MultiplayerStateManager {
         return new BallInfo().withBallSpeedX(speedX)
                              .withBallSpeedY(speedY)
                              .withPosition(position);
+    }
+
+    private class State {
+        public Player currentActivePlayer;
+        public ArrayList<Player> activePlayers = new ArrayList<>();
+
+        public void setCurrentActivePlayer(Player currentActivePlayer) {
+            this.currentActivePlayer = currentActivePlayer;
+        }
+
+        public void addPlayer(Player player) {
+            activePlayers.add(player);
+        }
+
+        public void removePlayer(Player player) {
+            activePlayers.remove(player);
+        }
+    }
+
+    // this wrapper avoids possible weird behaviour of removing an integer from an ArrayList
+    public class Player {
+        Integer id;
+
+        Player(Integer id) {
+            this.id = id;
+        }
+
+        // TODO: Enforce the fact that ids of different players are effectively different
+        @Override
+        public boolean equals(Object obj) {
+            if(!(obj instanceof Player)) return false;
+            return id.equals(((Player) obj).id);
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(id.intValue());
+        }
     }
 
     public static class BallInfo {

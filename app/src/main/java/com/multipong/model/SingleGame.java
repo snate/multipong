@@ -41,9 +41,6 @@ public class SingleGame implements Game {
         private double xFactor = 1.0; // ball horizontal multiplier
         private double yFactor = 1.0; // ball vertical multiplier
 
-        // TODO: Find out more about 0.90 hard-coded value
-        // TODO  -> that is, when the ball impacts with the palette
-        private double paletteHeight = 0.14;
         private boolean lose = false;
 
         private double palettePosition = 0.0;
@@ -65,7 +62,7 @@ public class SingleGame implements Game {
                 y += yFactor / range;
                 if (x <= 0.0 || x >= 1.0) xFactor *= -1;
                 if (y <= 0.0)             yFactor *= -1;
-                if (!lose && y >= (1.0 - paletteHeight))
+                if (!lose && y >= 1.0)
                     if (isColliding()) {
                         if (delay > 11) delay -= 10;
                         // TODO: compute bounce direction

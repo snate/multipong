@@ -48,7 +48,7 @@ public class MultiplayerStateManager {
     }
 
     // this wrapper avoids possible weird behaviour of removing an integer from an ArrayList
-    public class Player {
+    public static class Player {
         Integer id;
 
         Player(Integer id) {

@@ -51,15 +51,16 @@ public abstract class AbsGameThread implements Runnable {
             y += yFactor / range;
             if (x <= 0.0 || x >= 1.0) xFactor *= -1;
             if (y <= 0.0)             ballOnTopOfTheField();
-            if (!lose && y >= 1.0)
-                if (isColliding()) {
+            if (!lose && y >= 1.0) {
+                double pointOfCollision = computeCollision();
+                if (pointOfCollision < - 1 || pointOfCollision > 1) {
                     if (delay > 11) delay -= 10;
                     // TODO: compute bounce direction
                     yFactor *= -1;
                     activity.updateScore(++score);
-                }
-                else
+                } else
                     lose = true;
+            }
             activity.moveBall(x, y);
             try {
                 Thread.sleep(delay);
@@ -74,10 +75,13 @@ public abstract class AbsGameThread implements Runnable {
         this.palettePosition = (1 - paletteWidth) * palettePosition + paletteWidth / 2;
     }
 
-    private boolean isColliding() {
+    /**
+     * Computes a collision starting from the ball and the palette position.
+     * @return the percentage of mid-palette that the ball is distant from the center of the palette
+     */
+    private double computeCollision() {
         // TODO: Fix bug when ball is near to the right edge: collision not detected
-        return x >= palettePosition - paletteWidth/2 &&
-                x <= palettePosition + paletteWidth/2;
+        return 2 * (x - palettePosition) / paletteWidth;
     }
 
     public void setPaletteWidth(double paletteWidth) {

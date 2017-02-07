@@ -71,7 +71,7 @@ public abstract class AbsGameThread implements Runnable {
     }
 
     public void setPalettePosition(double palettePosition) {
-        this.palettePosition = palettePosition;
+        this.palettePosition = (1 - paletteWidth) * palettePosition + paletteWidth / 2;
     }
 
     private boolean isColliding() {

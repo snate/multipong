@@ -1,11 +1,8 @@
 package com.multipong.activity;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,6 +19,7 @@ import com.multipong.persistence.MultipongDatabase;
 import com.multipong.persistence.pojos.Stats;
 import com.multipong.persistence.read.StatsReader;
 import com.multipong.persistence.save.StatsSaver;
+import com.multipong.utilities.PlayerNameUtility;
 import com.multipong.view.PongView;
 
 public class GameActivity extends AppCompatActivity {
@@ -49,8 +47,9 @@ public class GameActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
 
-        Intent intent = getIntent();
-        playerName = intent.getCharSequenceExtra(MainActivity.PLAYER_NAME).toString();
+        /*Intent intent = getIntent();
+        playerName = intent.getCharSequenceExtra(MainActivity.PLAYER_NAME).toString();*/
+        playerName = PlayerNameUtility.getPlayerName(this);
 
         mSurfaceView = (PongView) findViewById(R.id.game_surface);
         mLayout = (RelativeLayout) findViewById(R.id.activity_game);

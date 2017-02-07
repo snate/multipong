@@ -14,4 +14,9 @@
     <string name="title_activity_game">Multipong</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="single_player">Single Player</string>
+    <string name="multi_player">Multi Player</string>
+
+    <string name="shared_preferences_file">com.multipong.shared_preferences</string>
 </resources>

@@ -32,7 +32,7 @@ public class SingleGame extends Game {
 
         @Override
         public void ballOnTopOfTheField() {
-            setXFactor(-1 * getYFactor());
+            setYFactor(-1 * getYFactor());
         }
 
         @Override

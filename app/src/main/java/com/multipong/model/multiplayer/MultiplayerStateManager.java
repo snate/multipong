@@ -15,6 +15,8 @@ public class MultiplayerStateManager {
     }
 
     public void sendBallToNext(BallInfo ballInfo){
+        PlayerExtractor extractor = new ConsecutivePlayerExtractor();
+        extractor.getNext(state.activePlayers, state.me);
         // TODO: Send ball info to coordinator via net
         // TODO: Remove the following stub call
         receiveData(ballInfo);
@@ -31,8 +33,13 @@ public class MultiplayerStateManager {
     }
 
     private class State {
+        public Player me;
         public Player currentActivePlayer;
         public ArrayList<Player> activePlayers = new ArrayList<>();
+
+        public void setMe(Player me) {
+            this.me = me;
+        }
 
         public void setCurrentActivePlayer(Player currentActivePlayer) {
             this.currentActivePlayer = currentActivePlayer;

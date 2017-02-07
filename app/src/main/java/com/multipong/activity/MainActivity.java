@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         singlePlay = (FloatingActionButton) findViewById(R.id.single_player_button);
         singlePlay.setOnClickListener(new SinglePlayerListener());
 
-        multiPlay = (FloatingActionButton) findViewById(R.id.single_player_button);
+        multiPlay = (FloatingActionButton) findViewById(R.id.multi_player_button);
         multiPlay.setOnClickListener(new MultiPlayerListener());
 
         mCredits.setOnClickListener(new CreditsListener());

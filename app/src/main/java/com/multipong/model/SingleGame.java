@@ -17,7 +17,7 @@ public class SingleGame extends Game {
     public void start(String playerName) {
         this.playerName = playerName;
         if (currentGame == null) {
-            currentGame = new SingleGameThread(playerName, activity);
+            currentGame = new SingleGameThread(playerName, activity, getNumberOfLives());
             new Thread(currentGame).start();
         }
 
@@ -26,8 +26,8 @@ public class SingleGame extends Game {
     private class SingleGameThread extends AbsGameThread {
         private volatile boolean started = true;
 
-        public SingleGameThread(String playerName, GameActivity activity) {
-            super(playerName, activity);
+        public SingleGameThread(String playerName, GameActivity activity, int lives) {
+            super(playerName, activity, lives);
         }
 
         @Override

@@ -17,6 +17,7 @@ public abstract class AbsGameThread implements Runnable {
     private double yFactor = 1.0; // ball vertical multiplier
 
     private boolean lose = false;
+    private int lives;
 
     private volatile double palettePosition = 0.0;
     private volatile double paletteWidth = 0;
@@ -27,7 +28,8 @@ public abstract class AbsGameThread implements Runnable {
     private String playerName;
     private GameActivity activity;
 
-    public AbsGameThread(String playerName, GameActivity activity) {
+    public AbsGameThread(String playerName, GameActivity activity, int lives) {
+        this.lives = lives;
         this.activity = activity;
         this.playerName = playerName;
     }
@@ -59,8 +61,10 @@ public abstract class AbsGameThread implements Runnable {
                     xFactor = ricochetAngle;
                     yFactor = -(1 - (1 - paletteWidth) * ricochetAngle);
                     activity.updateScore(++score);
-                } else
-                    lose = true;
+                } else {
+                    lives -= 1;
+                    lose = lives == 0;
+                }
             }
             activity.moveBall(x, y);
             try {

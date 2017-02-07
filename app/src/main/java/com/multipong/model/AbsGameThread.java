@@ -52,11 +52,12 @@ public abstract class AbsGameThread implements Runnable {
             if (x <= 0.0 || x >= 1.0) xFactor *= -1;
             if (y <= 0.0)             ballOnTopOfTheField();
             if (!lose && y >= 1.0) {
-                double pointOfCollision = computeCollision();
-                if (pointOfCollision < - 1 || pointOfCollision > 1) {
+                double ricochetAngle = computeCollision();
+                if (ricochetAngle >= - 1 && ricochetAngle <= 1) {
                     if (delay > 11) delay -= 10;
-                    // TODO: compute bounce direction
-                    yFactor *= -1;
+                    // trust me, I've done the math
+                    xFactor = ricochetAngle;
+                    yFactor = -(1 - 0.8 * ricochetAngle);
                     activity.updateScore(++score);
                 } else
                     lose = true;

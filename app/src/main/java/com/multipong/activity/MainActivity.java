@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.multipong.R;
+import com.multipong.utilities.PlayerNameUtility;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             showShortToast("Play button clicked!");
-            Intent intent = new Intent(getApplicationContext(), GameActivity.class)
-                            .putExtra(PLAYER_NAME, playerName);
+            PlayerNameUtility.setPlayerName(MainActivity.this, playerName.toString());
+            Intent intent = new Intent(getApplicationContext(), SingleOrMultiPlayerChoose.class);
             startActivity(intent);
         }
     }

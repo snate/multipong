@@ -1,6 +1,4 @@
 *.aux
-*.fdb_latexmk
-*.fls
 *.log
 *.pdf
 bare_ieee/*

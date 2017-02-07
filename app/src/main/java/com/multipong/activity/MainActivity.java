@@ -2,18 +2,18 @@ package com.multipong.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.multipong.R;
-import com.multipong.utilities.PlayerNameUtility;
+import com.multipong.utility.PlayerNameUtility;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mCredits;
     private TextView mNameTextView;
-    private Button mPlayButton;
+    private FloatingActionButton singlePlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +35,16 @@ public class MainActivity extends AppCompatActivity {
 
         mCredits = (TextView) findViewById(R.id.credits_tv);
         mNameTextView = (TextView) findViewById(R.id.player_name_tv);
-        mPlayButton = (Button) findViewById(R.id.play_button);
+        singlePlay = (FloatingActionButton) findViewById(R.id.single_player_button);
+        singlePlay.setOnClickListener(new SinglePlayerListener());
 
         mCredits.setOnClickListener(new CreditsListener());
-        mPlayButton.setOnClickListener(new SinglePlayerListener());
+        //mPlayButton.setOnClickListener(new SinglePlayerListener());
 
         bouncingBall();
+
+        if (PlayerNameUtility.getPlayerName() != null)
+            mNameTextView.setText(PlayerNameUtility.getPlayerName());
     }
 
     private void bouncingBall() {
@@ -61,27 +65,28 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(context, text, duration).show();
     }
 
+    private class CreditsListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getApplicationContext(), CreditsActivity.class);
+            startActivity(intent);
+        }
+    }
+
     private class SinglePlayerListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
             CharSequence playerName = mNameTextView.getText();
             if(playerName.length() == 0) {
-                showShortToast("Please insert your name");
+                showShortToast(getString(R.string.insert_your_name));
                 return;
             }
-            showShortToast("Play button clicked!");
-            PlayerNameUtility.setPlayerName(MainActivity.this, playerName.toString());
-            Intent intent = new Intent(getApplicationContext(), SingleOrMultiPlayerChoose.class);
-            startActivity(intent);
-        }
-    }
 
-    private class CreditsListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(getApplicationContext(), CreditsActivity.class);
+            PlayerNameUtility.setPlayerName(playerName.toString());
+            Intent intent = new Intent(getApplicationContext(), GameActivity.class)
+                    .putExtra(PLAYER_NAME, playerName);
             startActivity(intent);
         }
     }

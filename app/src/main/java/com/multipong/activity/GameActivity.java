@@ -19,7 +19,7 @@ import com.multipong.persistence.MultipongDatabase;
 import com.multipong.persistence.pojos.Stats;
 import com.multipong.persistence.read.StatsReader;
 import com.multipong.persistence.save.StatsSaver;
-import com.multipong.utilities.PlayerNameUtility;
+import com.multipong.utility.PlayerNameUtility;
 import com.multipong.view.PongView;
 
 public class GameActivity extends AppCompatActivity {
@@ -49,7 +49,7 @@ public class GameActivity extends AppCompatActivity {
 
         /*Intent intent = getIntent();
         playerName = intent.getCharSequenceExtra(MainActivity.PLAYER_NAME).toString();*/
-        playerName = PlayerNameUtility.getPlayerName(this);
+        playerName = PlayerNameUtility.getPlayerName();
 
         mSurfaceView = (PongView) findViewById(R.id.game_surface);
         mLayout = (RelativeLayout) findViewById(R.id.activity_game);

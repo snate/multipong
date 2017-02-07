@@ -3,7 +3,7 @@ package com.multipong.model;
 import com.multipong.activity.GameActivity;
 import com.multipong.persistence.MultipongDatabase;
 
-public class SingleGame extends AbsGame {
+public class SingleGame extends Game {
 
     private GameActivity activity;
     private String playerName;

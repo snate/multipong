@@ -8,7 +8,7 @@ import com.multipong.persistence.MultipongDatabase;
  * @version 0.01
  * @since 0.01
  */
-public class MultiplayerGame extends AbsGame {
+public class MultiplayerGame extends Game {
     private GameActivity activity;
     private String playerName;
     private MultipongDatabase database;

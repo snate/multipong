@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mCredits;
     private TextView mNameTextView;
     private FloatingActionButton singlePlay;
+    private FloatingActionButton multiPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +36,15 @@ public class MainActivity extends AppCompatActivity {
 
         mCredits = (TextView) findViewById(R.id.credits_tv);
         mNameTextView = (TextView) findViewById(R.id.player_name_tv);
+
         singlePlay = (FloatingActionButton) findViewById(R.id.single_player_button);
         singlePlay.setOnClickListener(new SinglePlayerListener());
 
+        multiPlay = (FloatingActionButton) findViewById(R.id.single_player_button);
+        multiPlay.setOnClickListener(new MultiPlayerListener());
+
         mCredits.setOnClickListener(new CreditsListener());
-        //mPlayButton.setOnClickListener(new SinglePlayerListener());
+
 
         bouncingBall();
 
@@ -75,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class SinglePlayerListener implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
             CharSequence playerName = mNameTextView.getText();
@@ -88,6 +92,20 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), GameActivity.class)
                     .putExtra(PLAYER_NAME, playerName);
             startActivity(intent);
+        }
+    }
+
+    private class MultiPlayerListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            CharSequence playerName = mNameTextView.getText();
+            if(playerName.length() == 0) {
+                showShortToast(getString(R.string.insert_your_name));
+                return;
+            }
+
+            PlayerNameUtility.setPlayerName(playerName.toString());
+            //TODO start right activity for multiplayer
         }
     }
 }

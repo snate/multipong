@@ -10,6 +10,7 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class MultiplayerGameFormationActivity extends AppCompatActivity {
-
-    public static int PORT = 8888;
 
     private WifiP2pManager mManager;
     private Channel mChannel;
@@ -89,7 +88,11 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
         PlayerAdapter adapter = new PlayerAdapter(this, names);
         playerList.setAdapter(adapter);
 
-        showShortToast("Found " + list.size() + " devices");
+        Log.d("Game Formation", "Found " + list.size() + " devices");
+        if(list.isEmpty()) return;
+        Iterator<WifiP2pDevice> iterator = list.iterator();
+        WifiP2pDevice device = iterator.next();
+        Utils.connectTo(device, mManager, mChannel);
     }
 
     private void showShortToast(String toastText) {

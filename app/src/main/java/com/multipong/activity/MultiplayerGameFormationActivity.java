@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.multipong.R;
 import com.multipong.net.PeerExplorer;
+import com.multipong.net.Utils;
 import com.multipong.net.WifiP2pListener;
 
 import java.util.List;
@@ -54,9 +55,13 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
 
     public void receiveList(List<WifiP2pDevice> list) {
         showShortToast("Found " + list.size() + " devices");
+        if(list.isEmpty()) return;
+        WifiP2pDevice device = list.get(0);
+        Utils.connectTo(device, mManager, mChannel);
+
     }
 
-    private void showShortToast(String toastText) {
+    public void showShortToast(String toastText) {
         Context context = getApplicationContext();
         CharSequence text = toastText;
         int duration = Toast.LENGTH_SHORT;

@@ -23,4 +23,8 @@
     <string name="username">username</string>
 
     <string name="insert_your_name">Please insert your name</string>
+
+    <string name="start">Start</string>
+
+    <string name="list_of_players">List of players</string>
 </resources>

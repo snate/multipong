@@ -10,4 +10,25 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.multipong.activity.MultiplayerGameFormationActivity">
 
+    <TextView android:layout_width="match_parent"
+              android:text="list of players"
+              android:layout_height="wrap_content"/>
+
+    <ListView
+            android:id="@+id/player_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:text="OK"/>
+
 </RelativeLayout>

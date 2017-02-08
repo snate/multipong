@@ -31,7 +31,6 @@
         <activity
             android:name=".activity.GameActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activity.SingleOrMultiPlayerChoose" />
         <activity android:name=".activity.MultiplayerGameFormationActivity"></activity>
     </application>
 

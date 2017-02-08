@@ -21,9 +21,9 @@ public class Receiver implements Runnable {
         Log.d("RECEIVER", "Started");
         serverSocket = null;
         try {
-            serverSocket = new ServerSocket(8888);
+            serverSocket = new ServerSocket(Utils.PORT);
             Socket client = serverSocket.accept();
-            Log.d("RECEIVER", "Request accepted");
+            Log.d("Receiver", "Request accepted");
         } catch (IOException e) {
             e.printStackTrace();
         }

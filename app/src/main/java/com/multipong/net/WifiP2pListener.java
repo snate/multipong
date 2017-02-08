@@ -83,6 +83,7 @@ public class WifiP2pListener extends BroadcastReceiver {
             serviceIntent.putExtra(Sender.EXTRAS_ADDRESS, address);
             serviceIntent.putExtra(Sender.EXTRAS_PORT, Utils.PORT);
             Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
+            mActivity.startService(serviceIntent);
         }
     }
 }

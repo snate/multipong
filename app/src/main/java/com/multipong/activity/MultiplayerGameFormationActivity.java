@@ -7,6 +7,7 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.multipong.R;
@@ -54,7 +55,7 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
     }
 
     public void receiveList(List<WifiP2pDevice> list) {
-        showShortToast("Found " + list.size() + " devices");
+        Log.d("Game Formation", "Found " + list.size() + " devices");
         if(list.isEmpty()) return;
         WifiP2pDevice device = list.get(0);
         Utils.connectTo(device, mManager, mChannel);

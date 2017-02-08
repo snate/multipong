@@ -34,6 +34,7 @@ public class GameActivity extends AppCompatActivity {
     private String playerName;
     private Game game;
     private StatsSaver saver;
+    private volatile boolean gameEnded = false;
 
     private final double PALETTE_WIDTH = 0.2;
 
@@ -87,7 +88,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() { }
+    public void onBackPressed() {
+        if(gameEnded)
+            super.onBackPressed();
+    }
 
     public void showPlayerName(String name) {
         TextView mDebugTextView = (TextView) findViewById(R.id.debug_tv);
@@ -113,6 +117,7 @@ public class GameActivity extends AppCompatActivity {
                                  .withName(playerName)
                                  .withScore(score);
         saver.save(stats);
+        gameEnded = true;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

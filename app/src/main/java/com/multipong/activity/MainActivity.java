@@ -105,7 +105,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
             PlayerNameUtility.setPlayerName(playerName.toString());
-            //TODO start right activity for multiplayer
+            Intent intent = new Intent(getApplicationContext(),
+                                       MultiplayerGameFormationActivity.class)
+                    .putExtra(PLAYER_NAME, playerName);
+            startActivity(intent);
         }
     }
 }

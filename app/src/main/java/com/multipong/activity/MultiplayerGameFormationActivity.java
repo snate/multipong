@@ -53,8 +53,6 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
         playerList = (ListView) findViewById(R.id.player_list);
-
-        receiveList(new LinkedList<WifiP2pDevice>());
     }
 
     @Override
@@ -71,18 +69,8 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
 
     public void receiveList(List<WifiP2pDevice> list) {
         ArrayList<String> names = new ArrayList<>();
-
-        for(WifiP2pDevice device:list)
-            names.add(device.deviceName);
-
-        /*for (int i = 0; i < 100; i++) {
-            names.add(i + ". nome giocatore");
-        }
-
-        for (int i = 0; i < 100; i++) {
-            Log.i("names", names.get(i));
-        }*/
-
+        for(WifiP2pDevice dev:list)
+            names.add(dev.deviceName);
         PlayerAdapter adapter = new PlayerAdapter(this, names);
         playerList.setAdapter(adapter);
 

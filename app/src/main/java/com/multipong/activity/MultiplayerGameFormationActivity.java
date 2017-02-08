@@ -21,6 +21,9 @@ import com.multipong.net.PeerExplorer;
 import com.multipong.net.WifiP2pListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MultiplayerGameFormationActivity extends AppCompatActivity {
@@ -50,6 +53,8 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
         playerList = (ListView) findViewById(R.id.player_list);
+
+        receiveList(new LinkedList<WifiP2pDevice>());
     }
 
     @Override

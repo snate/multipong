@@ -26,11 +26,10 @@ public class PeerExplorer implements WifiP2pManager.PeerListListener {
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peerList) {
         Collection<WifiP2pDevice> refreshedPeers = peerList.getDeviceList();
-        peers.addAll(refreshedPeers);
-        mActivity.receiveList(peers);
         if (!refreshedPeers.equals(peers)) {
             peers.clear();
             peers.addAll(refreshedPeers);
+            mActivity.receiveList(peers);
 
             // If an AdapterView is backed by this data, notify it
             // of the change.  For instance, if you have a ListView of

@@ -53,9 +53,7 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
     }
 
     public void receiveList(List<WifiP2pDevice> list) {
-        showShortToast("All good");
-        /*if (list != null)
-            showShortToast("YAHOO");*/
+        showShortToast("Found " + list.size() + " devices");
     }
 
     private void showShortToast(String toastText) {

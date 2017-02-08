@@ -8,6 +8,7 @@ import android.util.Log;
 import com.multipong.activity.MultiplayerGameFormationActivity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,7 +25,8 @@ public class PeerExplorer implements WifiP2pManager.PeerListListener {
 
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peerList) {
-        List<WifiP2pDevice> refreshedPeers = (List<WifiP2pDevice>) peerList.getDeviceList();
+        Collection<WifiP2pDevice> refreshedPeers = peerList.getDeviceList();
+        peers.addAll(refreshedPeers);
         mActivity.receiveList(peers);
         if (!refreshedPeers.equals(peers)) {
             peers.clear();

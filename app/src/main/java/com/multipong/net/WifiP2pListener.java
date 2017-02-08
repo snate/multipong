@@ -12,6 +12,8 @@ import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
 
+import java.net.InetAddress;
+
 public class WifiP2pListener extends BroadcastReceiver {
 
     private WifiP2pManager mManager;
@@ -56,7 +58,6 @@ public class WifiP2pListener extends BroadcastReceiver {
             mManager.requestPeers(mChannel, mListener);
 
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
-            Log.d("WifiP2pListener", "Uh?");
             if (mManager == null) { return; }
             NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
             if (networkInfo.isConnected()) {
@@ -76,9 +77,12 @@ public class WifiP2pListener extends BroadcastReceiver {
 
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
-            Log.d("MyConnectionLister", "here");
+            InetAddress address = info.groupOwnerAddress;
             Intent serviceIntent = new Intent(mActivity, Sender.class);
             serviceIntent.setAction(Sender.ACTION_SEND_FILE);
+            serviceIntent.putExtra(Sender.EXTRAS_ADDRESS, address);
+            serviceIntent.putExtra(Sender.EXTRAS_PORT, Utils.PORT);
+            Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
         }
     }
 }

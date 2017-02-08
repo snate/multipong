@@ -16,7 +16,8 @@ public class Utils {
         manager.connect(channel, config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-                Log.d("Utils", "Connected to" + device.deviceName);
+                Log.d("Utils", "Connected to " + device.deviceName + " that has address "
+                        + device.deviceAddress);
             }
             @Override
             public void onFailure(int reason) { }

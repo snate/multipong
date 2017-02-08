@@ -9,7 +9,6 @@ import com.multipong.activity.MultiplayerGameFormationActivity;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * PeerExplorer discovers new peers.
@@ -17,7 +16,7 @@ import java.util.List;
 public class PeerExplorer implements WifiP2pManager.PeerListListener {
 
     MultiplayerGameFormationActivity mActivity;
-    private List<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
+    private volatile Collection<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
 
     public PeerExplorer(MultiplayerGameFormationActivity activity) {
         mActivity = activity;
@@ -26,7 +25,8 @@ public class PeerExplorer implements WifiP2pManager.PeerListListener {
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peerList) {
         Collection<WifiP2pDevice> refreshedPeers = peerList.getDeviceList();
-        if (!refreshedPeers.equals(peers)) {
+        if (!peers.containsAll(refreshedPeers) ||
+                !refreshedPeers.containsAll(peers)) {
             peers.clear();
             peers.addAll(refreshedPeers);
             mActivity.receiveList(peers);

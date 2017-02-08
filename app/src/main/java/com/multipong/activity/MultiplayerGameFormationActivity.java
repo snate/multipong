@@ -15,6 +15,8 @@ import com.multipong.net.PeerExplorer;
 import com.multipong.net.Utils;
 import com.multipong.net.WifiP2pListener;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 public class MultiplayerGameFormationActivity extends AppCompatActivity {
@@ -54,10 +56,11 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
         unregisterReceiver(mWifiP2pListener);
     }
 
-    public void receiveList(List<WifiP2pDevice> list) {
+    public void receiveList(Collection<WifiP2pDevice> list) {
         Log.d("Game Formation", "Found " + list.size() + " devices");
         if(list.isEmpty()) return;
-        WifiP2pDevice device = list.get(0);
+        Iterator<WifiP2pDevice> iterator = list.iterator();
+        WifiP2pDevice device = iterator.next();
         Utils.connectTo(device, mManager, mChannel);
 
     }

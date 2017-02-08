@@ -1,7 +1,9 @@
 package com.multipong.activity;
 
 import android.app.Activity;
+import android.app.IntentService;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -18,21 +20,26 @@ import android.widget.Toast;
 
 import com.multipong.R;
 import com.multipong.net.PeerExplorer;
+import com.multipong.net.Receiver;
+import com.multipong.net.Sender;
+import com.multipong.net.Utils;
 import com.multipong.net.WifiP2pListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 public class MultiplayerGameFormationActivity extends AppCompatActivity {
+
+    public static int PORT = 8888;
 
     private WifiP2pManager mManager;
     private Channel mChannel;
     private PeerExplorer mExplorer;
     private WifiP2pListener mWifiP2pListener;
     private IntentFilter mIntentFilter;
+    private Receiver receiver;
 
     private ListView playerList;
 
@@ -44,7 +51,7 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(this, getMainLooper(), null);
         mExplorer = new PeerExplorer(this);
-        mWifiP2pListener = new WifiP2pListener(mManager, mChannel, mExplorer);
+        mWifiP2pListener = new WifiP2pListener(mManager, mChannel, this);
 
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
@@ -53,6 +60,8 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
         playerList = (ListView) findViewById(R.id.player_list);
+        receiver = new Receiver(this);
+        new Thread(receiver).start();
     }
 
     @Override
@@ -67,7 +76,13 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
         unregisterReceiver(mWifiP2pListener);
     }
 
-    public void receiveList(List<WifiP2pDevice> list) {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(receiver != null) receiver.stop();
+    }
+
+    public void receiveList(Collection<WifiP2pDevice> list) {
         ArrayList<String> names = new ArrayList<>();
         for(WifiP2pDevice dev:list)
             names.add(dev.deviceName);
@@ -76,8 +91,6 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
 
         showShortToast("Found " + list.size() + " devices");
     }
-
-
 
     private void showShortToast(String toastText) {
         Context context = getApplicationContext();

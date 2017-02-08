@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -99,6 +103,8 @@ public class GameActivity extends AppCompatActivity {
         // TODO: parameterize single game or multiplayer game choice
         if(game == null) {
             game = new SingleGame(this);
+            // TODO set the number of lives
+            game.setNumberOfLives(3);
             game.start(playerName);
             game.setPaletteWidth(PALETTE_WIDTH);
         }

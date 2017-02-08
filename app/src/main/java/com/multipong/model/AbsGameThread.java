@@ -1,5 +1,7 @@
 package com.multipong.model;
 
+import android.widget.Toast;
+
 import com.multipong.activity.GameActivity;
 
 /**
@@ -63,7 +65,24 @@ public abstract class AbsGameThread implements Runnable {
                     activity.updateScore(++score);
                 } else {
                     lives -= 1;
-                    lose = lives == 0;
+                    lose = (lives == 0);
+                    if (!lose) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //TODO use a string or remove the toast
+                                Toast.makeText(activity.getApplication(), "Hai perso una vita!!",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        try {
+                            //TODO use a parametrized number
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        resetGame();
+                    }
                 }
             }
             activity.moveBall(x, y);
@@ -96,5 +115,7 @@ public abstract class AbsGameThread implements Runnable {
     public abstract void ballOnTopOfTheField();
 
     public abstract void initialBallPosition();
+
+    public void resetGame(){}
 }
 

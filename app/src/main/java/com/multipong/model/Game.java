@@ -7,7 +7,7 @@ package com.multipong.model;
  */
 public abstract class Game {
     protected AbsGameThread currentGame = null;
-    private int lives = 1;
+    private volatile int lives = 1;
 
     public abstract void start(String playerName);
 

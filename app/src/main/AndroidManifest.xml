@@ -18,7 +18,6 @@
         <activity android:name=".activity.CreditsActivity" />
         <activity android:name=".activity.GameActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".activity.SingleOrMultiPlayerChoose" />
     </application>
 
 </manifest>

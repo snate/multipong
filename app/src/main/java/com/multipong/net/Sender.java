@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -53,8 +54,18 @@ public class Sender extends IntentService {
             socket.bind(null);
             socket.connect(new InetSocketAddress(host, port), SOCKET_TIMEOUT);
             Log.d("Sender", "Client socket - " + socket.isConnected());
+            OutputStream stream = socket.getOutputStream();
+            stream.write(data.getBytes(), 0,data.length());
+            stream.close();
+            Log.d("Sender", "Data has been sent: " + data);
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if(socket != null && socket.isConnected())
+                try {
+                    socket.close();
+                    Log.d("Sender", "Socket closed.");
+                } catch (IOException e) { }
         }
     }
 }

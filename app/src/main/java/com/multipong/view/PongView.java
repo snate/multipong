@@ -1,5 +1,6 @@
 package com.multipong.view;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,12 +9,16 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.multipong.R;
+import com.multipong.activity.MainActivity;
 
 import java.util.concurrent.atomic.AtomicInteger;
+
+
 
 public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -108,11 +113,20 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void drawFrame(Canvas canvas) {
-        paint.setColor(Color.GRAY);
-        canvas.drawRect(left(), scrollTop(), right(), scrollBottom(), paint);
-        canvas.drawRect(left(), getTop(), left() + borderSize, scrollBottom(), paint);
-        canvas.drawRect(right() - borderSize, getTop(), right(), scrollBottom(), paint);
-        canvas.drawRect(left(), getTop(), right(), getTop() + borderSize, paint);
+        paint.setColor(Color.BLUE);
+
+        Log.d("getLeft()  ",""+getLeft());
+        Log.d("getTop()   ",""+getTop());
+        Log.d("getRight() ",""+getRight());
+        Log.d("getBottom()",""+getBottom());
+
+        canvas.drawRect(getLeft(), getTop(), getRight(), getBottom(), paint);
+
+        //canvas.drawRect(left(), scrollTop(), right(), scrollBottom(), paint);
+        //canvas.drawRect(left(), getTop(), left() + borderSize, scrollBottom(), paint);
+        //canvas.drawRect(right() - borderSize, getTop(), right(), scrollBottom(), paint);
+        //canvas.drawRect(left(), getTop(), right(), getTop() + borderSize, paint);
+
     }
 
     private void drawPalette(Canvas canvas) {
@@ -146,6 +160,6 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     private int left()         { return getLeft(); }
     private int right()        { return getWidth(); }
-    private int scrollTop ()   { return getTop()+(getBottom()-getTop())*4/5; }
+    private int scrollTop ()   { return getTop()+(getBottom()-getTop())/*4/5*/; }
     private int scrollBottom() { return getBottom(); }
 }

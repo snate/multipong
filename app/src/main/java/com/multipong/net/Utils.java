@@ -44,10 +44,12 @@ public class Utils {
 
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
+            if(info.isGroupOwner) Log.d("Utils", "I'm GO");
+            else Log.d("Utils", "Not GO");
             InetAddress address = info.groupOwnerAddress;
             Intent serviceIntent = new Intent(mActivity, Sender.class);
             serviceIntent.setAction(Sender.ACTION_SEND_FILE);
-            serviceIntent.putExtra(Sender.EXTRAS_ADDRESS, address);
+            serviceIntent.putExtra(Sender.EXTRAS_ADDRESS, address.toString());
             serviceIntent.putExtra(Sender.EXTRAS_PORT, Utils.PORT);
             Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
             mActivity.startService(serviceIntent);

@@ -1,4 +1,4 @@
-package com.multipong.model;
+package com.multipong.model.game;
 
 import android.util.Log;
 

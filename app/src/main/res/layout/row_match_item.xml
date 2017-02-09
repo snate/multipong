@@ -3,7 +3,7 @@
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:background="@android:color/white"
-                android:padding="2dp"
+                android:padding="1dp"
                 tools:context="com.multipong.activity.MultiplayerGameFormationActivity">
 
     <TextView
@@ -26,19 +26,32 @@
             android:clickable="true"
             android:focusable="true"
             android:cropToPadding="false"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_margin="0dp"
+            android:paddingLeft="5dp"
+            android:paddingStart="5dp"
+            android:paddingRight="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="@color/teal"/>
 
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/match_partecipants"
-            android:text="partecipants"
+            android:text="@string/partecipants"
             android:layout_alignParentBottom="false"
             android:clickable="true"
             android:focusable="true"
             android:cropToPadding="false"
             android:layout_centerVertical="true"
             android:baselineAligned="true"
-            android:layout_toLeftOf="@id/join_match"/>
+            android:layout_toLeftOf="@id/join_match"
+            android:layout_toStartOf="@id/join_match"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_margin="0dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/teal"/>
 
 </RelativeLayout>

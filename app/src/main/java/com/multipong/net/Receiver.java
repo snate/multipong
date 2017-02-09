@@ -5,8 +5,10 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Receiver implements Runnable {
 
@@ -27,7 +29,9 @@ public class Receiver implements Runnable {
 
             try {
                 InputStream input = client.getInputStream();
-                Log.d("input", input.toString());
+                Scanner scanner = new Scanner(input).useDelimiter("\\A");
+                String text = scanner.hasNext() ? scanner.next() : "";
+                Log.d("input", text);
             }
             catch (IOException e) {
                 System.out.println(e);

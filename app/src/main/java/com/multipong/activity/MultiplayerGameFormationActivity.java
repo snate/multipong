@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.multipong.R;
 import com.multipong.net.PeerExplorer;
 import com.multipong.net.Receiver;
-import com.multipong.net.Sender;
 import com.multipong.net.Utils;
 import com.multipong.net.WifiP2pListener;
 

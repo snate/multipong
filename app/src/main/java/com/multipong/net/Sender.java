@@ -43,13 +43,13 @@ public class Sender extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Log.d("Sender", "Intent received");
         Context context = getApplicationContext();
-        String host = "localhost";
         /*
          * TODO the next avaible free port could be find using
          * ServerSocket serverSocket = new ServerSocket(0);
          * int port = serverSocket.getLocalPort();
          */
-        int port = 8888;
+        int port = intent.getIntExtra(EXTRAS_PORT, 8888);
+        String host = intent.getStringExtra(EXTRAS_ADDRESS);
         if (!intent.getAction().equals(ACTION_SEND_FILE)) return;
         Socket socket = new Socket();
         try {

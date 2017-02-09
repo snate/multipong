@@ -11,6 +11,7 @@ import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 
+import com.multipong.activity.AbsMultiplayerGamePeersActivity;
 import com.multipong.activity.MultiplayerGameFormationActivity;
 
 import java.net.InetAddress;
@@ -20,10 +21,10 @@ public class WifiP2pListener extends BroadcastReceiver {
     private WifiP2pManager mManager;
     private Channel mChannel;
     private PeerListListener mListener;
-    private MultiplayerGameFormationActivity mActivity;
+    private AbsMultiplayerGamePeersActivity mActivity;
 
     public WifiP2pListener(WifiP2pManager manager, Channel channel,
-                           MultiplayerGameFormationActivity activity) {
+                           AbsMultiplayerGamePeersActivity activity) {
         mManager = manager;
         mChannel = channel;
         mListener = new PeerExplorer(activity);

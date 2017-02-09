@@ -40,6 +40,11 @@ public class Sender extends IntentService {
         Log.d("Sender", "Intent received");
         Context context = getApplicationContext();
         String host = "localhost";
+        /*
+         * TODO the next avaible free port could be find using
+         * ServerSocket serverSocket = new ServerSocket(0);
+         * int port = serverSocket.getLocalPort();
+         */
         int port = 8888;
         if (!intent.getAction().equals(ACTION_SEND_FILE)) return;
         String data = "Hello, world";

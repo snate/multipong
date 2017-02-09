@@ -21,8 +21,8 @@ import android.widget.Toast;
 import android.util.Log;
 
 import com.multipong.R;
-import com.multipong.model.Game;
-import com.multipong.model.SingleGame;
+import com.multipong.model.game.Game;
+import com.multipong.model.game.SingleGame;
 import com.multipong.persistence.MultipongDatabase;
 import com.multipong.persistence.pojos.Stats;
 import com.multipong.persistence.read.StatsReader;

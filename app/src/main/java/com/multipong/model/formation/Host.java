@@ -1,27 +1,22 @@
 package com.multipong.model.formation;
 
 import com.multipong.model.Actor;
+import com.multipong.model.formation.Participant.MessageType;
 
 import org.json.JSONObject;
 
 public class Host implements Actor {
 
     @Override
-    public void receiveMessage(String type, JSONObject message) {
-        // TODO: Check if host has received either `discover or `join Participant messages
+    public void receive(String type, JSONObject message) {
+        switch (type) {
+            case Participant.MessageType.DISCOVER: break;
+            case Participant.MessageType.JOIN: break;
+        }
     }
 
-    public enum MessageType {
-        AVAILABLE("AVAILABLE"),
-        STARTED("STARTED");
-
-        private final String description;
-
-        private MessageType(String value) { description = value; }
-
-        @Override
-        public String toString() {
-            return description;
-        }
+    public class MessageType {
+        public static final String AVAILABLE = "AVAILABLE";
+        public static final String STARTED = "STARTED";
     }
 }

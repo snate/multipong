@@ -1,18 +1,28 @@
 package com.multipong.net.messages;
 
+import com.multipong.net.Utils;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
 public abstract class Message {
 
+    public static final String APP_FIELD = "application";
+    public static final String APP_VALUE = "multipong";
+    public static final String MESSAGE_TYPE = "type";
+
     protected JSONObject object;
 
     public Message() {
-        this.object = new JSONObject();
-        // TODO: Add here basic stuff like   { "application": "multipong" }
-        // TODO: Add message type like       { "type": getMessageType() }
-        String messageType = getMessageType();
+        try {
+            object = new JSONObject();
+            object.put(APP_FIELD, APP_VALUE);
+            object.put(MESSAGE_TYPE, getMessageType());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public JSONObject getMsg() {

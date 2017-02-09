@@ -56,10 +56,9 @@ public class Utils {
         }
     }
 
-    public static class JsonGameFormation {
-        public static final String APP_FIELD = "application";
-        public static final String APP_VALUE = "multipong";
-
+    // TODO: Remove the following class
+    public static class JsonUtils {
+        // TODO: Remove the following field
         public static final String NAME_FIELD = "playerName";
     }
 }

@@ -3,6 +3,8 @@ package com.multipong.net;
 import android.content.Context;
 import android.util.Log;
 
+import com.multipong.net.messages.Message;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,8 +37,8 @@ public class Receiver implements Runnable {
                     Scanner scanner = new Scanner(input).useDelimiter("\\A");
                     String json = scanner.hasNext() ? scanner.next() : "";
                     JSONObject jsonObject = new JSONObject(json);
-                    String app = jsonObject.getString(Utils.JsonGameFormation.APP_FIELD);
-                    String name = jsonObject.getString(Utils.JsonGameFormation.NAME_FIELD);
+                    String app = jsonObject.getString(Message.APP_FIELD);
+                    String name = jsonObject.getString(Utils.JsonUtils.NAME_FIELD);
                     Log.d("Receiver", "'Application' field: " + app + " with name " + name);
                 } catch (IOException e) {
                     System.out.println(e);

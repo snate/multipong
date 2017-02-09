@@ -23,7 +23,8 @@ public class MultiplayerGameJoinOrHostActivity extends AppCompatActivity {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getApplicationContext(), MultiplayerGameJoinActivity.class);
+                startActivity(intent);
             }
         });
 

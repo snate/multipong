@@ -105,9 +105,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             PlayerNameUtility.setPlayerName(playerName.toString());
-            Intent intent = new Intent(getApplicationContext(),
+            /*Intent intent = new Intent(getApplicationContext(),
                                        MultiplayerGameFormationActivity.class)
                     .putExtra(PLAYER_NAME, playerName);
+            startActivity(intent);*/
+            Intent intent = new Intent(getApplicationContext(), MultiplayerGameJoinOrHostActivity.class);
             startActivity(intent);
         }
     }

@@ -31,7 +31,14 @@
         <activity
             android:name=".activity.GameActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activity.MultiplayerGameFormationActivity"></activity>
+        <activity android:name=".activity.MultiplayerGameFormationActivity"/>
+        <activity android:name=".activity.MultiplayerGameJoinOrHostActivity"/>
+        <activity android:name=".activity.MultiplayerGameJoinActivity"/>
+
+        <!-- TODO remove -> only debug purpose -->
+        <activity android:name=".activity.DummyActivity"/>
+
+        <service android:name=".net.Sender" android:exported="false"/>
     </application>
 
 </manifest>

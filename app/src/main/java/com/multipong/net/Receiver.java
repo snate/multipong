@@ -3,6 +3,9 @@ package com.multipong.net;
 import android.content.Context;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -30,11 +33,15 @@ public class Receiver implements Runnable {
             try {
                 InputStream input = client.getInputStream();
                 Scanner scanner = new Scanner(input).useDelimiter("\\A");
-                String text = scanner.hasNext() ? scanner.next() : "";
-                Log.d("input", text);
+                String json = scanner.hasNext() ? scanner.next() : "";
+                JSONObject jsonObject = new JSONObject(json);
+                String app = jsonObject.getString(Utils.JsonGameFormation.APP_FIELD);
+                Log.d("Receiver", "'Application' field: " + app);
             }
             catch (IOException e) {
                 System.out.println(e);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
             Log.d("Receiver", "Request accepted");

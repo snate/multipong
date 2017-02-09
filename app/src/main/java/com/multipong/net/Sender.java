@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -55,10 +58,14 @@ public class Sender extends IntentService {
             socket.connect(new InetSocketAddress(host, port), SOCKET_TIMEOUT);
             Log.d("Sender", "Client socket - " + socket.isConnected());
             OutputStream stream = socket.getOutputStream();
-            stream.write(data.getBytes(), 0,data.length());
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(Utils.JsonGameFormation.APP_FIELD, Utils.JsonGameFormation.APP_VALUE);
+            stream.write(jsonObject.toString().getBytes(), 0, jsonObject.toString().length());
             stream.close();
             Log.d("Sender", "Data has been sent: " + data);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         } finally {
             if(socket != null && socket.isConnected())

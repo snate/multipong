@@ -3,20 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_game"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent"
+
     android:background="#FFFFFF"
     tools:context="com.multipong.activity.GameActivity">
 
-    <com.multipong.view.PongView
-        android:id="@+id/game_surface"
+    <RelativeLayout
+        android:id="@+id/game_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#446688"
+        tools:context="com.multipong.activity.GameActivity"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <com.multipong.view.PongView
+            android:id="@+id/game_surface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true" />
+
+
+    </RelativeLayout>
 
     <SeekBar
         style="@style/Widget.AppCompat.SeekBar.Discrete"
@@ -27,6 +37,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="35dp"
+        android:background="#ff0000"
         android:progress="0" />
 
     <TextView
@@ -39,18 +50,6 @@
         android:layout_marginTop="27dp"
         android:textColor="@color/colorPrimaryDark"
         android:id="@+id/debug_tv" />
-
-    <TextView
-        android:id="@+id/score_tv"
-        android:text="TextView"
-        android:textColor="@color/black_overlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/debug_tv"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp" />
 
     <TextView
         android:id="@+id/end_tv"
@@ -74,4 +73,18 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp" />
 
+    <TextView
+        android:id="@+id/score_tv"
+        android:text="TextView"
+        android:textColor="@color/black_overlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
 </RelativeLayout>
+    <!--
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    -->

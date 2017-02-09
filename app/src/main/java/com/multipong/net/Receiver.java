@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -23,6 +24,15 @@ public class Receiver implements Runnable {
         try {
             serverSocket = new ServerSocket(Utils.PORT);
             Socket client = serverSocket.accept();
+
+            try {
+                InputStream input = client.getInputStream();
+                Log.d("input", input.toString());
+            }
+            catch (IOException e) {
+                System.out.println(e);
+            }
+
             Log.d("Receiver", "Request accepted");
         } catch (IOException e) {
             e.printStackTrace();

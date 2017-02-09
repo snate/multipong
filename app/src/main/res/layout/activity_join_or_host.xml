@@ -3,4 +3,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+    <RelativeLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_centerVertical="true"
+                  android:layout_centerHorizontal="true">
+
+        <Button
+                android:id="@+id/new_match_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:text="@string/create_new_match" />
+
+        <Button
+                android:id="@+id/join_match_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/new_match_button"
+                android:text="@string/join_match" />
+
+    </RelativeLayout>
+
 </RelativeLayout>

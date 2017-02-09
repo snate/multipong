@@ -9,7 +9,7 @@ public class Participant implements Actor {
     public void receive(String type, JSONObject message) {
         switch (type) {
             case Host.MessageType.AVAILABLE: break;
-            case Host.MessageType.STARTED: break;
+            case Host.MessageType.STARTING: break;
         }
     }
 

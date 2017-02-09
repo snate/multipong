@@ -49,7 +49,7 @@ public class Sender extends IntentService {
          * int port = serverSocket.getLocalPort();
          */
         int port = intent.getIntExtra(EXTRAS_PORT, 8888);
-        String host = intent.getStringExtra(EXTRAS_ADDRESS);
+        String host = intent.getStringExtra(EXTRAS_ADDRESS).substring(1);
         if (!intent.getAction().equals(ACTION_SEND_FILE)) return;
         Socket socket = new Socket();
         try {

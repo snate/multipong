@@ -24,11 +24,10 @@ public class Receiver implements Runnable {
 
     @Override
     public void run() {
-        while(true) {
-            Log.d("RECEIVER", "Started");
-            serverSocket = null;
-            try {
-                serverSocket = new ServerSocket(Utils.PORT);
+        Log.d("RECEIVER", "Started");
+        try {
+            serverSocket = new ServerSocket(Utils.PORT);
+            while(true) {
                 Socket client = serverSocket.accept();
 
                 try {
@@ -46,9 +45,9 @@ public class Receiver implements Runnable {
                 }
 
                 Log.d("Receiver", "Request accepted");
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

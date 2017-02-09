@@ -23,4 +23,11 @@ public class Utils {
             public void onFailure(int reason) { }
         });
     }
+
+    public static class JsonGameFormation {
+        public static final String APP_FIELD = "application";
+        public static final String APP_VALUE = "multipong";
+
+        public static final String NAME_FIELD = "playerName";
+    }
 }

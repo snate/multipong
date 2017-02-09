@@ -51,7 +51,6 @@ public class Sender extends IntentService {
          */
         int port = 8888;
         if (!intent.getAction().equals(ACTION_SEND_FILE)) return;
-        String data = "Hello, world";
         Socket socket = new Socket();
         try {
             socket.bind(null);
@@ -60,9 +59,10 @@ public class Sender extends IntentService {
             OutputStream stream = socket.getOutputStream();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put(Utils.JsonGameFormation.APP_FIELD, Utils.JsonGameFormation.APP_VALUE);
+            jsonObject.put(Utils.JsonGameFormation.NAME_FIELD, "Seba");
             stream.write(jsonObject.toString().getBytes(), 0, jsonObject.toString().length());
             stream.close();
-            Log.d("Sender", "Data has been sent: " + data);
+            Log.d("Sender", "Data has been sent: " + "Seba");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {

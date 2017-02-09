@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.multipong.net.messages.Message;
 import com.multipong.utility.PlayerNameUtility;
 
 import org.json.JSONException;
@@ -60,8 +61,8 @@ public class Sender extends IntentService {
             Log.d("Sender", "Client socket - " + socket.isConnected());
             OutputStream stream = socket.getOutputStream();
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put(Utils.JsonGameFormation.APP_FIELD, Utils.JsonGameFormation.APP_VALUE);
-            jsonObject.put(Utils.JsonGameFormation.NAME_FIELD, PlayerNameUtility.getPlayerName());
+            jsonObject.put(Message.APP_FIELD, Message.APP_VALUE);
+            jsonObject.put(Utils.JsonUtils.NAME_FIELD, PlayerNameUtility.getPlayerName());
             stream.write(jsonObject.toString().getBytes(), 0, jsonObject.toString().length());
             stream.close();
             Log.d("Sender", "Data has been sent: " + PlayerNameUtility.getPlayerName());

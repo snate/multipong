@@ -22,6 +22,11 @@ public class Receiver implements Runnable {
         this.context = context;
     }
 
+    /**
+     * TODO: PARTICIPANT can receive: `available`, `started`
+     * TODO: HOST can receive: `discover`, `join`
+     */
+
     @Override
     public void run() {
         Log.d("RECEIVER", "Started");

@@ -24,30 +24,31 @@ public class Receiver implements Runnable {
 
     @Override
     public void run() {
-        Log.d("RECEIVER", "Started");
-        serverSocket = null;
-        try {
-            serverSocket = new ServerSocket(Utils.PORT);
-            Socket client = serverSocket.accept();
-
+        while(true) {
+            Log.d("RECEIVER", "Started");
+            serverSocket = null;
             try {
-                InputStream input = client.getInputStream();
-                Scanner scanner = new Scanner(input).useDelimiter("\\A");
-                String json = scanner.hasNext() ? scanner.next() : "";
-                JSONObject jsonObject = new JSONObject(json);
-                String app = jsonObject.getString(Utils.JsonGameFormation.APP_FIELD);
-                String name = jsonObject.getString(Utils.JsonGameFormation.NAME_FIELD);
-                Log.d("Receiver", "'Application' field: " + app + " with name " + name);
-            }
-            catch (IOException e) {
-                System.out.println(e);
-            } catch (JSONException e) {
+                serverSocket = new ServerSocket(Utils.PORT);
+                Socket client = serverSocket.accept();
+
+                try {
+                    InputStream input = client.getInputStream();
+                    Scanner scanner = new Scanner(input).useDelimiter("\\A");
+                    String json = scanner.hasNext() ? scanner.next() : "";
+                    JSONObject jsonObject = new JSONObject(json);
+                    String app = jsonObject.getString(Utils.JsonGameFormation.APP_FIELD);
+                    String name = jsonObject.getString(Utils.JsonGameFormation.NAME_FIELD);
+                    Log.d("Receiver", "'Application' field: " + app + " with name " + name);
+                } catch (IOException e) {
+                    System.out.println(e);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Log.d("Receiver", "Request accepted");
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            Log.d("Receiver", "Request accepted");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

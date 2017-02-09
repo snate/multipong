@@ -92,7 +92,7 @@ public class MultiplayerGameFormationActivity extends AppCompatActivity {
         if(list.isEmpty()) return;
         Iterator<WifiP2pDevice> iterator = list.iterator();
         WifiP2pDevice device = iterator.next();
-        Utils.connectTo(device, mManager, mChannel);
+        Utils.connectTo(device, mManager, mChannel, this);
     }
 
     private void showShortToast(String toastText) {

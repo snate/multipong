@@ -8,6 +8,7 @@ import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
+import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
@@ -62,7 +63,6 @@ public class WifiP2pListener extends BroadcastReceiver {
             NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
             if (networkInfo.isConnected()) {
                 // Connection
-                mManager.requestConnectionInfo(mChannel, new MyConnectionListener());
             } else {
                 // Disconnection
 
@@ -70,20 +70,6 @@ public class WifiP2pListener extends BroadcastReceiver {
 
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             // Respond to this device's wifi state changing
-        }
-    }
-
-    private class MyConnectionListener implements WifiP2pManager.ConnectionInfoListener {
-
-        @Override
-        public void onConnectionInfoAvailable(WifiP2pInfo info) {
-            InetAddress address = info.groupOwnerAddress;
-            Intent serviceIntent = new Intent(mActivity, Sender.class);
-            serviceIntent.setAction(Sender.ACTION_SEND_FILE);
-            serviceIntent.putExtra(Sender.EXTRAS_ADDRESS, address);
-            serviceIntent.putExtra(Sender.EXTRAS_PORT, Utils.PORT);
-            Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
-            mActivity.startService(serviceIntent);
         }
     }
 }

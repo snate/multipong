@@ -1,13 +1,8 @@
 package com.multipong.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.wifi.p2p.WifiP2pDevice;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,19 +10,13 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.multipong.R;
 import com.multipong.model.Actor;
-import com.multipong.model.formation.Participant;
-import com.multipong.net.PeerExplorer;
 import com.multipong.net.Receiver;
-import com.multipong.net.Utils;
-import com.multipong.net.WifiP2pListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -39,6 +28,7 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
 
     private Receiver receiver;
     private ListView matchesList;
+    private MatchAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +39,7 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
         new Thread(receiver).start();
 
         //TODO remove -> only debug purpose
-        receiveList(new ArrayList<WifiP2pDevice>());
+        receiveList(0,"",new ArrayList<String>());
     }
 
     @Override
@@ -58,18 +48,8 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
         if(receiver != null) receiver.stop();
     }
 
-    public void receiveList(Collection<WifiP2pDevice> list) {
-        ArrayList<String> names = new ArrayList<>();
-
-        //TODO remove -> only debug purpose
-        for  (int i = 0; i < 100; i++)
-            names.add(i + ". match");
-
-        MatchAdapter adapter = new MatchAdapter(this, names);
-        matchesList.setAdapter(adapter);
-
-
-        Log.d("Game Formation", "Found " + list.size() + " devices");
+    public void receiveList(int hostID, String hostName, List<String> partecipants) {
+        adapter.addMatch(hostID, hostName, partecipants);
     }
 
     @Override
@@ -83,12 +63,39 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
     }
 
     private class MatchAdapter extends BaseAdapter {
-        private List<String> matches;
+        private class Match {
+            String host;
+            List<String> partecipants;
+        }
+        private LinkedHashMap<Integer, Match> matches;
         private Activity activity;
 
-        public MatchAdapter(Activity activity, List<String> matches){
+        public MatchAdapter(Activity activity){
             this.activity = activity;
-            this.matches = matches;
+            matches = new LinkedHashMap<>();
+
+            //TODO remove -> only debug purpose------------//
+            /**/ArrayList<String> names = new ArrayList<>(); //
+            /**/names.add("Minnie");
+            /**/names.add("Pippo");
+            /**/names.add("Pluto");
+            /**/names.add("Topolino");
+            /**/for (int i = 0; i < 10; i++) {
+            /**/    Match m = new Match();
+            /**/    m.host = "host" + i;
+            /**/    m.partecipants = names;
+            /**/    matches.put(i, m);
+            /**/}
+            //-----------------------------------------------//
+        }
+
+        public void addMatch(int hostID, String hostName, List<String> partecipants) {
+            Match newMatch = new Match();
+            newMatch.host = hostName;
+            newMatch.partecipants = partecipants;
+            matches.put(hostID, newMatch);
+
+            notifyDataSetChanged();
         }
 
         @Override
@@ -98,7 +105,7 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
 
         @Override
         public Object getItem(int position) {
-            return matches.get(position);
+            return matches.get((matches.keySet().toArray())[position]);
         }
 
         @Override
@@ -112,14 +119,15 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
                 convertView = LayoutInflater.from(activity)
                         .inflate(R.layout.row_match_item, null);
             }
-            final String playerName = (String) getItem(position);
+            final String matchName = ((Match)getItem(position)).host;
+            final List<String> partecipants = ((Match)getItem(position)).partecipants;
 
             TextView matchNameTextView = (TextView) convertView.findViewById(R.id.match_name_text);
-            Button joinMatch = (Button) convertView.findViewById(R.id.join_match);
-            Button partecipants = (Button) convertView.findViewById(R.id.match_partecipants);
+            Button joinMatchButton = (Button) convertView.findViewById(R.id.join_match);
+            Button partecipantsButton = (Button) convertView.findViewById(R.id.match_partecipants);
 
-            matchNameTextView.setText(playerName);
-            joinMatch.setOnClickListener(new View.OnClickListener() {
+            matchNameTextView.setText(matchName);
+            joinMatchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //TODO change -> only debug purpose
@@ -128,11 +136,14 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
                 }
             });
 
-            partecipants.setOnClickListener(new View.OnClickListener() {
+            partecipantsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //TODO change -> only debug purpose
                     Intent intent = new Intent(getApplicationContext(), DummyActivity.class);
+                    ArrayList<String> extra = new ArrayList<String>(partecipants.size());
+                    extra.addAll(partecipants);
+                    intent.putStringArrayListExtra("partecipants", extra);
                     startActivity(intent);
                 }
             });

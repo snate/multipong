@@ -38,7 +38,7 @@
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/match_partecipants"
+            android:id="@+id/match_participants"
             android:text="@string/partecipants"
             android:layout_alignParentBottom="false"
             android:clickable="true"

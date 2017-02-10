@@ -2,39 +2,53 @@ package com.multipong.net;
 
 import android.net.wifi.p2p.WifiP2pDevice;
 
+import java.net.InetAddress;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * NameResolutor binds logical names to physical addresses/objects.
  */
-public class NameResolutor {
-    private Map<Integer, WifiP2pDevice> nodes;
+public enum NameResolutor {
 
-    public NameResolutor() {
-        nodes = new HashMap<>();
+    INSTANCE;
+
+    private Map<Integer, InetAddress> nodes = new ConcurrentHashMap<>();
+    private volatile boolean starting = false;
+
+    public void addNode (WifiP2pDevice device, InetAddress address) {
+        if (starting) return;
+        nodes.put(hashOf(device.deviceAddress), address);
     }
 
-    public void addNode (WifiP2pDevice newNode) {
-        nodes.put(hashOf(newNode.deviceAddress), newNode);
+    public void addNode (String macAddress, InetAddress address) {
+        if (starting) return;
+        nodes.put(hashOf(macAddress), address);
     }
 
-    public WifiP2pDevice getNodeByHash (int hash) {
+    public void addNode (Integer id, InetAddress address) {
+        if (starting) return;
+        nodes.put(id, address);
+    }
+
+    public InetAddress getNodeByHash (Integer hash) {
         return nodes.get(hash);
     }
 
-    public WifiP2pDevice getNodeByName (String name) {
-        for (WifiP2pDevice device : nodes.values())
-            if (device.deviceName.equals(name))
-                return device;
-        return null;
+    public InetAddress getNodeByAddress (String macAddress) {
+        return nodes.get(hashOf(macAddress));
     }
 
-    public WifiP2pDevice getNodeByAddress (String address) {
-        for (WifiP2pDevice device : nodes.values())
-            if (device.deviceAddress.equals(address))
-                return device;
-        return null;
+    public void keepOnly(Collection<Integer> remaining) {
+        starting = true;
+        Map<Integer, InetAddress> newMap = new ConcurrentHashMap<>();
+        for (Integer id : nodes.keySet()) {
+            if (remaining.contains(id))
+                nodes.put(id, nodes.get(id));
+        }
+        nodes = newMap;
     }
 
     public static Integer hashOf(String mac) {

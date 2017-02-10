@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Message {
 
@@ -33,5 +34,15 @@ public abstract class Message {
 
     protected abstract String getMessageType();
 
-    public abstract HashMap<String, Object> decodeJson(JSONObject jsonObject);
+    public Map<String, Object> decode() {
+        Map<String, Object> result = new HashMap<String, Object>();
+        try {
+            result.put(APP_FIELD, object.getString(APP_FIELD));
+            result.put(NAME_FIELD, object.getString(NAME_FIELD));
+            result.put(MESSAGE_TYPE_FIELD, object.getString(MESSAGE_TYPE_FIELD));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

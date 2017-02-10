@@ -4,17 +4,18 @@ import com.multipong.model.formation.Participant;
 
 import org.json.JSONObject;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class DiscoverMessage extends Message {
-    @Override
-    protected String getMessageType() {
-        return Participant.MessageType.DISCOVER;
+
+    public static DiscoverMessage createFromJson(JSONObject jsonObject) {
+        DiscoverMessage message = new DiscoverMessage();
+        message.object = jsonObject;
+        return message;
     }
 
     @Override
-    public HashMap<String, Object> decodeJson(JSONObject jsonObject) {
-        // TODO: Add implementation
-        return null;
+    protected String getMessageType() {
+        return Participant.MessageType.DISCOVER;
     }
 }

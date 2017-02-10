@@ -24,7 +24,7 @@ public class Sender extends IntentService {
     private NameResolutor nameResolutor;
 
     private static final int SOCKET_TIMEOUT = 5000;
-    public static final String ACTION_SEND_FILE = "com.multipong.net.SEND_FILE";
+    public static final String ACTION_SEND_MESSAGE = "com.multipong.net.SEND_FILE";
     public static final String EXTRAS_ADDRESS = "sender_host";
     public static final String EXTRAS_PORT = "sender_port";
 
@@ -53,7 +53,7 @@ public class Sender extends IntentService {
          */
         int port = intent.getIntExtra(EXTRAS_PORT, 8888);
         String host = intent.getStringExtra(EXTRAS_ADDRESS).substring(1);
-        if (!intent.getAction().equals(ACTION_SEND_FILE)) return;
+        if (!intent.getAction().equals(ACTION_SEND_MESSAGE)) return;
         Socket socket = new Socket();
         try {
             socket.bind(null);

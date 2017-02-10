@@ -49,7 +49,7 @@ public class Utils {
             Log.d("Utils", "Not GO");
             InetAddress address = info.groupOwnerAddress;
             Intent serviceIntent = new Intent(mActivity, Sender.class);
-            serviceIntent.setAction(Sender.ACTION_SEND_FILE);
+            serviceIntent.setAction(Sender.ACTION_SEND_MESSAGE);
             serviceIntent.putExtra(Sender.EXTRAS_ADDRESS, address.toString());
             serviceIntent.putExtra(Sender.EXTRAS_PORT, Utils.PORT);
             Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);

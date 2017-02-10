@@ -14,6 +14,7 @@ import com.multipong.net.Sender;
 import com.multipong.net.Utils;
 import com.multipong.net.messages.AvailableMessage;
 import com.multipong.net.messages.CancelMessage;
+import com.multipong.net.messages.DiscoverMessage;
 import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.net.Sender.AddressedContent;
@@ -69,13 +70,21 @@ public class Host implements Actor {
     @Override
     public synchronized void receive(String type, JSONObject message, InetAddress sender) {
         switch (type) {
-            case Participant.MessageType.DISCOVER: discover(sender); break;
+            case Participant.MessageType.DISCOVER: discover(message, sender); break;
             case Participant.MessageType.JOIN: join(message, sender); break;
             case Participant.MessageType.CANCEL: cancel(message); break;
         }
     }
 
-    private void discover(InetAddress sender) {
+    private void discover(JSONObject json, InetAddress sender) {
+        DiscoverMessage message = DiscoverMessage.createFromJson(json);
+        Map<String, Object> fields = message.decode();
+        String address = (String) fields.get(DiscoverMessage.YOUR_IP);
+        try {
+            NameResolutor.INSTANCE.addNode(DeviceIdUtility.getId(), InetAddress.getByName(address));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         Collection<InetAddress> listWithSenderOnly = new ArrayList<>();
         listWithSenderOnly.add(sender);
         sendParticipantsListTo(listWithSenderOnly);

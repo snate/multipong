@@ -1,13 +1,17 @@
 package com.multipong.model.formation;
 
 import android.content.Context;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.os.AsyncTask;
+import android.text.format.Formatter;
+import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameHostActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.Sender;
+import com.multipong.net.Utils;
 import com.multipong.net.messages.AvailableMessage;
 import com.multipong.net.messages.CancelMessage;
 import com.multipong.net.messages.JoinMessage;
@@ -20,11 +24,14 @@ import com.multipong.utility.PlayerNameUtility;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static android.content.Context.WIFI_SERVICE;
 
 public class Host implements Actor {
 
@@ -45,12 +52,14 @@ public class Host implements Actor {
     }
 
     public void startGame() {
-        NameResolutor.INSTANCE.keepOnly(participants.keySet());
+        //NameResolutor.INSTANCE.keepOnly(participants.keySet());
         Collection<InetAddress> addresses = new ArrayList<>();
         for (Integer id : participants.keySet())
             addresses.add(NameResolutor.INSTANCE.getNodeByHash(id));
         StartingMessage response = new StartingMessage();
+        Log.d("Host", addresses.toString());
         response.addParticipants(participants);
+        Log.d("Host", response.toString());
         for (InetAddress recipient : addresses) {
             AddressedContent content = new Sender.AddressedContent(response, recipient);
             activity.addMessageToQueue(content);
@@ -60,9 +69,9 @@ public class Host implements Actor {
     @Override
     public synchronized void receive(String type, JSONObject message, InetAddress sender) {
         switch (type) {
-            case Participant.MessageType.DISCOVER: discover(sender);
-            case Participant.MessageType.JOIN: join(message, sender);
-            case Participant.MessageType.CANCEL: cancel(message);
+            case Participant.MessageType.DISCOVER: discover(sender); break;
+            case Participant.MessageType.JOIN: join(message, sender); break;
+            case Participant.MessageType.CANCEL: cancel(message); break;
         }
     }
 

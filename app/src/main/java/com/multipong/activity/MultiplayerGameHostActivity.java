@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.multipong.R;
 import com.multipong.model.formation.Host;
+import com.multipong.utility.PlayerNameUtility;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivity {
@@ -24,13 +26,18 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
     private Button mButton;
 
     private ListView playerList;
+    private PlayerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
 
+        ArrayList<String> listWithOnlyme = new ArrayList<>();
+        listWithOnlyme.add(PlayerNameUtility.getPlayerName());
         playerList = (ListView) findViewById(R.id.player_list);
+        mAdapter = new PlayerAdapter(this, listWithOnlyme);
+        playerList.setAdapter(mAdapter);
         mButton = (Button) findViewById(R.id.host_start_btn);
 
         setActor(new Host(this));
@@ -38,9 +45,8 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
     }
 
     public void receiveList(Collection<String> players) {
-        PlayerAdapter adapter = new PlayerAdapter(this, players);
-        playerList.setAdapter(adapter);
-        Log.d("HostActivity", "There are " + players.size() + " in this game");
+        mAdapter.players = players;
+        mAdapter.notifyDataSetChanged();
     }
 
     private void showShortToast(String toastText) {

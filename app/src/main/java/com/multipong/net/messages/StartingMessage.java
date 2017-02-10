@@ -43,16 +43,23 @@ public class StartingMessage extends Message {
     }
 
     public void addParticipants(Map<Integer, String> values) {
-        ArrayList<StartingGameInfo> gameInfos = new ArrayList();
+        ArrayList<StartingGameInfo> gameInfos = new ArrayList<>();
         for (Integer id : values.keySet())
             gameInfos.add( new StartingGameInfo(id, values.get(id),
                     NameResolutor.INSTANCE.getNodeByHash(id)));
         try {
-            JSONArray jsonArray = new JSONArray(Arrays.asList(gameInfos));
+            JSONArray jsonArray = new JSONArray();
+            for (StartingGameInfo gameInfo : gameInfos)
+                jsonArray.put(gameInfo.toJson());
             object.put(PARTICIPANTS_FIELD, jsonArray);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String toString() {
+        return object.toString();
     }
 
     public class StartingGameInfo {
@@ -75,7 +82,7 @@ public class StartingMessage extends Message {
             try {
                 jsonObject.put(ID, id);
                 jsonObject.put(NAME, name);
-                jsonObject.put(ADDR, address);
+                jsonObject.put(ADDR, address.getHostAddress());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

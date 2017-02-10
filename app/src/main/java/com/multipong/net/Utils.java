@@ -20,6 +20,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 public class Utils {
 
@@ -58,7 +60,8 @@ public class Utils {
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
             InetAddress address = info.groupOwnerAddress;
-            AddressedContent content = new AddressedContent(new DiscoverMessage(), address);
+            DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
+            AddressedContent content = new AddressedContent(message, address);
             mActivity.addMessageToQueue(content);
             Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
         }

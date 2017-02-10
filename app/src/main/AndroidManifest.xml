@@ -38,8 +38,6 @@
 
         <!-- TODO remove -> only debug purpose -->
         <activity android:name=".activity.DummyActivity"/>
-
-        <service android:name=".net.Sender" android:exported="false"/>
     </application>
 
 </manifest>

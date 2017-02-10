@@ -10,6 +10,9 @@ import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 
+import com.multipong.net.messages.DiscoverMessage;
+import com.multipong.net.messages.Message;
+
 import java.net.InetAddress;
 
 public class Utils {
@@ -52,6 +55,8 @@ public class Utils {
             serviceIntent.setAction(Sender.ACTION_SEND_MESSAGE);
             serviceIntent.putExtra(Sender.EXTRAS_ADDRESS, address.toString());
             serviceIntent.putExtra(Sender.EXTRAS_PORT, Utils.PORT);
+            Message message = new DiscoverMessage();
+            serviceIntent.putExtra(Sender.EXTRAS_CONTENT, message.getMsg().toString());
             Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
             mActivity.startService(serviceIntent);
         }

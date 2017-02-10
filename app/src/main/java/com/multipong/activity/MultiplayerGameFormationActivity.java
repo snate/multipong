@@ -25,4 +25,6 @@ public abstract class MultiplayerGameFormationActivity extends AppCompatActivity
     }
 
     public abstract void receiveList(Collection<WifiP2pDevice> list);
+
+    public abstract boolean isHost();
 }

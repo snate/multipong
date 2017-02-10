@@ -111,6 +111,11 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
     }
 
     @Override
+    public boolean isHost() {
+        return false;
+    }
+
+    @Override
     public Actor getActor() {
         return null;
     }

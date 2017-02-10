@@ -2,10 +2,13 @@ package com.multipong.model.formation;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.model.Actor;
+import com.multipong.net.messages.AvailableMessage;
+import com.multipong.net.messages.StartingMessage;
 
 import org.json.JSONObject;
 
 import java.net.InetAddress;
+import java.util.Map;
 
 public class Participant implements Actor {
 
@@ -18,8 +21,12 @@ public class Participant implements Actor {
     @Override
     public synchronized void receive(String type, JSONObject message, InetAddress sender) {
         switch (type) {
-            case Host.MessageType.AVAILABLE: break;
-            case Host.MessageType.STARTING: break;
+            case Host.MessageType.AVAILABLE:
+                onAvailableMessageReceived(message, sender);
+                break;
+            case Host.MessageType.STARTING:
+                onStartingMessageReceived(message, sender);
+                break;
         }
     }
 
@@ -27,5 +34,17 @@ public class Participant implements Actor {
         public static final String DISCOVER = "DISCOVER";
         public static final String JOIN = "JOIN";
         public static final String CANCEL = "CANCEL";
+    }
+
+    private void onAvailableMessageReceived(JSONObject message, InetAddress sender) {
+        AvailableMessage msg = AvailableMessage.createMessageFromJSON(message);
+        Map<String, Object> msgInfo = msg.decode();
+        //TODO -> do something with msgInfo
+    }
+
+    private void onStartingMessageReceived(JSONObject message, InetAddress sender) {
+        StartingMessage msg = StartingMessage.createMessageFromJSON(message);
+        Map<String, Object> msgInfo = msg.decode();
+        //TODO -> do something with msgInfo
     }
 }

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Host implements Actor {
 
@@ -36,10 +37,8 @@ public class Host implements Actor {
         participants = new HashMap<>();
         Integer myID = DeviceIdUtility.getId();
         if (myID == null) {
-            WifiManager manager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
-            WifiInfo wifiInfo = manager.getConnectionInfo();
-            String mac = wifiInfo.getMacAddress();
-            myID = NameResolutor.hashOf(mac);
+            String uniqueID = UUID.randomUUID().toString();
+            myID = NameResolutor.hashOf(uniqueID);
             DeviceIdUtility.setId(myID);
         }
         participants.put(myID, PlayerNameUtility.getPlayerName());

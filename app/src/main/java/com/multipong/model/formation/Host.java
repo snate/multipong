@@ -45,6 +45,10 @@ public class Host implements Actor {
         participants.put(myID, PlayerNameUtility.getPlayerName());
     }
 
+    public void startGame() {
+        // TODO: Add implementation
+    }
+
     @Override
     public synchronized void receive(String type, JSONObject message, InetAddress sender) {
         switch (type) {

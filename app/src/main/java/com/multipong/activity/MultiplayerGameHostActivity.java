@@ -1,6 +1,7 @@
 package com.multipong.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.multipong.R;
 import com.multipong.model.Actor;
@@ -39,6 +42,7 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
         setActor(new Host(this));
         receiver = new Receiver(this);
         new Thread(receiver).start();
+        mButton.setOnClickListener(new HostGameStarter(playerList));
     }
 
     @Override
@@ -58,6 +62,13 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
         playerList.setAdapter(adapter);
 
         Log.d("Game Formation", "Found " + list.size() + " devices");
+    }
+
+    private void showShortToast(String toastText) {
+        Context context = getApplicationContext();
+        CharSequence text = toastText;
+        int duration = Toast.LENGTH_SHORT;
+        Toast.makeText(context, text, duration).show();
     }
 
     @Override
@@ -99,6 +110,27 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
             TextView playerNameTextView = (TextView) convertView.findViewById(R.id.player_name_text);
             playerNameTextView.setText(playerName);
             return convertView;
+        }
+    }
+
+    private class HostGameStarter implements View.OnClickListener {
+
+        private ListView mPlayerList;
+
+        public HostGameStarter(ListView playerList) {
+            mPlayerList = playerList;
+        }
+
+        @Override
+        public void onClick(View v) {
+            ListAdapter listAdapter = mPlayerList.getAdapter();
+            int howMany = listAdapter.getCount();
+            if (howMany <= 1) {
+                showShortToast("There should be at least two players in the game");
+                return;
+            }
+            Host host = (Host) getActor();
+            host.startGame();
         }
     }
 }

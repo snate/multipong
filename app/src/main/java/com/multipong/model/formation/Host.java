@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
-import com.multipong.activity.MultiplayerGameFormationActivity;
+import com.multipong.activity.MultiplayerGameHostActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.Sender;
@@ -27,11 +27,11 @@ import java.util.Map;
 
 public class Host implements Actor {
 
-    private MultiplayerGameFormationActivity activity;
+    private MultiplayerGameHostActivity activity;
 
     private Map<Integer, String> participants;
 
-    public Host(MultiplayerGameFormationActivity activity) {
+    public Host(MultiplayerGameHostActivity activity) {
         this.activity = activity;
         participants = new HashMap<>();
         Integer myID = DeviceIdUtility.getId();

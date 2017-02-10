@@ -27,6 +27,7 @@
     <string name="start">Start</string>
 
     <string name="list_of_players">List of players</string>
+    <string name="list_of_players_of">List of players that joined the match created by </string>
     <string name="list_of_matches">List of matches</string>
 
     <string name="join_match">Join match</string>

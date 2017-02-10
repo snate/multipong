@@ -12,8 +12,8 @@
               tools:context="com.multipong.activity.MultiplayerGamePartecipantsActivity">
 
     <TextView android:layout_width="match_parent"
-              android:text="@string/list_of_players"
-              android:layout_height="wrap_content"/>
+              android:layout_height="wrap_content"
+              android:id="@+id/host_name_text"/>
 
     <ListView
             android:id="@+id/partecipants_list"

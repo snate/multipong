@@ -1,5 +1,6 @@
 package com.multipong.net.messages;
 
+import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.PlayerNameUtility;
 
 import org.json.JSONException;
@@ -14,15 +15,19 @@ public abstract class Message {
     public static final String APP_VALUE = "multipong";
     public static final String NAME_FIELD = "playerName";
     public static final String MESSAGE_TYPE_FIELD = "type";
+    public static final String ID_FIELD = "newId";
 
     protected JSONObject object;
 
+    // TODO: Precondition - here I assume that DeviceUtility.id has been set
+    //       when creating a participant-side JOIN message
     public Message() {
         try {
             object = new JSONObject();
             object.put(APP_FIELD, APP_VALUE);
             object.put(NAME_FIELD, PlayerNameUtility.getPlayerName());
             object.put(MESSAGE_TYPE_FIELD, getMessageType());
+            object.put(ID_FIELD, DeviceIdUtility.getId());
         } catch (JSONException e) {
             e.printStackTrace();
         }

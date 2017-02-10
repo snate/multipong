@@ -10,24 +10,10 @@ import java.util.Map;
 
 public class CancelMessage extends Message {
 
-    public static final String ID_FIELD = "newId";
-
     public static CancelMessage createFromJson(JSONObject object) {
         CancelMessage message = new CancelMessage();
         message.object = object;
         return message;
-    }
-
-    // TODO: Precondition - here I assume that DeviceUtility.id has been set
-    //       when creating a participant-side JOIN message
-    public CancelMessage() {
-        super();
-        Integer myId = DeviceIdUtility.getId();
-        try {
-            object.put(ID_FIELD, myId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

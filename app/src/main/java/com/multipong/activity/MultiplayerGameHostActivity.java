@@ -1,4 +1,4 @@
-/*package com.multipong.activity;
+package com.multipong.activity;
 
 import android.app.Activity;
 import android.app.IntentService;
@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-public class MultiplayerGameFormationActivity extends AbsMultiplayerGamePeersActivity {
+public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivity {
 
     private WifiP2pManager mManager;
     private Channel mChannel;
@@ -101,6 +101,11 @@ public class MultiplayerGameFormationActivity extends AbsMultiplayerGamePeersAct
         Utils.connectTo(device, mManager, mChannel, this);
     }
 
+    @Override
+    public boolean isHost() {
+        return true;
+    }
+
     public Actor getActor() {
         return mActor;
     }
@@ -149,4 +154,3 @@ public class MultiplayerGameFormationActivity extends AbsMultiplayerGamePeersAct
         }
     }
 }
-*/

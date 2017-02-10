@@ -1,11 +1,18 @@
 package com.multipong.model.formation;
 
+import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.model.Actor;
 import com.multipong.model.formation.Participant.MessageType;
 
 import org.json.JSONObject;
 
 public class Host implements Actor {
+
+    private MultiplayerGameFormationActivity activity;
+
+    public Host(MultiplayerGameFormationActivity activity) {
+        this.activity = activity;
+    }
 
     @Override
     public void receive(String type, JSONObject message) {

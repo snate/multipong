@@ -12,8 +12,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.multipong.R;
-import com.multipong.model.Actor;
-import com.multipong.net.Receiver;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -25,6 +23,7 @@ import java.util.List;
  * @since 0.01
  */
 public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivity {
+
     private ListView matchesList;
     private MatchAdapter adapter;
 
@@ -56,11 +55,6 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
     @Override
     public boolean isHost() {
         return false;
-    }
-
-    @Override
-    public Actor getActor() {
-        return null;
     }
 
     private class MatchAdapter extends BaseAdapter {

@@ -5,7 +5,6 @@ import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 
-import com.multipong.activity.AbsMultiplayerGamePeersActivity;
 import com.multipong.activity.MultiplayerGameFormationActivity;
 
 import java.util.ArrayList;
@@ -16,10 +15,10 @@ import java.util.Collection;
  */
 public class PeerExplorer implements WifiP2pManager.PeerListListener {
 
-    AbsMultiplayerGamePeersActivity mActivity;
+    MultiplayerGameFormationActivity mActivity;
     private volatile Collection<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
 
-    public PeerExplorer(AbsMultiplayerGamePeersActivity activity) {
+    public PeerExplorer(MultiplayerGameFormationActivity activity) {
         mActivity = activity;
     }
 

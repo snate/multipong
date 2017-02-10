@@ -1,6 +1,5 @@
 package com.multipong.view;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +13,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.multipong.R;
+import com.multipong.activity.GameActivity;
 import com.multipong.activity.MainActivity;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -132,7 +132,7 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawRect(getLeft()+borderSize,
                         getTop()+borderSize,
                         getRight()-borderSize,
-                        getBottom()-borderSize,
+                        getBottom()-borderSize, //R.dimen.pongview_space_at_bottom
                         paint);
     }
 

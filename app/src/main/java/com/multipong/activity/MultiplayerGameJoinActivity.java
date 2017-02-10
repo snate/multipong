@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.multipong.R;
 import com.multipong.model.Actor;
+import com.multipong.model.formation.Participant;
 import com.multipong.net.PeerExplorer;
 import com.multipong.net.Receiver;
 import com.multipong.net.Utils;
@@ -62,6 +63,7 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
         matchesList = (ListView) findViewById(R.id.matches_list);
+        setActor(new Participant(this));
         receiver = new Receiver(this);
         new Thread(receiver).start();
 

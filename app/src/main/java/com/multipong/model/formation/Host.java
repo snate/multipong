@@ -10,10 +10,10 @@ import com.multipong.net.NameResolutor;
 import com.multipong.net.Sender;
 import com.multipong.net.messages.AvailableMessage;
 import com.multipong.net.messages.CancelMessage;
-import com.multipong.net.messages.StartingMessage;
 import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.net.Sender.AddressedContent;
+import com.multipong.net.messages.StartingMessage;
 import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.PlayerNameUtility;
 
@@ -103,9 +103,9 @@ public class Host implements Actor {
     }
 
     private void sendParticipantsListTo(Collection<InetAddress> addresses) {
+        AvailableMessage response = new AvailableMessage();
+        response.addParticipants(participants.values());
         for (InetAddress recipient : addresses) {
-            AvailableMessage response = new AvailableMessage();
-            response.addParticipants(participants.values());
             AddressedContent content = new Sender.AddressedContent(response, recipient);
             activity.addMessageToQueue(content);
         }

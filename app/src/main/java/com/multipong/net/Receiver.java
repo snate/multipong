@@ -36,6 +36,7 @@ public class Receiver implements Runnable {
                     InputStream input = client.getInputStream();
                     Scanner scanner = new Scanner(input).useDelimiter("\\A");
                     String json = scanner.hasNext() ? scanner.next() : "";
+                    if (!Utils.isJsonObject(json)) continue;
                     JSONObject jsonObject = new JSONObject(json);
                     String app = jsonObject.getString(Message.APP_FIELD);
                     String name = jsonObject.getString(Message.NAME_FIELD);

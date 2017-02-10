@@ -13,6 +13,10 @@ import android.util.Log;
 import com.multipong.net.messages.DiscoverMessage;
 import com.multipong.net.messages.Message;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.InetAddress;
 
 public class Utils {
@@ -60,5 +64,14 @@ public class Utils {
             Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
             mActivity.startService(serviceIntent);
         }
+    }
+
+    public static boolean isJsonObject (String test) {
+        try {
+            new JSONObject(test);
+        } catch (JSONException ex) {
+            return false;
+        }
+        return true;
     }
 }

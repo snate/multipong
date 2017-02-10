@@ -5,9 +5,22 @@ import com.multipong.model.formation.Participant;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class DiscoverMessage extends Message {
 
-    public final String YOUR_IP = "yourIp";
+    public static final String YOUR_IP = "yourIp";
+
+    @Override
+    public Map<String, Object> decode() {
+        Map<String, Object> result = super.decode();
+        try {
+            result.put(YOUR_IP, object.getString(YOUR_IP));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     public DiscoverMessage withIp(String address) {
         try {
@@ -27,11 +40,5 @@ public class DiscoverMessage extends Message {
     @Override
     protected String getMessageType() {
         return Participant.MessageType.DISCOVER;
-    }
-
-    public static DiscoverMessage createMessageFromJSON(JSONObject json) {
-        DiscoverMessage msg = new DiscoverMessage();
-        msg.object = json;
-        return msg;
     }
 }

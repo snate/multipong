@@ -12,28 +12,28 @@ import com.multipong.net.Sender;
 import com.multipong.net.Utils;
 import com.multipong.net.messages.AvailableMessage;
 import com.multipong.net.messages.CancelMessage;
-import com.multipong.net.messages.DiscoverMessage;
 import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.utility.DeviceIdUtility;
+import com.multipong.utility.PlayerNameUtility;
 
 import org.json.JSONObject;
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Host implements Actor {
 
     private MultiplayerGameFormationActivity activity;
 
-    private Collection<Integer> participants;
+    private Map<Integer, String> participants;
 
     public Host(MultiplayerGameFormationActivity activity) {
         this.activity = activity;
-        participants = new ArrayList<>();
+        participants = new HashMap<>();
         Integer myID = DeviceIdUtility.getId();
         if (myID == null) {
             WifiManager manager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
@@ -42,7 +42,7 @@ public class Host implements Actor {
             myID = NameResolutor.hashOf(mac);
             DeviceIdUtility.setId(myID);
         }
-        participants.add(myID);
+        participants.put(myID, PlayerNameUtility.getPlayerName());
     }
 
     @Override
@@ -64,12 +64,13 @@ public class Host implements Actor {
         JoinMessage message = JoinMessage.createFromJson(json);
         Map<String, Object> object = message.decode();
         Integer newId = (Integer) object.get(JoinMessage.ID_FIELD);
-        if (!participants.contains(newId)) {
-            participants.add(newId);
+        String name = (String) object.get(Message.NAME_FIELD);
+        if (!participants.keySet().contains(newId)) {
+            participants.put(newId, name);
             NameResolutor.INSTANCE.addNode(newId, sender);
         }
         Collection<InetAddress> addresses = new ArrayList<>();
-        for (Integer id : participants)
+        for (Integer id : participants.keySet())
             addresses.add(NameResolutor.INSTANCE.getNodeByHash(id));
         sendParticipantsListTo(addresses);
         // TODO: Display updated participants' list on (here host) screen
@@ -79,10 +80,10 @@ public class Host implements Actor {
         CancelMessage message = CancelMessage.createFromJson(json);
         Map<String, Object> object = message.decode();
         Integer newId = (Integer) object.get(JoinMessage.ID_FIELD);
-        if (participants.contains(newId))
+        if (participants.keySet().contains(newId))
             participants.remove(newId);
         Collection<InetAddress> addresses = new ArrayList<>();
-        for (Integer id : participants)
+        for (Integer id : participants.keySet())
             addresses.add(NameResolutor.INSTANCE.getNodeByHash(id));
         sendParticipantsListTo(addresses);
     }
@@ -96,7 +97,7 @@ public class Host implements Actor {
             sendResponse.putExtra(Sender.EXTRAS_ADDRESS, recipient.toString());
             sendResponse.putExtra(Sender.EXTRAS_PORT, Utils.PORT);
             AvailableMessage response = new AvailableMessage();
-            response.addParticipants(participants);
+            response.addParticipants(participants.values());
             sendResponse.putExtra(Sender.EXTRAS_CONTENT, response.getMsg().toString());
             activity.startService(sendResponse);
         }

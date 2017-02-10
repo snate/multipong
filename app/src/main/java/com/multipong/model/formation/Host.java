@@ -10,7 +10,7 @@ import com.multipong.net.NameResolutor;
 import com.multipong.net.Sender;
 import com.multipong.net.messages.AvailableMessage;
 import com.multipong.net.messages.CancelMessage;
-import com.multipong.net.messages.DiscoverMessage;
+import com.multipong.net.messages.StartingMessage;
 import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.net.Sender.AddressedContent;
@@ -46,7 +46,16 @@ public class Host implements Actor {
     }
 
     public void startGame() {
-        // TODO: Add implementation
+        NameResolutor.INSTANCE.keepOnly(participants.keySet());
+        Collection<InetAddress> addresses = new ArrayList<>();
+        for (Integer id : participants.keySet())
+            addresses.add(NameResolutor.INSTANCE.getNodeByHash(id));
+        StartingMessage response = new StartingMessage();
+        response.addParticipants(participants);
+        for (InetAddress recipient : addresses) {
+            AddressedContent content = new Sender.AddressedContent(response, recipient);
+            activity.addMessageToQueue(content);
+        }
     }
 
     @Override

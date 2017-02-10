@@ -24,10 +24,4 @@ public class JoinMessage extends Message {
     protected String getMessageType() {
         return Participant.MessageType.JOIN;
     }
-
-    public static JoinMessage createMessageFromJSON(JSONObject json) {
-        JoinMessage msg = new JoinMessage();
-        msg.object = json;
-        return msg;
-    }
 }

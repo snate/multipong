@@ -8,11 +8,14 @@ import com.multipong.net.messages.StartingMessage;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Participant implements Actor {
 
     private MultiplayerGameFormationActivity activity;
+    private InetAddress hostAddress;
+    private ArrayList<String> partecipants;
 
     public Participant(MultiplayerGameFormationActivity activity) {
         this.activity = activity;
@@ -39,12 +42,14 @@ public class Participant implements Actor {
     private void onAvailableMessageReceived(JSONObject message, InetAddress sender) {
         AvailableMessage msg = AvailableMessage.createMessageFromJSON(message);
         Map<String, Object> msgInfo = msg.decode();
-        //TODO -> do something with msgInfo
+        partecipants = (ArrayList<String>) msgInfo.get(AvailableMessage.PARTICIPANTS_FIELD);
+        hostAddress = sender;
     }
 
     private void onStartingMessageReceived(JSONObject message, InetAddress sender) {
         StartingMessage msg = StartingMessage.createMessageFromJSON(message);
         Map<String, Object> msgInfo = msg.decode();
         //TODO -> do something with msgInfo
+        //probably start the game
     }
 }

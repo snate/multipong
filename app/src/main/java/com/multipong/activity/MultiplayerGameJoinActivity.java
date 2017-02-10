@@ -37,13 +37,7 @@ import java.util.List;
  */
 public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivity {
 
-    private WifiP2pManager mManager;
-    private WifiP2pManager.Channel mChannel;
-    private PeerExplorer mExplorer;
-    private WifiP2pListener mWifiP2pListener;
-    private IntentFilter mIntentFilter;
     private Receiver receiver;
-
     private ListView matchesList;
 
     @Override
@@ -51,36 +45,11 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
 
-        mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-        mChannel = mManager.initialize(this, getMainLooper(), null);
-        mExplorer = new PeerExplorer(this);
-        mWifiP2pListener = new WifiP2pListener(mManager, mChannel, this);
-
-        mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
-
-        matchesList = (ListView) findViewById(R.id.matches_list);
-        setActor(new Participant(this));
         receiver = new Receiver(this);
         new Thread(receiver).start();
 
         //TODO remove -> only debug purpose
         receiveList(new ArrayList<WifiP2pDevice>());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(mWifiP2pListener, mIntentFilter);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(mWifiP2pListener);
     }
 
     @Override
@@ -92,9 +61,6 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
     public void receiveList(Collection<WifiP2pDevice> list) {
         ArrayList<String> names = new ArrayList<>();
 
-        for(WifiP2pDevice dev:list)
-            names.add(dev.deviceName);
-
         //TODO remove -> only debug purpose
         for  (int i = 0; i < 100; i++)
             names.add(i + ". match");
@@ -104,10 +70,6 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
 
 
         Log.d("Game Formation", "Found " + list.size() + " devices");
-        if(list.isEmpty()) return;
-        Iterator<WifiP2pDevice> iterator = list.iterator();
-        WifiP2pDevice device = iterator.next();
-        Utils.connectTo(device, mManager, mChannel, this);
     }
 
     @Override
@@ -115,11 +77,9 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
         return false;
     }
 
-    public void showShortToast(String toastText) {
-        Context context = getApplicationContext();
-        CharSequence text = toastText;
-        int duration = Toast.LENGTH_SHORT;
-        Toast.makeText(context, text, duration).show();
+    @Override
+    public Actor getActor() {
+        return null;
     }
 
     private class MatchAdapter extends BaseAdapter {

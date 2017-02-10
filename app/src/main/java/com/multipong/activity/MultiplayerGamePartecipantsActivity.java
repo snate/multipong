@@ -28,6 +28,12 @@ public class MultiplayerGamePartecipantsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         List<String> partecipants = intent.getStringArrayListExtra("partecipants");
+        String host = intent.getStringExtra("hostName");
+
+        TextView text = (TextView)findViewById(R.id.host_name_text);
+        CharSequence cs = new StringBuffer().append(getString(R.string.list_of_players_of))
+                .append(host).toString();
+        text.setText(cs);
 
         ListView list = (ListView)findViewById(R.id.partecipants_list);
         list.setAdapter(new PartecipantsAdapter(this, partecipants));

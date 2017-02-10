@@ -34,6 +34,7 @@
         <activity android:name=".activity.MultiplayerGameHostActivity"/>
         <activity android:name=".activity.MultiplayerGameJoinOrHostActivity"/>
         <activity android:name=".activity.MultiplayerGameJoinActivity"/>
+        <activity android:name=".activity.MultiplayerGamePartecipantsActivity"/>
 
         <!-- TODO remove -> only debug purpose -->
         <activity android:name=".activity.DummyActivity"/>

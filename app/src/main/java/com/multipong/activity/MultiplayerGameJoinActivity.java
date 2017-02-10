@@ -32,9 +32,9 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
-
-        //TODO remove -> only debug purpose
-        receiveList(0,"",new ArrayList<String>());
+        adapter = new MatchAdapter(this);
+        matchesList = (ListView)findViewById(R.id.matches_list);
+        matchesList.setAdapter(adapter);
     }
 
     public void receiveList(int hostID, String hostName, List<String> partecipants) {
@@ -141,10 +141,12 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
                 @Override
                 public void onClick(View v) {
                     //TODO change -> only debug purpose
-                    Intent intent = new Intent(getApplicationContext(), DummyActivity.class);
-                    ArrayList<String> extra = new ArrayList<String>(partecipants.size());
+                    Intent intent = new Intent(getApplicationContext(),
+                            MultiplayerGamePartecipantsActivity.class);
+                    ArrayList<String> extra = new ArrayList<>(partecipants.size());
                     extra.addAll(partecipants);
                     intent.putStringArrayListExtra("partecipants", extra);
+                    intent.putExtra("hostName", matchName);
                     startActivity(intent);
                 }
             });

@@ -3,7 +3,6 @@ package com.multipong.net;
 import android.net.wifi.p2p.WifiP2pDevice;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -17,7 +16,7 @@ public class NameResolutor {
     }
 
     public void addNode (WifiP2pDevice newNode) {
-        nodes.put(hashOf(newNode), newNode);
+        nodes.put(hashOf(newNode.deviceAddress), newNode);
     }
 
     public WifiP2pDevice getNodeByHash (int hash) {
@@ -38,13 +37,10 @@ public class NameResolutor {
         return null;
     }
 
-
-
-    public static Integer hashOf(WifiP2pDevice device) {
-        String name = device.deviceName;
-        String mac = device.deviceAddress;
-        int nameHash = name.hashCode();
-        int macHash = mac.hashCode();
-        return nameHash * 31 + macHash;
+    public static Integer hashOf(String mac) {
+        int hash = 7;
+        for (int i = 0; i < mac.length(); i++)
+            hash = hash*31 + mac.charAt(i);
+        return hash;
     }
 }

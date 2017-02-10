@@ -20,16 +20,4 @@ public class CancelMessage extends Message {
     protected String getMessageType() {
         return Participant.MessageType.CANCEL;
     }
-
-    @Override
-    public Map<String, Object> decode() {
-        Map<String, Object> result = super.decode();
-        try {
-            Integer participantId = object.getInt(ID_FIELD);
-            result.put(ID_FIELD, participantId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
 }

@@ -45,6 +45,7 @@ public abstract class Message {
             result.put(APP_FIELD, object.getString(APP_FIELD));
             result.put(NAME_FIELD, object.getString(NAME_FIELD));
             result.put(MESSAGE_TYPE_FIELD, object.getString(MESSAGE_TYPE_FIELD));
+            result.put(ID_FIELD, object.getInt(ID_FIELD));
         } catch (JSONException e) {
             e.printStackTrace();
         }

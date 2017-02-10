@@ -16,13 +16,11 @@ import android.widget.Toast;
 
 import com.multipong.R;
 import com.multipong.model.formation.Host;
-import com.multipong.net.Receiver;
 
 import java.util.Collection;
 
 public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivity {
 
-    private Receiver receiver;
     private Button mButton;
 
     private ListView playerList;
@@ -36,15 +34,7 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
         mButton = (Button) findViewById(R.id.host_start_btn);
 
         setActor(new Host(this));
-        receiver = new Receiver(this);
-        new Thread(receiver).start();
         mButton.setOnClickListener(new HostGameStarter(playerList));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(receiver != null) receiver.stop();
     }
 
     public void receiveList(Collection<String> players) {

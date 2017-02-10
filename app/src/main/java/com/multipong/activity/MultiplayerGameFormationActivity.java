@@ -27,8 +27,8 @@ public abstract class MultiplayerGameFormationActivity extends AppCompatActivity
     private Actor actor;
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Utils.setActivity(this);
         sender = new Sender(messagesQueue);
         new Thread(sender).start();

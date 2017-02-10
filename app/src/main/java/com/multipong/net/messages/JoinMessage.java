@@ -25,18 +25,6 @@ public class JoinMessage extends Message {
         return Participant.MessageType.JOIN;
     }
 
-    @Override
-    public Map<String, Object> decode() {
-        Map<String, Object> result = super.decode();
-        try {
-            Integer participantId = object.getInt(ID_FIELD);
-            result.put(ID_FIELD, participantId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
     public static JoinMessage createMessageFromJSON(JSONObject json) {
         JoinMessage msg = new JoinMessage();
         msg.object = json;

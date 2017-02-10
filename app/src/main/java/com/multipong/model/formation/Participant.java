@@ -7,8 +7,10 @@ import com.multipong.activity.MultiplayerGameJoinActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.messages.AvailableMessage;
+import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.net.messages.StartingMessage;
+import com.multipong.net.Sender.AddressedContent;
 import com.multipong.utility.DeviceIdUtility;
 
 import org.json.JSONObject;
@@ -47,8 +49,11 @@ public class Participant implements Actor {
         }
     }
 
-    public void join(Integer text) {
-        // TODO: Add implementation
+    public void join(Integer hostId) {
+        InetAddress address = NameResolutor.INSTANCE.getNodeByHash(hostId);
+        JoinMessage joinMessage = new JoinMessage();
+        AddressedContent content = new AddressedContent(joinMessage, address);
+        activity.addMessageToQueue(content);
     }
 
     public class MessageType {

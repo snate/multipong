@@ -16,5 +16,6 @@ public class Participant implements Actor {
     public class MessageType {
         public static final String DISCOVER = "DISCOVER";
         public static final String JOIN = "JOIN";
+        public static final String CANCEL = "CANCEL";
     }
 }

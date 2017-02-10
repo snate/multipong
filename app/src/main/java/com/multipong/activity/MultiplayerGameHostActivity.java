@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,7 +24,7 @@ import java.util.List;
 public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivity {
 
     private Receiver receiver;
-    private Actor mActor;
+    private Button mButton;
 
     private ListView playerList;
 
@@ -33,7 +34,9 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
         setContentView(R.layout.activity_host);
 
         playerList = (ListView) findViewById(R.id.player_list);
-        mActor = new Host(this);
+        mButton = (Button) findViewById(R.id.host_start_btn);
+
+        setActor(new Host(this));
         receiver = new Receiver(this);
         new Thread(receiver).start();
     }
@@ -60,10 +63,6 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
     @Override
     public boolean isHost() {
         return true;
-    }
-
-    public Actor getActor() {
-        return mActor;
     }
 
     private class PlayerAdapter extends BaseAdapter {

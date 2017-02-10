@@ -16,7 +16,7 @@ public class Host implements Actor {
     }
 
     @Override
-    public void receive(String type, JSONObject message, InetAddress sender) {
+    public synchronized void receive(String type, JSONObject message, InetAddress sender) {
         switch (type) {
             case Participant.MessageType.DISCOVER: break;
             case Participant.MessageType.JOIN: break;

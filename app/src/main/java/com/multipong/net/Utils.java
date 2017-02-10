@@ -13,7 +13,6 @@ import android.util.Log;
 import com.multipong.net.messages.DiscoverMessage;
 import com.multipong.net.messages.Message;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,6 +48,7 @@ public class Utils {
 
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
+            // TODO: Change the following check to 'isHost?'
             if (info.isGroupOwner) {
                 Log.d("Utils", "I'm GO");
                 return;

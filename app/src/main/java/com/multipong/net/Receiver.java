@@ -38,7 +38,7 @@ public class Receiver implements Runnable {
                     String json = scanner.hasNext() ? scanner.next() : "";
                     JSONObject jsonObject = new JSONObject(json);
                     String app = jsonObject.getString(Message.APP_FIELD);
-                    String name = jsonObject.getString(Utils.JsonUtils.NAME_FIELD);
+                    String name = jsonObject.getString(Message.NAME_FIELD);
                     Log.d("Receiver", "'Application' field: " + app + " with name " + name);
                 } catch (IOException e) {
                     System.out.println(e);

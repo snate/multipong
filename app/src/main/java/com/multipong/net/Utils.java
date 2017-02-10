@@ -10,8 +10,6 @@ import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 
-import com.multipong.activity.MultiplayerGameFormationActivity;
-
 import java.net.InetAddress;
 
 public class Utils {
@@ -54,11 +52,5 @@ public class Utils {
             Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
             mActivity.startService(serviceIntent);
         }
-    }
-
-    // TODO: Remove the following class
-    public static class JsonUtils {
-        // TODO: Remove the following field
-        public static final String NAME_FIELD = "playerName";
     }
 }

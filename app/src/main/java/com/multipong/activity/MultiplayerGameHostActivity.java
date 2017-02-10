@@ -30,7 +30,7 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_multiplayer_game_formation);
+        setContentView(R.layout.activity_host);
 
         playerList = (ListView) findViewById(R.id.player_list);
         mActor = new Host(this);

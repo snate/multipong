@@ -77,7 +77,7 @@ public class Host implements Actor {
         for (Integer id : participants.keySet())
             addresses.add(NameResolutor.INSTANCE.getNodeByHash(id));
         sendParticipantsListTo(addresses);
-        // TODO: Display updated participants' list on (here host) screen
+        activity.receiveList(participants.values());
     }
 
     private void cancel(JSONObject json) {
@@ -90,7 +90,7 @@ public class Host implements Actor {
         for (Integer id : participants.keySet())
             addresses.add(NameResolutor.INSTANCE.getNodeByHash(id));
         sendParticipantsListTo(addresses);
-        // TODO: Display updated participants' list on (here host) screen
+        activity.receiveList(participants.values());
     }
 
     // TODO: Ensure FIFO ordering for available messages which are sent out

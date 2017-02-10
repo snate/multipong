@@ -1,78 +1,76 @@
 package com.multipong.net;
 
-import android.app.IntentService;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.multipong.net.messages.Message;
-import com.multipong.utility.PlayerNameUtility;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Sender has the task of sending packets to a given peer
  */
-public class Sender extends IntentService {
-    private int id;
-    private NameResolutor nameResolutor;
+public class Sender implements Runnable {
 
     private static final int SOCKET_TIMEOUT = 5000;
-    public static final String ACTION_SEND_MESSAGE = "com.multipong.net.SEND_FILE";
-    public static final String EXTRAS_ADDRESS = "sender_host";
-    public static final String EXTRAS_PORT = "sender_port";
-    public static final String EXTRAS_CONTENT = "sender_content";
 
-    public Sender(String name) {
-        super(name);
+    private final BlockingQueue<AddressedContent> messages;
+    private volatile boolean stop = false;
+
+    public Sender(BlockingQueue<AddressedContent> queue) {
+        messages = queue;
     }
 
-    public Sender() {
-        super("SenderService");
+    public static class AddressedContent {
+        private Message message;
+        private InetAddress address;
+
+        public AddressedContent(Message message, InetAddress address) {
+            this.message = message;
+            this.address = address;
+        }
     }
-
-    public void send(int node, Object msg){
-
-    }
-
-    public void sendToCoordinator(Object msg){}
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        Log.d("Sender", "Intent received");
-        Context context = getApplicationContext();
-        /*
-         * TODO the next avaible free port could be find using
-         * ServerSocket serverSocket = new ServerSocket(0);
-         * int port = serverSocket.getLocalPort();
-         */
-        if (!intent.getAction().equals(ACTION_SEND_MESSAGE)) return;
-        int port = intent.getIntExtra(EXTRAS_PORT, 8888);
-        String host = intent.getStringExtra(EXTRAS_ADDRESS).substring(1);
-        String jsonObjectString = intent.getStringExtra(EXTRAS_CONTENT);
-        Socket socket = new Socket();
-        try {
-            socket.bind(null);
-            socket.connect(new InetSocketAddress(host, port), SOCKET_TIMEOUT);
-            Log.d("Sender", "Client socket - " + socket.isConnected());
-            OutputStream stream = socket.getOutputStream();
-            stream.write(jsonObjectString.getBytes(), 0, jsonObjectString.length());
-            stream.close();
-            Log.d("Sender", "Data has been sent: " + jsonObjectString);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if(socket != null && socket.isConnected())
-                try {
-                    socket.close();
-                    Log.d("Sender", "Socket closed.");
-                } catch (IOException e) { }
+    public void run() {
+        while (!stop) {
+            AddressedContent content = null;
+            try {
+                content = messages.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.d("Sender", "Sending new message");
+            int port = 8888; // TODO: may it change?
+            String host = content.address.getHostAddress();
+            String jsonObjectString = content.message.getMsg().toString();
+            Socket socket = new Socket();
+            try {
+                socket.bind(null);
+                socket.connect(new InetSocketAddress(host, port), SOCKET_TIMEOUT);
+                Log.d("Sender", "Client socket - " + socket.isConnected());
+                OutputStream stream = socket.getOutputStream();
+                stream.write(jsonObjectString.getBytes(), 0, jsonObjectString.length());
+                stream.close();
+                Log.d("Sender", "Data has been sent: " + jsonObjectString);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (socket != null && socket.isConnected())
+                    try {
+                        socket.close();
+                        Log.d("Sender", "Socket closed.");
+                    } catch (IOException e) {
+                    }
+            }
         }
+    }
+
+    public void stop() {
+        stop = true;
     }
 }

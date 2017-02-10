@@ -1,7 +1,6 @@
 package com.multipong.model.formation;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
@@ -9,11 +8,12 @@ import com.multipong.activity.MultiplayerGameHostActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.Sender;
-import com.multipong.net.Utils;
 import com.multipong.net.messages.AvailableMessage;
 import com.multipong.net.messages.CancelMessage;
+import com.multipong.net.messages.DiscoverMessage;
 import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.Message;
+import com.multipong.net.Sender.AddressedContent;
 import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.PlayerNameUtility;
 
@@ -93,18 +93,13 @@ public class Host implements Actor {
         activity.receiveList(participants.values());
     }
 
-    // TODO: Ensure FIFO ordering for available messages which are sent out
-    //       (to prevent inconsistencies)
     private void sendParticipantsListTo(Collection<InetAddress> addresses) {
         for (InetAddress recipient : addresses) {
-            Intent sendResponse = new Intent(activity, Sender.class);
-            sendResponse.setAction(Sender.ACTION_SEND_MESSAGE);
-            sendResponse.putExtra(Sender.EXTRAS_ADDRESS, recipient.toString());
-            sendResponse.putExtra(Sender.EXTRAS_PORT, Utils.PORT);
+            InetAddress address = recipient;
             AvailableMessage response = new AvailableMessage();
             response.addParticipants(participants.values());
-            sendResponse.putExtra(Sender.EXTRAS_CONTENT, response.getMsg().toString());
-            activity.startService(sendResponse);
+            AddressedContent content = new Sender.AddressedContent(response, address);
+            activity.addMessageToQueue(content);
         }
     }
 

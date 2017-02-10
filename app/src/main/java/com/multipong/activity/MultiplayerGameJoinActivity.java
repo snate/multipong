@@ -25,8 +25,6 @@ import java.util.List;
  * @since 0.01
  */
 public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivity {
-
-    private Receiver receiver;
     private ListView matchesList;
     private MatchAdapter adapter;
 
@@ -35,21 +33,24 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
 
-        receiver = new Receiver(this);
-        new Thread(receiver).start();
-
         //TODO remove -> only debug purpose
         receiveList(0,"",new ArrayList<String>());
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(receiver != null) receiver.stop();
-    }
-
     public void receiveList(int hostID, String hostName, List<String> partecipants) {
         adapter.addMatch(hostID, hostName, partecipants);
+    public void receiveList(Collection<WifiP2pDevice> list) {
+        ArrayList<String> names = new ArrayList<>();
+
+        //TODO remove -> only debug purpose
+        for  (int i = 0; i < 100; i++)
+            names.add(i + ". match");
+
+        MatchAdapter adapter = new MatchAdapter(this, names);
+        matchesList.setAdapter(adapter);
+
+
+        Log.d("Game Formation", "Found " + list.size() + " devices");
     }
 
     @Override

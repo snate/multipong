@@ -50,7 +50,7 @@ public class Host implements Actor {
         switch (type) {
             case Participant.MessageType.DISCOVER: discover(sender);
             case Participant.MessageType.JOIN: join(message, sender);
-            case Participant.MessageType.CANCEL: cancel(message, sender);
+            case Participant.MessageType.CANCEL: cancel(message);
         }
     }
 
@@ -76,7 +76,7 @@ public class Host implements Actor {
         // TODO: Display updated participants' list on (here host) screen
     }
 
-    private void cancel(JSONObject json, InetAddress sender) {
+    private void cancel(JSONObject json) {
         CancelMessage message = CancelMessage.createFromJson(json);
         Map<String, Object> object = message.decode();
         Integer newId = (Integer) object.get(JoinMessage.ID_FIELD);

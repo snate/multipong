@@ -1,5 +1,6 @@
 package com.multipong.net;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pConfig;
@@ -22,8 +23,14 @@ public class Utils {
 
     public static final int PORT = 8888;
 
+    private static Activity activity;
+
+    public static void setActivity(Activity activity) {
+        Utils.activity = activity;
+    }
+
     public static void connectTo(final WifiP2pDevice device, final WifiP2pManager manager,
-                                 final Channel channel, final Context activity) {
+                                 final Channel channel) {
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = device.deviceAddress;
         manager.connect(channel, config, new WifiP2pManager.ActionListener() {

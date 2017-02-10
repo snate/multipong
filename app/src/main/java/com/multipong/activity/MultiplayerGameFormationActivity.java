@@ -1,9 +1,12 @@
 package com.multipong.activity;
 
 import android.net.wifi.p2p.WifiP2pDevice;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.multipong.model.Actor;
+import com.multipong.net.Utils;
 
 import java.util.Collection;
 
@@ -13,6 +16,12 @@ import java.util.Collection;
  * @since 0.01
  */
 public abstract class MultiplayerGameFormationActivity extends AppCompatActivity{
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        Utils.setActivity(this);
+    }
 
     private Actor actor;
 

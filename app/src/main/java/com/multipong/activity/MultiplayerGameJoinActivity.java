@@ -1,7 +1,10 @@
 package com.multipong.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 
 import com.multipong.R;
 import com.multipong.model.formation.Participant;
+import com.multipong.net.WifiP2pListener;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -33,10 +37,16 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
+
         adapter = new MatchAdapter(this);
         matchesList = (ListView)findViewById(R.id.matches_list);
         matchesList.setAdapter(adapter);
+
         setActor(new Participant(this));
+
+        WifiP2pManager manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        Channel channel = manager.initialize(this, getMainLooper(), null);
+        new WifiP2pListener(manager, channel, this);
     }
 
     public void receiveList(int hostID, String hostName, List<String> partecipants) {

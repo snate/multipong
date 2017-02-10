@@ -4,6 +4,7 @@ import com.multipong.model.formation.Participant;
 import com.multipong.utility.DeviceIdUtility;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -14,6 +15,12 @@ import java.util.Map;
 public class JoinMessage extends Message {
 
     public static final String ID_FIELD = "newId";
+
+    public static JoinMessage createFromJson(JSONObject object) {
+        JoinMessage message = new JoinMessage();
+        message.object = object;
+        return message;
+    }
 
     // TODO: Precondition - here I assume that DeviceUtility.id has been set
     //       when creating a participant-side JOIN message
@@ -34,8 +41,14 @@ public class JoinMessage extends Message {
 
     @Override
     public Map<String, Object> decode() {
-        // TODO: Add implementation
-        return null;
+        Map<String, Object> result = super.decode();
+        try {
+            Integer participantId = object.getInt(ID_FIELD);
+            result.put(ID_FIELD, participantId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public static JoinMessage createMessageFromJSON(JSONObject json) {

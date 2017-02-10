@@ -115,11 +115,6 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
         return false;
     }
 
-    @Override
-    public Actor getActor() {
-        return null;
-    }
-
     public void showShortToast(String toastText) {
         Context context = getApplicationContext();
         CharSequence text = toastText;

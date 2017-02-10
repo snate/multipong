@@ -1,6 +1,7 @@
 package com.multipong.model.formation;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
+import com.multipong.activity.MultiplayerGameJoinActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.messages.AvailableMessage;
 import com.multipong.net.messages.StartingMessage;
@@ -44,6 +45,7 @@ public class Participant implements Actor {
         Map<String, Object> msgInfo = msg.decode();
         partecipants = (ArrayList<String>) msgInfo.get(AvailableMessage.PARTICIPANTS_FIELD);
         hostAddress = sender;
+        ((MultiplayerGameJoinActivity)activity).receiveList(msgInfo.);
     }
 
     private void onStartingMessageReceived(JSONObject message, InetAddress sender) {

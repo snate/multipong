@@ -21,7 +21,7 @@ public class WifiP2pListener extends BroadcastReceiver {
                            MultiplayerGameFormationActivity activity) {
         mManager = manager;
         mChannel = channel;
-        mListener = new PeerExplorer(activity);
+        mListener = new PeerExplorer(activity).withManager(manager).withChannel(channel);
         mActivity = activity;
         mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
             @Override

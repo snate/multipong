@@ -1,6 +1,5 @@
 package com.multipong.net.messages;
 
-import com.multipong.net.Utils;
 import com.multipong.utility.PlayerNameUtility;
 
 import org.json.JSONException;
@@ -13,7 +12,7 @@ public abstract class Message {
     public static final String APP_FIELD = "application";
     public static final String APP_VALUE = "multipong";
     public static final String NAME_FIELD = "playerName";
-    public static final String MESSAGE_TYPE = "type";
+    public static final String MESSAGE_TYPE_FIELD = "type";
 
     protected JSONObject object;
 
@@ -22,7 +21,7 @@ public abstract class Message {
             object = new JSONObject();
             object.put(APP_FIELD, APP_VALUE);
             object.put(NAME_FIELD, PlayerNameUtility.getPlayerName());
-            object.put(MESSAGE_TYPE, getMessageType());
+            object.put(MESSAGE_TYPE_FIELD, getMessageType());
         } catch (JSONException e) {
             e.printStackTrace();
         }

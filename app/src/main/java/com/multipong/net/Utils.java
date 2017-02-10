@@ -11,8 +11,10 @@ import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 
+import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.net.messages.DiscoverMessage;
 import com.multipong.net.messages.Message;
+import com.multipong.net.Sender.AddressedContent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,9 +25,9 @@ public class Utils {
 
     public static final int PORT = 8888;
 
-    private static Activity activity;
+    private static MultiplayerGameFormationActivity activity;
 
-    public static void setActivity(Activity activity) {
+    public static void setActivity(MultiplayerGameFormationActivity activity) {
         Utils.activity = activity;
     }
 
@@ -47,29 +49,18 @@ public class Utils {
 
     private static class MyConnectionListener implements ConnectionInfoListener {
 
-        private Context mActivity;
+        private MultiplayerGameFormationActivity mActivity;
 
-        public MyConnectionListener(Context context) {
+        public MyConnectionListener(MultiplayerGameFormationActivity context) {
             mActivity = context;
         }
 
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
-            // TODO: Change the following check to 'isHost?'
-            if (info.isGroupOwner) {
-                Log.d("Utils", "I'm GO");
-                return;
-            }
-            Log.d("Utils", "Not GO");
             InetAddress address = info.groupOwnerAddress;
-            Intent serviceIntent = new Intent(mActivity, Sender.class);
-            serviceIntent.setAction(Sender.ACTION_SEND_MESSAGE);
-            serviceIntent.putExtra(Sender.EXTRAS_ADDRESS, address.toString());
-            serviceIntent.putExtra(Sender.EXTRAS_PORT, Utils.PORT);
-            Message message = new DiscoverMessage();
-            serviceIntent.putExtra(Sender.EXTRAS_CONTENT, message.getMsg().toString());
+            AddressedContent content = new AddressedContent(new DiscoverMessage(), address);
+            mActivity.addMessageToQueue(content);
             Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
-            mActivity.startService(serviceIntent);
         }
     }
 

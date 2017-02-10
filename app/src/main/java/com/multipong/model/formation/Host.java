@@ -11,6 +11,7 @@ import com.multipong.net.NameResolutor;
 import com.multipong.net.Sender;
 import com.multipong.net.Utils;
 import com.multipong.net.messages.AvailableMessage;
+import com.multipong.net.messages.CancelMessage;
 import com.multipong.net.messages.DiscoverMessage;
 import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.Message;
@@ -49,7 +50,7 @@ public class Host implements Actor {
         switch (type) {
             case Participant.MessageType.DISCOVER: discover(sender);
             case Participant.MessageType.JOIN: join(message, sender);
-            case Participant.MessageType.CANCEL: break;
+            case Participant.MessageType.CANCEL: cancel(message, sender);
         }
     }
 
@@ -72,6 +73,18 @@ public class Host implements Actor {
             addresses.add(NameResolutor.INSTANCE.getNodeByHash(id));
         sendParticipantsListTo(addresses);
         // TODO: Display updated participants' list on (here host) screen
+    }
+
+    private void cancel(JSONObject json, InetAddress sender) {
+        CancelMessage message = CancelMessage.createFromJson(json);
+        Map<String, Object> object = message.decode();
+        Integer newId = (Integer) object.get(JoinMessage.ID_FIELD);
+        if (participants.contains(newId))
+            participants.remove(newId);
+        Collection<InetAddress> addresses = new ArrayList<>();
+        for (Integer id : participants)
+            addresses.add(NameResolutor.INSTANCE.getNodeByHash(id));
+        sendParticipantsListTo(addresses);
     }
 
     // TODO: Ensure FIFO ordering for available messages which are sent out

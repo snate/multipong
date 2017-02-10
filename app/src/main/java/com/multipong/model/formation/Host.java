@@ -95,10 +95,9 @@ public class Host implements Actor {
 
     private void sendParticipantsListTo(Collection<InetAddress> addresses) {
         for (InetAddress recipient : addresses) {
-            InetAddress address = recipient;
             AvailableMessage response = new AvailableMessage();
             response.addParticipants(participants.values());
-            AddressedContent content = new Sender.AddressedContent(response, address);
+            AddressedContent content = new Sender.AddressedContent(response, recipient);
             activity.addMessageToQueue(content);
         }
     }

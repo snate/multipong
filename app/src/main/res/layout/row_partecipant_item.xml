@@ -5,7 +5,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:background="@android:color/white"
                 android:padding="8dp"
-                tools:context="com.multipong.activity.MultiplayerGamePartecipantsActivity">
+                tools:context="com.multipong.activity.MultiplayerGameParticipantsActivity">
 
     <TextView
             android:layout_width="wrap_content"

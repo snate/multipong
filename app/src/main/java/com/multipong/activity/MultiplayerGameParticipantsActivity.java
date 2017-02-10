@@ -20,14 +20,14 @@ import java.util.List;
  * @version 0.01
  * @since 0.01
  */
-public class MultiplayerGamePartecipantsActivity extends AppCompatActivity {
+public class MultiplayerGameParticipantsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_partecipants);
 
         Intent intent = getIntent();
-        List<String> partecipants = intent.getStringArrayListExtra("partecipants");
+        List<String> partecipants = intent.getStringArrayListExtra("participants");
         String host = intent.getStringExtra("hostName");
 
         TextView text = (TextView)findViewById(R.id.host_name_text);

@@ -1,17 +1,24 @@
 package com.multipong.model.formation;
 
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+
 import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.activity.MultiplayerGameJoinActivity;
 import com.multipong.model.Actor;
+import com.multipong.net.NameResolutor;
 import com.multipong.net.messages.AvailableMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.net.messages.StartingMessage;
+import com.multipong.utility.DeviceIdUtility;
 
 import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.UUID;
 
 public class Participant implements Actor {
 
@@ -21,6 +28,12 @@ public class Participant implements Actor {
 
     public Participant(MultiplayerGameFormationActivity activity) {
         this.activity = activity;
+        Integer myID = DeviceIdUtility.getId();
+        if (myID == null) {
+            String uniqueID = UUID.randomUUID().toString();
+            myID = NameResolutor.hashOf(uniqueID);
+            DeviceIdUtility.setId(myID);
+        }
     }
 
     @Override

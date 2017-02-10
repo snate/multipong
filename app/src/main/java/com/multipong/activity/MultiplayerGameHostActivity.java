@@ -2,7 +2,6 @@ package com.multipong.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,13 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.multipong.R;
-import com.multipong.model.Actor;
 import com.multipong.model.formation.Host;
 import com.multipong.net.Receiver;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivity {
 
@@ -51,17 +47,10 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
         if(receiver != null) receiver.stop();
     }
 
-    public void receiveList(Collection<WifiP2pDevice> list) {
-        ArrayList<String> names = new ArrayList<>();
-
-        for(WifiP2pDevice dev:list)
-            names.add(dev.deviceName);
-
-        // TODO: Add content to adapter only when further info are available
-        PlayerAdapter adapter = new PlayerAdapter(this, names);
+    public void receiveList(Collection<String> players) {
+        PlayerAdapter adapter = new PlayerAdapter(this, players);
         playerList.setAdapter(adapter);
-
-        Log.d("Game Formation", "Found " + list.size() + " devices");
+        Log.d("HostActivity", "There are " + players.size() + " in this game");
     }
 
     private void showShortToast(String toastText) {
@@ -77,10 +66,10 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
     }
 
     private class PlayerAdapter extends BaseAdapter {
-        private List<String> players;
+        private Collection<String> players;
         private Activity activity;
 
-        public PlayerAdapter(Activity activity, List<String> players){
+        public PlayerAdapter(Activity activity, Collection<String> players){
             this.activity = activity;
             this.players = players;
         }
@@ -92,7 +81,7 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
 
         @Override
         public Object getItem(int position) {
-            return players.get(position);
+            return players.toArray()[position];
         }
 
         @Override

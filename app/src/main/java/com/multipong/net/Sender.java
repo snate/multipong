@@ -62,7 +62,7 @@ public class Sender extends IntentService {
             OutputStream stream = socket.getOutputStream();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put(Message.APP_FIELD, Message.APP_VALUE);
-            jsonObject.put(Utils.JsonUtils.NAME_FIELD, PlayerNameUtility.getPlayerName());
+            jsonObject.put(Message.NAME_FIELD, PlayerNameUtility.getPlayerName());
             stream.write(jsonObject.toString().getBytes(), 0, jsonObject.toString().length());
             stream.close();
             Log.d("Sender", "Data has been sent: " + PlayerNameUtility.getPlayerName());

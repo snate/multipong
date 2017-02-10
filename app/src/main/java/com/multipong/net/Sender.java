@@ -44,6 +44,7 @@ public class Sender implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            if (content.address == null || content.message == null) continue;
             Log.d("Sender", "Sending new message");
             int port = 8888; // TODO: may it change?
             String host = content.address.getHostAddress();

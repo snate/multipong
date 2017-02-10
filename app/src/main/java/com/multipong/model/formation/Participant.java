@@ -1,8 +1,6 @@
 package com.multipong.model.formation;
 
-import android.content.Context;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.activity.MultiplayerGameJoinActivity;
@@ -17,14 +15,15 @@ import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class Participant implements Actor {
 
     private MultiplayerGameFormationActivity activity;
-    private InetAddress hostAddress;
-    private ArrayList<String> partecipants;
+    private ArrayList<String> participants;
+    private Map<Integer, String> hosts = new HashMap<>();
 
     public Participant(MultiplayerGameFormationActivity activity) {
         this.activity = activity;
@@ -48,6 +47,10 @@ public class Participant implements Actor {
         }
     }
 
+    public void join(Integer text) {
+        // TODO: Add implementation
+    }
+
     public class MessageType {
         public static final String DISCOVER = "DISCOVER";
         public static final String JOIN = "JOIN";
@@ -57,12 +60,12 @@ public class Participant implements Actor {
     private void onAvailableMessageReceived(JSONObject message, InetAddress sender) {
         AvailableMessage msg = AvailableMessage.createMessageFromJSON(message);
         Map<String, Object> msgInfo = msg.decode();
-        partecipants = (ArrayList<String>) msgInfo.get(AvailableMessage.PARTICIPANTS_FIELD);
-        hostAddress = sender;
-        ((MultiplayerGameJoinActivity)activity).receiveList(
-                (Integer)msgInfo.get(Message.ID_FIELD),
-                (String)msgInfo.get(Message.NAME_FIELD),
-                partecipants);
+        participants = (ArrayList<String>) msgInfo.get(AvailableMessage.PARTICIPANTS_FIELD);
+        Integer id = (Integer) msgInfo.get(Message.ID_FIELD);
+        String hostName = (String) msgInfo.get(Message.NAME_FIELD);
+        hosts.put(id, hostName);
+        NameResolutor.INSTANCE.addNode(id, sender);
+        ((MultiplayerGameJoinActivity)activity).receiveList(id, hostName, participants);
     }
 
     private void onStartingMessageReceived(JSONObject message, InetAddress sender) {

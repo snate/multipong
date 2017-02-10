@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
 
     private class MatchAdapter extends BaseAdapter {
         private class Match {
+            Integer hostId;
             String host;
             List<String> participants;
         }
@@ -86,6 +88,7 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
 
         public void addMatch(int hostID, String hostName, List<String> participants) {
             Match newMatch = new Match();
+            newMatch.hostId = hostID;
             newMatch.host = hostName;
             newMatch.participants = participants;
             matches.put(hostID, newMatch);
@@ -114,20 +117,20 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
                 convertView = LayoutInflater.from(activity)
                         .inflate(R.layout.row_match_item, null);
             }
-            final String matchName = ((Match)getItem(position)).host;
+            final Match match = (Match) getItem(position);
+            final String matchName = match.host;
             final List<String> participants = ((Match)getItem(position)).participants;
 
-            TextView matchNameTextView = (TextView) convertView.findViewById(R.id.match_name_text);
-            Button joinMatchButton = (Button) convertView.findViewById(R.id.join_match);
+            final TextView matchNameTextView = (TextView) convertView.findViewById(R.id.match_name_text);
+            final Button joinMatchButton = (Button) convertView.findViewById(R.id.join_match);
             Button participantsButton = (Button) convertView.findViewById(R.id.match_participants);
 
             matchNameTextView.setText(matchName);
             joinMatchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO change -> only debug purpose
-                    Intent intent = new Intent(getApplicationContext(), DummyActivity.class);
-                    startActivity(intent);
+                    Participant participant = (Participant) getActor();
+                    participant.join(match.hostId);
                 }
             });
 

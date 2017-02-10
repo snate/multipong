@@ -12,14 +12,17 @@ import com.multipong.net.Sender;
 import com.multipong.net.Utils;
 import com.multipong.net.messages.AvailableMessage;
 import com.multipong.net.messages.DiscoverMessage;
+import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.utility.DeviceIdUtility;
 
 import org.json.JSONObject;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 public class Host implements Actor {
 
@@ -45,20 +48,45 @@ public class Host implements Actor {
     public synchronized void receive(String type, JSONObject message, InetAddress sender) {
         switch (type) {
             case Participant.MessageType.DISCOVER: discover(sender);
-            case Participant.MessageType.JOIN: break;
+            case Participant.MessageType.JOIN: join(message, sender);
             case Participant.MessageType.CANCEL: break;
         }
     }
 
     private void discover(InetAddress sender) {
-        Intent sendResponse = new Intent(activity, Sender.class);
-        sendResponse.setAction(Sender.ACTION_SEND_MESSAGE);
-        sendResponse.putExtra(Sender.EXTRAS_ADDRESS, sender.toString());
-        sendResponse.putExtra(Sender.EXTRAS_PORT, Utils.PORT);
-        AvailableMessage response = new AvailableMessage();
-        response.addParticipants(participants);
-        sendResponse.putExtra(Sender.EXTRAS_CONTENT, response.getMsg().toString());
-        activity.startService(sendResponse);
+        Collection<InetAddress> listWithSenderOnly = new ArrayList<>();
+        listWithSenderOnly.add(sender);
+        sendParticipantsListTo(listWithSenderOnly);
+    }
+
+    private void join(JSONObject json, InetAddress sender) {
+        JoinMessage message = JoinMessage.createFromJson(json);
+        Map<String, Object> object = message.decode();
+        Integer newId = (Integer) object.get(JoinMessage.ID_FIELD);
+        if (!participants.contains(newId)) {
+            participants.add(newId);
+            NameResolutor.INSTANCE.addNode(newId, sender);
+        }
+        Collection<InetAddress> addresses = new ArrayList<>();
+        for (Integer id : participants)
+            addresses.add(NameResolutor.INSTANCE.getNodeByHash(id));
+        sendParticipantsListTo(addresses);
+        // TODO: Display updated participants' list on (here host) screen
+    }
+
+    // TODO: Ensure FIFO ordering for available messages which are sent out
+    //       (to prevent inconsistencies)
+    private void sendParticipantsListTo(Collection<InetAddress> addresses) {
+        for (InetAddress recipient : addresses) {
+            Intent sendResponse = new Intent(activity, Sender.class);
+            sendResponse.setAction(Sender.ACTION_SEND_MESSAGE);
+            sendResponse.putExtra(Sender.EXTRAS_ADDRESS, recipient.toString());
+            sendResponse.putExtra(Sender.EXTRAS_PORT, Utils.PORT);
+            AvailableMessage response = new AvailableMessage();
+            response.addParticipants(participants);
+            sendResponse.putExtra(Sender.EXTRAS_CONTENT, response.getMsg().toString());
+            activity.startService(sendResponse);
+        }
     }
 
     public class MessageType {

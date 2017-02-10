@@ -42,8 +42,11 @@ public class Utils {
 
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
-            if(info.isGroupOwner) Log.d("Utils", "I'm GO");
-            else Log.d("Utils", "Not GO");
+            if (info.isGroupOwner) {
+                Log.d("Utils", "I'm GO");
+                return;
+            }
+            Log.d("Utils", "Not GO");
             InetAddress address = info.groupOwnerAddress;
             Intent serviceIntent = new Intent(mActivity, Sender.class);
             serviceIntent.setAction(Sender.ACTION_SEND_FILE);

@@ -7,6 +7,10 @@ import org.json.JSONException;
 
 import java.util.Map;
 
+import org.json.JSONObject;
+
+import java.util.Map;
+
 public class JoinMessage extends Message {
 
     public static final String ID_FIELD = "newId";
@@ -32,5 +36,11 @@ public class JoinMessage extends Message {
     public Map<String, Object> decode() {
         // TODO: Add implementation
         return null;
+    }
+
+    public static JoinMessage createMessageFromJSON(JSONObject json) {
+        JoinMessage msg = new JoinMessage();
+        msg.object = json;
+        return msg;
     }
 }

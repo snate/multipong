@@ -4,6 +4,7 @@ import com.multipong.model.formation.Host;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,5 +42,11 @@ public class AvailableMessage extends Message {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static AvailableMessage createMessageFromJSON(JSONObject json) {
+        AvailableMessage msg = new AvailableMessage();
+        msg.object = json;
+        return msg;
     }
 }

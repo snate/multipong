@@ -41,13 +41,13 @@ public class Receiver implements Runnable {
                     String app = jsonObject.getString(Message.APP_FIELD);
                     String name = jsonObject.getString(Message.NAME_FIELD);
                     Log.d("Receiver", "'Application' field: " + app + " with name " + name);
+                    Log.d("Receiver", "Request accepted");
                 } catch (IOException e) {
                     System.out.println(e);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.d("Receiver", "Not understandable Json object");
                 }
 
-                Log.d("Receiver", "Request accepted");
             }
         } catch (IOException e) {
             e.printStackTrace();

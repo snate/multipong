@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.multipong.R;
+import com.multipong.model.formation.Participant;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -35,6 +36,7 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
         adapter = new MatchAdapter(this);
         matchesList = (ListView)findViewById(R.id.matches_list);
         matchesList.setAdapter(adapter);
+        setActor(new Participant(this));
     }
 
     public void receiveList(int hostID, String hostName, List<String> partecipants) {

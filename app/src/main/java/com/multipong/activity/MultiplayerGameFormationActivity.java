@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.multipong.R;
+import com.multipong.model.Actor;
+import com.multipong.model.formation.Host;
 import com.multipong.net.PeerExplorer;
 import com.multipong.net.Receiver;
 import com.multipong.net.Utils;
@@ -38,6 +40,7 @@ public class MultiplayerGameFormationActivity extends AbsMultiplayerGamePeersAct
     private WifiP2pListener mWifiP2pListener;
     private IntentFilter mIntentFilter;
     private Receiver receiver;
+    private Actor mActor;
 
     private ListView playerList;
 
@@ -58,6 +61,7 @@ public class MultiplayerGameFormationActivity extends AbsMultiplayerGamePeersAct
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
         playerList = (ListView) findViewById(R.id.player_list);
+        mActor = new Host(this);
         receiver = new Receiver(this);
         new Thread(receiver).start();
     }
@@ -84,6 +88,7 @@ public class MultiplayerGameFormationActivity extends AbsMultiplayerGamePeersAct
         ArrayList<String> names = new ArrayList<>();
         for(WifiP2pDevice dev:list)
             names.add(dev.deviceName);
+        // TODO: Add content to adapter only when further info are available
         PlayerAdapter adapter = new PlayerAdapter(this, names);
         playerList.setAdapter(adapter);
 
@@ -94,7 +99,11 @@ public class MultiplayerGameFormationActivity extends AbsMultiplayerGamePeersAct
         Utils.connectTo(device, mManager, mChannel, this);
     }
 
-    private void showShortToast(String toastText) {
+    public Actor getActor() {
+        return mActor;
+    }
+
+    public void showShortToast(String toastText) {
         Context context = getApplicationContext();
         CharSequence text = toastText;
         int duration = Toast.LENGTH_SHORT;

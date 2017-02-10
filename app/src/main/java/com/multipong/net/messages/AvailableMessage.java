@@ -20,7 +20,7 @@ public class AvailableMessage extends Message {
         return Host.MessageType.AVAILABLE;
     }
 
-    public void addParticipants(Collection<Integer> participants) {
+    public void addParticipants(Collection<String> participants) {
         try {
             JSONArray jsonArray = new JSONArray(Arrays.asList(participants));
             object.put(PARTICIPANTS_FIELD, jsonArray);
@@ -33,10 +33,10 @@ public class AvailableMessage extends Message {
     public Map<String, Object> decode() {
         Map<String, Object> result = super.decode();
         try {
-            ArrayList<Integer> ids = new ArrayList<>();
+            ArrayList<String> ids = new ArrayList<>();
             JSONArray array = object.getJSONArray(PARTICIPANTS_FIELD);
             for (int i = 0; i < array.length(); i++)
-                ids.add(array.getInt(i));
+                ids.add(array.getString(i));
             result.put(PARTICIPANTS_FIELD, ids);
         } catch (JSONException e) {
             e.printStackTrace();

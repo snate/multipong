@@ -27,6 +27,7 @@ public class Sender extends IntentService {
     public static final String ACTION_SEND_MESSAGE = "com.multipong.net.SEND_FILE";
     public static final String EXTRAS_ADDRESS = "sender_host";
     public static final String EXTRAS_PORT = "sender_port";
+    public static final String EXTRAS_CONTENT = "sender_content";
 
     public Sender(String name) {
         super(name);
@@ -51,24 +52,20 @@ public class Sender extends IntentService {
          * ServerSocket serverSocket = new ServerSocket(0);
          * int port = serverSocket.getLocalPort();
          */
+        if (!intent.getAction().equals(ACTION_SEND_MESSAGE)) return;
         int port = intent.getIntExtra(EXTRAS_PORT, 8888);
         String host = intent.getStringExtra(EXTRAS_ADDRESS).substring(1);
-        if (!intent.getAction().equals(ACTION_SEND_MESSAGE)) return;
+        String jsonObjectString = intent.getStringExtra(EXTRAS_CONTENT);
         Socket socket = new Socket();
         try {
             socket.bind(null);
             socket.connect(new InetSocketAddress(host, port), SOCKET_TIMEOUT);
             Log.d("Sender", "Client socket - " + socket.isConnected());
             OutputStream stream = socket.getOutputStream();
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put(Message.APP_FIELD, Message.APP_VALUE);
-            jsonObject.put(Message.NAME_FIELD, PlayerNameUtility.getPlayerName());
-            stream.write(jsonObject.toString().getBytes(), 0, jsonObject.toString().length());
+            stream.write(jsonObjectString.getBytes(), 0, jsonObjectString.length());
             stream.close();
-            Log.d("Sender", "Data has been sent: " + PlayerNameUtility.getPlayerName());
+            Log.d("Sender", "Data has been sent: " + jsonObjectString);
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         } finally {
             if(socket != null && socket.isConnected())

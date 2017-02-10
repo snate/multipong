@@ -14,8 +14,9 @@ public class Participant implements Actor {
     public Participant(MultiplayerGameFormationActivity activity) {
         this.activity = activity;
     }
+
     @Override
-    public void receive(String type, JSONObject message, InetAddress sender) {
+    public synchronized void receive(String type, JSONObject message, InetAddress sender) {
         switch (type) {
             case Host.MessageType.AVAILABLE: break;
             case Host.MessageType.STARTING: break;

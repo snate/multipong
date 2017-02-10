@@ -2,9 +2,10 @@ package com.multipong.model.formation;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.model.Actor;
-import com.multipong.model.formation.Participant.MessageType;
 
 import org.json.JSONObject;
+
+import java.net.InetAddress;
 
 public class Host implements Actor {
 
@@ -15,7 +16,7 @@ public class Host implements Actor {
     }
 
     @Override
-    public void receive(String type, JSONObject message) {
+    public void receive(String type, JSONObject message, InetAddress sender) {
         switch (type) {
             case Participant.MessageType.DISCOVER: break;
             case Participant.MessageType.JOIN: break;

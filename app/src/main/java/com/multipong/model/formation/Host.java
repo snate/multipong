@@ -12,6 +12,7 @@ public class Host implements Actor {
         switch (type) {
             case Participant.MessageType.DISCOVER: break;
             case Participant.MessageType.JOIN: break;
+            case Participant.MessageType.CANCEL: break;
         }
     }
 

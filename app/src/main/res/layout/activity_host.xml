@@ -28,6 +28,8 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:layout_gravity="end"
-            android:text="@string/start"/>
+            android:text="@string/start"
+            style="?android:attr/buttonBarButtonStyle"
+            android:textColor="@color/teal"/>
 
 </LinearLayout>

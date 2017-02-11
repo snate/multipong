@@ -152,9 +152,8 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void drawBall(Canvas canvas) {
         if (ballX == null || ballY == null) return;
-        Bitmap ball = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
-        Bitmap drawnBall = Bitmap.createScaledBitmap(ball, ballSize, ballSize, true);
-        canvas.drawBitmap(drawnBall, ballX.get(), ballY.get(), paint);
+        paint.setColor(Color.BLACK);
+        canvas.drawCircle(ballX.get()+ballSize/2, ballY.get()+ballSize/2, ballSize/2, paint);
     }
 
     @Override

@@ -10,9 +10,12 @@ import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 import java.util.concurrent.BlockingQueue;
 
 public class AckUDPSender extends Sender {
+
+    private static final int UDP_TIMEOUT = 400;
 
     public AckUDPSender(BlockingQueue<AddressedContent> queue) {
         super(queue);
@@ -20,20 +23,30 @@ public class AckUDPSender extends Sender {
 
     @Override
     public void send(AddressedContent content) {
-        try {
-            DatagramSocket clientSocket = new DatagramSocket();
-            InetAddress addr = content.getAddress();
-            String message = content.getMessage().getMsg().toString();
-            byte[] data = new byte[message.length()];
-            byte[] receiveData = new byte[message.length()];
-            data = message.getBytes();
-            DatagramPacket sendPacket = new DatagramPacket(data, data.length, addr, Utils.UDP_PORT);
-            clientSocket.send(sendPacket);
-            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-            clientSocket.receive(receivePacket);
-            String ack = new String(receivePacket.getData());
-            Log.d("AckUDPSender", "Received " + ack + " as a response");
-            clientSocket.close();
-        } catch (IOException e) { }
+        int attempts = 0;
+        while (attempts < 4) {
+            try {
+                DatagramSocket clientSocket = new DatagramSocket();
+                InetAddress addr = content.getAddress();
+                String message = content.getMessage().getMsg().toString();
+                byte[] data = new byte[message.length()];
+                byte[] receiveData = new byte[message.length()];
+                data = message.getBytes();
+                DatagramPacket sendPacket = new DatagramPacket(data, data.length, addr, Utils.UDP_PORT);
+                clientSocket.send(sendPacket);
+
+                clientSocket.setSoTimeout(UDP_TIMEOUT);
+
+                DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+                clientSocket.receive(receivePacket);
+                attempts = 4;
+                String ack = new String(receivePacket.getData());
+                Log.d("AckUDPSender", "Received " + ack + " as a response");
+                clientSocket.close();
+            } catch (SocketTimeoutException exc) {
+                attempts++;
+            } catch (IOException e) {
+            }
+        }
     }
 }

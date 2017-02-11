@@ -17,4 +17,8 @@ public abstract class Game {
     public void providePalettePosition(double position) {
         currentGame.setPalettePosition(position);
     }
+
+    public void addLife() {
+        currentGame.incrementNumberOfLives();
+    }
 }

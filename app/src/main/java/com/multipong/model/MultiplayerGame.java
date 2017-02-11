@@ -13,6 +13,7 @@ public class MultiplayerGame extends Game {
     private String playerName;
     private MultipongDatabase database;
 
+    //TODO invoke setNumberOfLives before start on MultiGame to have a game with more than one live
     @Override
     public void start(String playerName) {
         this.playerName = playerName;

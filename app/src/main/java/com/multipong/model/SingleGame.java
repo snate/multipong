@@ -1,5 +1,7 @@
 package com.multipong.model;
 
+import android.widget.Toast;
+
 import com.multipong.activity.GameActivity;
 import com.multipong.persistence.MultipongDatabase;
 
@@ -13,6 +15,7 @@ public class SingleGame extends Game {
         this.activity = activity;
     }
 
+    //TODO invoke setNumberOfLives before start  on SingleGame to have a game with more than one live
     @Override
     public void start(String playerName) {
         this.playerName = playerName;
@@ -41,6 +44,12 @@ public class SingleGame extends Game {
                 setX(Math.random());
                 started = false;
             }
+        }
+
+        @Override
+        public void resetGame() {
+            started = true;
+            setY(0.0);
         }
     }
 }

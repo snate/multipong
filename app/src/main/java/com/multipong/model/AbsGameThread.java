@@ -1,5 +1,7 @@
 package com.multipong.model;
 
+import android.widget.Toast;
+
 import com.multipong.activity.GameActivity;
 
 /**
@@ -17,6 +19,7 @@ public abstract class AbsGameThread implements Runnable {
     private double yFactor = 1.0; // ball vertical multiplier
 
     private boolean lose = false;
+    private int lives = 1;
 
     private volatile double palettePosition = 0.0;
     private volatile double paletteWidth = 0;
@@ -42,6 +45,10 @@ public abstract class AbsGameThread implements Runnable {
     public void setXFactor(double xFactor) {this.xFactor = xFactor;}
     public void setYFactor(double yFactor) {this.yFactor = yFactor;}
 
+    public synchronized int getNumberOfLives(){ return lives; }
+    public synchronized void incrementNumberOfLives() { lives = lives + 1; }
+    public synchronized void decrementNumberOfLives() { lives = lives - 1; }
+
     @Override
     public void run() {
         activity.showPlayerName(playerName);
@@ -59,8 +66,27 @@ public abstract class AbsGameThread implements Runnable {
                     xFactor = ricochetAngle;
                     yFactor = -(1 - (1 - paletteWidth) * ricochetAngle);
                     activity.updateScore(++score);
-                } else
-                    lose = true;
+                } else {
+                    decrementNumberOfLives();
+                    lose = (getNumberOfLives() == 0);
+                    if (!lose) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //TODO use a string or remove the toast
+                                Toast.makeText(activity.getApplication(), "You lost a life :'(",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        try {
+                            //TODO use a parametrized number
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        resetGame();
+                    }
+                }
             }
             activity.moveBall(x, y);
             try {
@@ -92,5 +118,7 @@ public abstract class AbsGameThread implements Runnable {
     public abstract void ballOnTopOfTheField();
 
     public abstract void initialBallPosition();
+
+    public void resetGame(){}
 }
 

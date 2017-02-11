@@ -65,6 +65,14 @@ public class Participant implements Actor {
         activity.addMessageToQueue(joinRequest);
     }
 
+    public void cancelGame() {
+        if (currentHost == null) return;
+        InetAddress oldHost = NameResolutor.INSTANCE.getNodeByHash(currentHost);
+        CancelMessage cancelMessage = new CancelMessage();
+        AddressedContent cancellation = new AddressedContent(cancelMessage, oldHost);
+        activity.addMessageToQueue(cancellation);
+    }
+
     public class MessageType {
         public static final String DISCOVER = "DISCOVER";
         public static final String JOIN = "JOIN";

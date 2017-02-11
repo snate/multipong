@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.multipong.R;
+import com.multipong.model.Actor;
 import com.multipong.model.formation.Participant;
 import com.multipong.net.WifiP2pListener;
 
@@ -47,6 +48,14 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
         WifiP2pManager manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         Channel channel = manager.initialize(this, getMainLooper(), null);
         new WifiP2pListener(manager, channel, this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Participant actor = (Participant) getActor();
+        if(actor == null) return;
+        actor.cancelGame();
+        super.onDestroy();
     }
 
     public void receiveList(int hostID, String hostName, List<String> participants) {

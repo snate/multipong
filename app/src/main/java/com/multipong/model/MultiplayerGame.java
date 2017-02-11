@@ -1,5 +1,7 @@
 package com.multipong.model;
 
+import android.util.Log;
+
 import com.multipong.activity.GameActivity;
 import com.multipong.persistence.MultipongDatabase;
 
@@ -56,6 +58,26 @@ public class MultiplayerGame extends Game {
         public void newPlayerTurn(double x) {
             newX = x;
             myTurn = true;
+        }
+
+        @Override
+        public void ballBounced() {
+            double posX = getX();
+            double speedX = getXFactor();
+            double speedY = getYFactor() * (-1.0);
+            double range = getRange();
+            int movements = (int) Math.ceil(range / speedY);
+            double xFinalPosition = posX + movements * speedX / range;
+            Log.d("Speed X", String.valueOf(speedX));
+            Log.d("Speed Y", String.valueOf(speedY));
+            Log.d("Movements", String.valueOf(movements));
+            Log.d("X movement", String.valueOf(xFinalPosition));
+            int leftEdge = (int) Math.floor(xFinalPosition);
+            xFinalPosition = xFinalPosition - leftEdge;
+            if (leftEdge % 2 != 0) xFinalPosition = 1 - xFinalPosition;
+            if (0 <= xFinalPosition && xFinalPosition <= 1) {
+                Log.d("Predictor", "Predicted: " + xFinalPosition);
+            }
         }
     }
 }

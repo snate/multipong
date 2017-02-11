@@ -39,6 +39,7 @@ public abstract class AbsGameThread implements Runnable {
     public double getY() {return y;}
     public double getYFactor() {return yFactor;}
     public double getXFactor() {return xFactor;}
+    public double getRange() {return range;}
 
     public void setX(double x) {this.x = x;}
     public void setY(double y) {this.y = y;}
@@ -66,6 +67,8 @@ public abstract class AbsGameThread implements Runnable {
                     xFactor = ricochetAngle;
                     yFactor = -(1 - (1 - paletteWidth) * ricochetAngle);
                     activity.updateScore(++score);
+                    y = 1.0;
+                    ballBounced();
                 } else {
                     decrementNumberOfLives();
                     lose = (getNumberOfLives() == 0);
@@ -120,5 +123,7 @@ public abstract class AbsGameThread implements Runnable {
     public abstract void initialBallPosition();
 
     public void resetGame(){}
+
+    public abstract void ballBounced();
 }
 

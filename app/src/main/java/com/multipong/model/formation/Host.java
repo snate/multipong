@@ -53,7 +53,6 @@ public class Host implements Actor {
     }
 
     public void startGame() {
-        //NameResolutor.INSTANCE.keepOnly(participants.keySet());
         Collection<InetAddress> addresses = new ArrayList<>();
         for (Integer id : participants.keySet())
             addresses.add(NameResolutor.INSTANCE.getNodeByHash(id));
@@ -109,9 +108,10 @@ public class Host implements Actor {
     private void cancel(JSONObject json) {
         CancelMessage message = CancelMessage.createFromJson(json);
         Map<String, Object> object = message.decode();
-        Integer newId = (Integer) object.get(JoinMessage.ID_FIELD);
-        if (participants.keySet().contains(newId))
-            participants.remove(newId);
+        Integer hasLeftId = (Integer) object.get(JoinMessage.ID_FIELD);
+        if (participants.keySet().contains(hasLeftId))
+            participants.remove(hasLeftId);
+        NameResolutor.INSTANCE.removeNode(hasLeftId);
         Collection<InetAddress> addresses = new ArrayList<>();
         for (Integer id : participants.keySet())
             addresses.add(NameResolutor.INSTANCE.getNodeByHash(id));

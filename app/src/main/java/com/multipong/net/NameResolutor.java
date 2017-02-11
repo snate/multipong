@@ -41,14 +41,8 @@ public enum NameResolutor {
         return nodes.get(hashOf(macAddress));
     }
 
-    public void keepOnly(Collection<Integer> remaining) {
-        starting = true;
-        Map<Integer, InetAddress> newMap = new ConcurrentHashMap<>();
-        for (Integer id : nodes.keySet()) {
-            if (remaining.contains(id))
-                nodes.put(id, nodes.get(id));
-        }
-        nodes = newMap;
+    public void removeNode(Integer entry) {
+        nodes.remove(entry);
     }
 
     public static Integer hashOf(String mac) {

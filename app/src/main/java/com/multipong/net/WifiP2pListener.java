@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
+import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
 
@@ -31,6 +32,7 @@ public class WifiP2pListener extends BroadcastReceiver {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
+                Log.d("DISCOVER", "scheduled discover of peers");
                 mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
                     @Override
                     public void onSuccess() {

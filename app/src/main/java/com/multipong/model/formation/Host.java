@@ -1,23 +1,17 @@
 package com.multipong.model.formation;
 
-import android.content.Context;
-import android.net.wifi.WifiManager;
-import android.net.wifi.p2p.WifiP2pManager;
-import android.os.AsyncTask;
-import android.text.format.Formatter;
 import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameHostActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
-import com.multipong.net.Sender;
-import com.multipong.net.Utils;
+import com.multipong.net.send.Sender;
 import com.multipong.net.messages.AvailableMessage;
 import com.multipong.net.messages.CancelMessage;
 import com.multipong.net.messages.DiscoverMessage;
 import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.Message;
-import com.multipong.net.Sender.AddressedContent;
+import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.net.messages.StartingMessage;
 import com.multipong.net.messages.TellIPMessage;
 import com.multipong.utility.DeviceIdUtility;
@@ -32,8 +26,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import static android.content.Context.WIFI_SERVICE;
 
 public class Host implements Actor {
 

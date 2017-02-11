@@ -11,7 +11,7 @@ import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.KnownHostsMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.net.messages.StartingMessage;
-import com.multipong.net.Sender.AddressedContent;
+import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.DeviceIdUtility;
 
 import org.json.JSONObject;

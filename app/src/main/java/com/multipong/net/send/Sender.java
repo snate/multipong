@@ -1,7 +1,8 @@
-package com.multipong.net;
+package com.multipong.net.send;
 
 import android.util.Log;
 
+import com.multipong.net.Utils;
 import com.multipong.net.messages.Message;
 
 import java.io.IOException;

@@ -59,24 +59,6 @@ public class Utils {
 
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
-        /*
-            final InetAddress address = info.groupOwnerAddress;
-            Timer timer = new Timer();
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
-                    AddressedContent content = new AddressedContent(message, address);
-                    mActivity.addMessageToQueue(content);
-                    Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
-                }
-            };
-            timer.scheduleAtFixedRate(timerTask, 0, 7000);
-            // DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
-            // AddressedContent content = new AddressedContent(message, address);
-            // mActivity.addMessageToQueue(content);
-            Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
-            */
             InetAddress address = info.groupOwnerAddress;
             Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
             // GO does not know other IP: do nothing

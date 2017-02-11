@@ -9,18 +9,14 @@ import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
-import com.multipong.net.Sender.AddressedContent;
+import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.net.messages.AreYouTheHostMessage;
-import com.multipong.net.messages.DiscoverMessage;
 import com.multipong.net.messages.TellIPMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Utils {
 

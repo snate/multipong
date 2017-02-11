@@ -1,16 +1,14 @@
 package com.multipong.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.multipong.model.Actor;
 import com.multipong.net.Receiver;
-import com.multipong.net.Sender;
+import com.multipong.net.send.Sender;
 import com.multipong.net.Utils;
-import com.multipong.net.Sender.AddressedContent;
+import com.multipong.net.send.Sender.AddressedContent;
 
-import java.util.PriorityQueue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 

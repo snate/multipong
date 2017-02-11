@@ -7,6 +7,7 @@ import com.multipong.activity.MultiplayerGameJoinActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.messages.AvailableMessage;
+import com.multipong.net.messages.CancelMessage;
 import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.net.messages.StartingMessage;
@@ -26,6 +27,7 @@ public class Participant implements Actor {
     private MultiplayerGameFormationActivity activity;
     private ArrayList<String> participants;
     private Map<Integer, String> hosts = new HashMap<>();
+    private Integer currentHost;
 
     public Participant(MultiplayerGameFormationActivity activity) {
         this.activity = activity;
@@ -49,7 +51,14 @@ public class Participant implements Actor {
         }
     }
 
-    public void join(Integer hostId) {
+    public synchronized void join(Integer hostId) {
+        if (currentHost != null) {
+            InetAddress oldHost = NameResolutor.INSTANCE.getNodeByHash(currentHost);
+            CancelMessage cancelMessage = new CancelMessage();
+            AddressedContent cancellation = new AddressedContent(cancelMessage, oldHost);
+            activity.addMessageToQueue(cancellation);
+        }
+        currentHost = hostId;
         InetAddress address = NameResolutor.INSTANCE.getNodeByHash(hostId);
         JoinMessage joinMessage = new JoinMessage();
         AddressedContent content = new AddressedContent(joinMessage, address);

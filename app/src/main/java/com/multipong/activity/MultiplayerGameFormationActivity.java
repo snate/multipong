@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.multipong.model.Actor;
+import com.multipong.net.NameResolutor;
 import com.multipong.net.Receiver;
 import com.multipong.net.send.Sender;
 import com.multipong.net.Utils;
 import com.multipong.net.send.Sender.AddressedContent;
+import com.multipong.utility.DeviceIdUtility;
 
+import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -28,6 +31,14 @@ public abstract class MultiplayerGameFormationActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.setActivity(this);
+
+        Integer myID = DeviceIdUtility.getId();
+        if (myID == null) {
+            String uniqueID = UUID.randomUUID().toString();
+            myID = NameResolutor.hashOf(uniqueID);
+            DeviceIdUtility.setId(myID);
+        }
+
         sender = new Sender(messagesQueue);
         new Thread(sender).start();
 

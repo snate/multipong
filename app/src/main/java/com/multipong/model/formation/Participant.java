@@ -10,6 +10,7 @@ import com.multipong.net.messages.AvailableMessage;
 import com.multipong.net.messages.CancelMessage;
 import com.multipong.net.messages.DiscoverMessage;
 import com.multipong.net.messages.JoinMessage;
+import com.multipong.net.messages.KnownHostsMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.net.messages.StartingMessage;
 import com.multipong.net.Sender.AddressedContent;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -28,6 +30,7 @@ public class Participant implements Actor {
     private MultiplayerGameFormationActivity activity;
     private ArrayList<String> participants;
     private Map<Integer, String> hosts = new HashMap<>();
+    private Collection<InetAddress> known_hosts = new ArrayList<>();
     private Integer currentHost;
 
     public Participant(MultiplayerGameFormationActivity activity) {
@@ -37,21 +40,6 @@ public class Participant implements Actor {
             String uniqueID = UUID.randomUUID().toString();
             myID = NameResolutor.hashOf(uniqueID);
             DeviceIdUtility.setId(myID);
-        }
-    }
-
-    @Override
-    public synchronized void receive(String type, JSONObject message, InetAddress sender) {
-        switch (type) {
-            case Host.MessageType.TELL_IP:
-                onReceivingHostIp(sender);
-                break;
-            case Host.MessageType.AVAILABLE:
-                onAvailableMessageReceived(message, sender);
-                break;
-            case Host.MessageType.STARTING:
-                onStartingMessageReceived(message, sender);
-                break;
         }
     }
 
@@ -77,14 +65,33 @@ public class Participant implements Actor {
         activity.addMessageToQueue(cancellation);
     }
 
-    public class MessageType {
-        public static final String ARE_YOU_THE_HOST = "ARE_U_HOST";
-        public static final String DISCOVER = "DISCOVER";
-        public static final String JOIN = "JOIN";
-        public static final String CANCEL = "CANCEL";
+    @Override
+    public synchronized void receive(String type, JSONObject message, InetAddress sender) {
+        switch (type) {
+            case MessageType.ARE_YOU_THE_HOST:
+                tellKnownHostsTo(sender);
+                break;
+            case Host.MessageType.TELL_IP:
+                onReceivingHostIp(sender);
+                break;
+            case Host.MessageType.AVAILABLE:
+                onAvailableMessageReceived(message, sender);
+                break;
+            case Host.MessageType.STARTING:
+                onStartingMessageReceived(message, sender);
+                break;
+        }
+    }
+
+    private void tellKnownHostsTo(InetAddress sender) {
+        KnownHostsMessage message = new KnownHostsMessage();
+        message.addHosts(known_hosts);
+        AddressedContent reply = new AddressedContent(message, sender);
+        activity.addMessageToQueue(reply);
     }
 
     private void onReceivingHostIp(InetAddress sender) {
+        if (!known_hosts.contains(sender)) known_hosts.add(sender);
         DiscoverMessage message = new DiscoverMessage().withIp(sender.getHostAddress());
         AddressedContent content = new AddressedContent(message, sender);
         activity.addMessageToQueue(content);
@@ -106,5 +113,13 @@ public class Participant implements Actor {
         Map<String, Object> msgInfo = msg.decode();
         //TODO -> do something with msgInfo
         //probably start the game
+    }
+
+    public class MessageType {
+        public static final String ARE_YOU_THE_HOST = "ARE_U_HOST";
+        public static final String KNOWN_HOSTS = "KNOWN_HOSTS";
+        public static final String DISCOVER = "DISCOVER";
+        public static final String JOIN = "JOIN";
+        public static final String CANCEL = "CANCEL";
     }
 }

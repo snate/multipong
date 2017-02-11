@@ -19,6 +19,7 @@ import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.net.Sender.AddressedContent;
 import com.multipong.net.messages.StartingMessage;
+import com.multipong.net.messages.TellIPMessage;
 import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.PlayerNameUtility;
 
@@ -72,6 +73,7 @@ public class Host implements Actor {
             case Participant.MessageType.DISCOVER: discover(message, sender); break;
             case Participant.MessageType.JOIN: join(message, sender); break;
             case Participant.MessageType.CANCEL: cancel(message); break;
+            case Participant.MessageType.ARE_YOU_THE_HOST: tell_ip(sender);
         }
     }
 
@@ -126,6 +128,13 @@ public class Host implements Actor {
             AddressedContent content = new Sender.AddressedContent(response, recipient);
             activity.addMessageToQueue(content);
         }
+    }
+
+    private void tell_ip(InetAddress sender) {
+        Log.d("Telling","IP");
+        TellIPMessage message = new TellIPMessage();
+        AddressedContent content = new AddressedContent(message, sender);
+        activity.addMessageToQueue(content);
     }
 
     public class MessageType {

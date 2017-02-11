@@ -46,7 +46,7 @@ public class Sender implements Runnable {
             }
             if (content.address == null || content.message == null) continue;
             Log.d("Sender", "Sending new message");
-            int port = 8888; // TODO: may it change?
+            int port = Utils.PORT; // TODO: may it change?
             String host = content.address.getHostAddress();
             String jsonObjectString = content.message.getMsg().toString();
             Socket socket = new Socket();

@@ -4,15 +4,14 @@ import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.activity.MultiplayerGameJoinActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
-import com.multipong.net.messages.AvailableMessage;
-import com.multipong.net.messages.CancelMessage;
-import com.multipong.net.messages.DiscoverMessage;
-import com.multipong.net.messages.JoinMessage;
-import com.multipong.net.messages.KnownHostsMessage;
+import com.multipong.net.messages.gameformation.AvailableMessage;
+import com.multipong.net.messages.gameformation.CancelMessage;
+import com.multipong.net.messages.gameformation.DiscoverMessage;
+import com.multipong.net.messages.gameformation.JoinMessage;
+import com.multipong.net.messages.gameformation.KnownHostsMessage;
 import com.multipong.net.messages.Message;
-import com.multipong.net.messages.StartingMessage;
+import com.multipong.net.messages.gameformation.StartingMessage;
 import com.multipong.net.send.Sender.AddressedContent;
-import com.multipong.utility.DeviceIdUtility;
 
 import org.json.JSONObject;
 
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class Participant implements Actor {
 

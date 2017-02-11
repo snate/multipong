@@ -1,6 +1,7 @@
-package com.multipong.net.messages;
+package com.multipong.net.messages.gameformation;
 
 import com.multipong.model.formation.Host;
+import com.multipong.net.messages.Message;
 
 import org.json.JSONArray;
 import org.json.JSONException;

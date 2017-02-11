@@ -1,16 +1,9 @@
-package com.multipong.net.messages;
+package com.multipong.net.messages.gameformation;
 
 import com.multipong.model.formation.Participant;
-import com.multipong.utility.DeviceIdUtility;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Map;
+import com.multipong.net.messages.Message;
 
 import org.json.JSONObject;
-
-import java.util.Map;
 
 public class JoinMessage extends Message {
 

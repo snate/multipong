@@ -1,6 +1,7 @@
-package com.multipong.net.messages;
+package com.multipong.net.messages.gameformation;
 
 import com.multipong.model.formation.Participant;
+import com.multipong.net.messages.Message;
 
 public class AreYouTheHostMessage extends Message {
     @Override

@@ -10,8 +10,8 @@ import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.net.send.Sender.AddressedContent;
-import com.multipong.net.messages.AreYouTheHostMessage;
-import com.multipong.net.messages.TellIPMessage;
+import com.multipong.net.messages.gameformation.AreYouTheHostMessage;
+import com.multipong.net.messages.gameformation.TellIPMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;

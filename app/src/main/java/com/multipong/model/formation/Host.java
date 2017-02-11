@@ -6,14 +6,14 @@ import com.multipong.activity.MultiplayerGameHostActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.send.Sender;
-import com.multipong.net.messages.AvailableMessage;
-import com.multipong.net.messages.CancelMessage;
-import com.multipong.net.messages.DiscoverMessage;
-import com.multipong.net.messages.JoinMessage;
+import com.multipong.net.messages.gameformation.AvailableMessage;
+import com.multipong.net.messages.gameformation.CancelMessage;
+import com.multipong.net.messages.gameformation.DiscoverMessage;
+import com.multipong.net.messages.gameformation.JoinMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.net.send.Sender.AddressedContent;
-import com.multipong.net.messages.StartingMessage;
-import com.multipong.net.messages.TellIPMessage;
+import com.multipong.net.messages.gameformation.StartingMessage;
+import com.multipong.net.messages.gameformation.TellIPMessage;
 import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.PlayerNameUtility;
 
@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class Host implements Actor {
 

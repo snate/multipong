@@ -1,7 +1,8 @@
-package com.multipong.net.messages;
+package com.multipong.net.messages.gameformation;
 
 import com.multipong.model.formation.Host;
 import com.multipong.net.NameResolutor;
+import com.multipong.net.messages.Message;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,7 +10,6 @@ import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 public class StartingMessage extends Message {

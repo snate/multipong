@@ -16,6 +16,7 @@ public enum Coordination implements Actor {
     // TODO: Refactor to give proper type to activity
     private MultiplayerGameFormationActivity activity;
     private static final String WIFI_P2P_GROUP_OWNER_ADDRESS = "192.168.49.1";
+    private static final String WIFI_P2P_BROADCAST = "192.168.49.255";
 
     @Override
     public synchronized void receive(String type, JSONObject message, InetAddress sender) {

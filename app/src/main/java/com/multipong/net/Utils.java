@@ -1,8 +1,5 @@
 package com.multipong.net;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pInfo;
@@ -12,16 +9,15 @@ import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
-import com.multipong.net.messages.DiscoverMessage;
-import com.multipong.net.messages.Message;
 import com.multipong.net.Sender.AddressedContent;
+import com.multipong.net.messages.DiscoverMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Utils {
 
@@ -53,16 +49,28 @@ public class Utils {
 
         private MultiplayerGameFormationActivity mActivity;
 
+
         public MyConnectionListener(MultiplayerGameFormationActivity context) {
             mActivity = context;
         }
 
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
-            InetAddress address = info.groupOwnerAddress;
-            DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
+            final InetAddress address = info.groupOwnerAddress;
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
+                    AddressedContent content = new AddressedContent(message, address);
+                    mActivity.addMessageToQueue(content);
+                    Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
+                }
+            };
+            timer.scheduleAtFixedRate(timerTask, 0, 7000);
+            /*DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
             AddressedContent content = new AddressedContent(message, address);
-            mActivity.addMessageToQueue(content);
+            mActivity.addMessageToQueue(content);*/
             Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
         }
     }

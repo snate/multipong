@@ -32,7 +32,7 @@ public class MultiplayerGameParticipantsActivity extends AppCompatActivity {
 
         TextView text = (TextView)findViewById(R.id.host_name_text);
         CharSequence cs = new StringBuffer().append(getString(R.string.list_of_players_of))
-                .append(host).toString();
+                .append(" ").append(host).toString();
         text.setText(cs);
 
         ListView list = (ListView)findViewById(R.id.partecipants_list);

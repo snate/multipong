@@ -57,7 +57,7 @@ public abstract class AbsGameThread implements Runnable {
                     if (delay > 11) delay -= 10;
                     // trust me, I've done the math
                     xFactor = ricochetAngle;
-                    yFactor = -(1 - 0.8 * ricochetAngle);
+                    yFactor = -(1 - (1 - paletteWidth) * ricochetAngle);
                     activity.updateScore(++score);
                 } else
                     lose = true;

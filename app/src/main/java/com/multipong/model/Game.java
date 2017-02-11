@@ -7,13 +7,8 @@ package com.multipong.model;
  */
 public abstract class Game {
     protected AbsGameThread currentGame = null;
-    private volatile int lives = 1;
 
     public abstract void start(String playerName);
-
-    public void setNumberOfLives(int lives) { this.lives = lives; }
-
-    public int getNumberOfLives(){ return lives; }
 
     public void setPaletteWidth(double width) {
         currentGame.setPaletteWidth(width);
@@ -21,5 +16,9 @@ public abstract class Game {
 
     public void providePalettePosition(double position) {
         currentGame.setPalettePosition(position);
+    }
+
+    public void addLife() {
+        currentGame.incrementNumberOfLives();
     }
 }

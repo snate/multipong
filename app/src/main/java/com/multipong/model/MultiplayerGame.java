@@ -18,7 +18,7 @@ public class MultiplayerGame extends Game {
     public void start(String playerName) {
         this.playerName = playerName;
         if (currentGame == null) {
-            currentGame = new MultiplayerGameThread(playerName, activity, getNumberOfLives());
+            currentGame = new MultiplayerGameThread(playerName, activity);
             new Thread(currentGame).start();
         }
 
@@ -35,8 +35,8 @@ public class MultiplayerGame extends Game {
         private volatile boolean myTurn = false;
         private double newX;
 
-        public MultiplayerGameThread(String playerName, GameActivity activity, int lives) {
-            super(playerName, activity, lives);
+        public MultiplayerGameThread(String playerName, GameActivity activity) {
+            super(playerName, activity);
         }
 
         /*

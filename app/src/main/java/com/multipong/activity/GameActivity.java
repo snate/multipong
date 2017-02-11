@@ -103,8 +103,6 @@ public class GameActivity extends AppCompatActivity {
         // TODO: parameterize single game or multiplayer game choice
         if(game == null) {
             game = new SingleGame(this);
-            // TODO set the number of lives
-            game.setNumberOfLives(3);
             game.start(playerName);
             game.setPaletteWidth(PALETTE_WIDTH);
         }

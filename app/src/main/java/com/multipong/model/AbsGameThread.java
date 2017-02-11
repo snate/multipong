@@ -19,7 +19,7 @@ public abstract class AbsGameThread implements Runnable {
     private double yFactor = 1.0; // ball vertical multiplier
 
     private boolean lose = false;
-    private int lives;
+    private int lives = 1;
 
     private volatile double palettePosition = 0.0;
     private volatile double paletteWidth = 0;
@@ -30,8 +30,7 @@ public abstract class AbsGameThread implements Runnable {
     private String playerName;
     private GameActivity activity;
 
-    public AbsGameThread(String playerName, GameActivity activity, int lives) {
-        this.lives = lives;
+    public AbsGameThread(String playerName, GameActivity activity) {
         this.activity = activity;
         this.playerName = playerName;
     }
@@ -45,6 +44,10 @@ public abstract class AbsGameThread implements Runnable {
     public void setY(double y) {this.y = y;}
     public void setXFactor(double xFactor) {this.xFactor = xFactor;}
     public void setYFactor(double yFactor) {this.yFactor = yFactor;}
+
+    public synchronized int getNumberOfLives(){ return lives; }
+    public synchronized void incrementNumberOfLives() { lives = lives + 1; }
+    public synchronized void decrementNumberOfLives() { lives = lives - 1; }
 
     @Override
     public void run() {
@@ -64,14 +67,14 @@ public abstract class AbsGameThread implements Runnable {
                     yFactor = -(1 - (1 - paletteWidth) * ricochetAngle);
                     activity.updateScore(++score);
                 } else {
-                    lives -= 1;
-                    lose = (lives == 0);
+                    decrementNumberOfLives();
+                    lose = (getNumberOfLives() == 0);
                     if (!lose) {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 //TODO use a string or remove the toast
-                                Toast.makeText(activity.getApplication(), "Hai perso una vita!!",
+                                Toast.makeText(activity.getApplication(), "You lost a life :'(",
                                         Toast.LENGTH_SHORT).show();
                             }
                         });

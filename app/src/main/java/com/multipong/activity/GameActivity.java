@@ -63,26 +63,19 @@ public class GameActivity extends AppCompatActivity {
         mEndButton = (Button) findViewById(R.id.end_bt);
 
 
-        mSurfaceView.setOnTouchListener(new View.OnTouchListener() {
+        mLayout.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
-                Log.d("GameActivity 68",""+event.getX());
-                Log.d(""+mSurfaceView.getLeft(),""+mSurfaceView.getRight());
-
                 int max = mSurfaceView.getRight(); // range: 0 to max (0=mSurfaceView.getLeft(), max=mSurfaceView.getRight()
                 double progress = event.getX(); // range:
                 if (progress < 0) progress = 0.0;
                 if (progress > max) progress = max;
-
                 double percentProgress = (progress) / (double) max;
-                Log.d("%prog",""+percentProgress);
                 game.providePalettePosition(percentProgress);
                 mSurfaceView.movePalette(percentProgress);
-
                 return true;
             }
         });
 
-        //mBar.setOnSeekBarChangeListener(new PaletteListener());
         mSurfaceView.setPaletteWidth(PALETTE_WIDTH);
         mScore.setText("0");
         MultipongDatabase database = new MultipongDatabase(this);
@@ -154,22 +147,6 @@ public class GameActivity extends AppCompatActivity {
         });
         // TODO: Add code to end game
     }
-
-    /*
-    public class PaletteListener extends GestureDetector.SimpleOnGestureListener {
-        private GestureDetector detector;
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY){
-            float x1 = e1.getX();
-            float y1 = e1.getY();
-            Log.d(""+x1,""+y1);
-            float x2 = e2.getX();
-            float y2 = e2.getY();
-            Log.d(""+x2,""+y2);
-            return true;
-        }
-    }
-    */
 
     private void showShortToast(String toastText) {
         Context context = getApplicationContext();

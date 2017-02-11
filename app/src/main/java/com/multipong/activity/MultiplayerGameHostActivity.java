@@ -3,7 +3,6 @@ package com.multipong.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,12 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
 
     public void receiveList(Collection<String> players) {
         mAdapter.players = players;
-        mAdapter.notifyDataSetChanged();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void showShortToast(String toastText) {

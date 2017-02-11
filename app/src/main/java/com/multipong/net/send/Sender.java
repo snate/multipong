@@ -20,10 +20,6 @@ public abstract class Sender implements Runnable {
         messages = queue;
     }
 
-    public int getPort() {
-        return Utils.PORT;
-    }
-
     @Override
     public void run() {
         while (!stop) {

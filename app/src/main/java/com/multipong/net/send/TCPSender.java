@@ -2,6 +2,7 @@ package com.multipong.net.send;
 
 import android.util.Log;
 
+import com.multipong.net.Utils;
 import com.multipong.net.messages.Message;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class TCPSender extends Sender {
         Socket socket = new Socket();
         try {
             socket.bind(null);
-            socket.connect(new InetSocketAddress(host, getPort()), SOCKET_TIMEOUT);
+            socket.connect(new InetSocketAddress(host, Utils.PORT), SOCKET_TIMEOUT);
             Log.d("Sender", "Client socket - " + socket.isConnected());
             OutputStream stream = socket.getOutputStream();
             stream.write(jsonObjectString.getBytes(), 0, jsonObjectString.length());

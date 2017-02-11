@@ -33,12 +33,6 @@ public class Participant implements Actor {
 
     public Participant(MultiplayerGameFormationActivity activity) {
         this.activity = activity;
-        Integer myID = DeviceIdUtility.getId();
-        if (myID == null) {
-            String uniqueID = UUID.randomUUID().toString();
-            myID = NameResolutor.hashOf(uniqueID);
-            DeviceIdUtility.setId(myID);
-        }
     }
 
     public synchronized void join(Integer hostId) {

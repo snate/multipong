@@ -37,11 +37,6 @@ public class Host implements Actor {
         this.activity = activity;
         participants = new HashMap<>();
         Integer myID = DeviceIdUtility.getId();
-        if (myID == null) {
-            String uniqueID = UUID.randomUUID().toString();
-            myID = NameResolutor.hashOf(uniqueID);
-            DeviceIdUtility.setId(myID);
-        }
         participants.put(myID, PlayerNameUtility.getPlayerName());
     }
 

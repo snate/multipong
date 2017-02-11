@@ -26,14 +26,8 @@ public class Sender implements Runnable {
         messages = queue;
     }
 
-    public static class AddressedContent {
-        private Message message;
-        private InetAddress address;
-
-        public AddressedContent(Message message, InetAddress address) {
-            this.message = message;
-            this.address = address;
-        }
+    public int getPort() {
+        return Utils.PORT;
     }
 
     @Override
@@ -47,13 +41,12 @@ public class Sender implements Runnable {
             }
             if (content.address == null || content.message == null) continue;
             Log.d("Sender", "Sending new message");
-            int port = Utils.PORT; // TODO: may it change?
             String host = content.address.getHostAddress();
             String jsonObjectString = content.message.getMsg().toString();
             Socket socket = new Socket();
             try {
                 socket.bind(null);
-                socket.connect(new InetSocketAddress(host, port), SOCKET_TIMEOUT);
+                socket.connect(new InetSocketAddress(host, getPort()), SOCKET_TIMEOUT);
                 Log.d("Sender", "Client socket - " + socket.isConnected());
                 OutputStream stream = socket.getOutputStream();
                 stream.write(jsonObjectString.getBytes(), 0, jsonObjectString.length());
@@ -74,5 +67,17 @@ public class Sender implements Runnable {
 
     public void stop() {
         stop = true;
+    }
+
+
+
+    public static class AddressedContent {
+        private Message message;
+        private InetAddress address;
+
+        public AddressedContent(Message message, InetAddress address) {
+            this.message = message;
+            this.address = address;
+        }
     }
 }

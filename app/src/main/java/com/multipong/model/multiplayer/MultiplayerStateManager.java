@@ -26,7 +26,8 @@ public class MultiplayerStateManager implements Actor {
         extractor.getNext(state.activePlayers, state.me);
         // Send ball info to coordinator via net
         // TODO: Add actual ball info to the message
-        Message ballInfoMessage = new BallInfoMessage();
+        BallInfoMessage ballInfoMessage = new BallInfoMessage();
+        ballInfoMessage.addBallInfo(ballInfo);
         Coordination.INSTANCE.sendToCoordinator(ballInfoMessage);
         // TODO: Remove the following stub call
         receiveData(ballInfo);

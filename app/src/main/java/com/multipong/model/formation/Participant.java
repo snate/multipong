@@ -78,6 +78,7 @@ public class Participant implements Actor {
     }
 
     public class MessageType {
+        public static final String ARE_YOU_THE_HOST = "ARE_U_HOST";
         public static final String DISCOVER = "DISCOVER";
         public static final String JOIN = "JOIN";
         public static final String CANCEL = "CANCEL";

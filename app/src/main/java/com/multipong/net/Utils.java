@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.net.Sender.AddressedContent;
+import com.multipong.net.messages.AreYouTheHostMessage;
 import com.multipong.net.messages.DiscoverMessage;
 import com.multipong.net.messages.TellIPMessage;
 
@@ -17,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -78,10 +80,13 @@ public class Utils {
             InetAddress address = info.groupOwnerAddress;
             Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
             // GO does not know other IP: do nothing
-            if (info.isGroupOwner) return;
+            if (info.isGroupOwner) {
+                Log.d("Hello", " world");
+                return;
+            }
             // Participant sends discovery message to host because knows its IP
             if (!mActivity.isHost()) {
-                DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
+                AreYouTheHostMessage message = new AreYouTheHostMessage();
                 AddressedContent content = new AddressedContent(message, address);
                 mActivity.addMessageToQueue(content);
                 return;

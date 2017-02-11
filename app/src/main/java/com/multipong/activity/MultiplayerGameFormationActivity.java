@@ -9,6 +9,7 @@ import com.multipong.net.Receiver;
 import com.multipong.net.send.Sender;
 import com.multipong.net.Utils;
 import com.multipong.net.send.Sender.AddressedContent;
+import com.multipong.net.send.TCPSender;
 import com.multipong.utility.DeviceIdUtility;
 
 import java.util.UUID;
@@ -39,7 +40,7 @@ public abstract class MultiplayerGameFormationActivity extends AppCompatActivity
             DeviceIdUtility.setId(myID);
         }
 
-        sender = new Sender(messagesQueue);
+        sender = new TCPSender(messagesQueue);
         new Thread(sender).start();
 
         receiver = new Receiver(this);

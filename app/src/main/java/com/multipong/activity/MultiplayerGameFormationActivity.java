@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.receive.Receiver;
+import com.multipong.net.receive.TCPReceiver;
 import com.multipong.net.send.Sender;
 import com.multipong.net.Utils;
 import com.multipong.net.send.Sender.AddressedContent;
@@ -43,7 +44,7 @@ public abstract class MultiplayerGameFormationActivity extends AppCompatActivity
         sender = new TCPSender(messagesQueue);
         new Thread(sender).start();
 
-        receiver = new Receiver(this);
+        receiver = new TCPReceiver(this);
         new Thread(receiver).start();
     }
 

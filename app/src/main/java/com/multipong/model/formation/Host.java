@@ -131,5 +131,6 @@ public class Host implements Actor {
     public class MessageType {
         public static final String AVAILABLE = "AVAILABLE";
         public static final String STARTING = "STARTING";
+        public static final String TELL_IP = "TELL_IP";
     }
 }

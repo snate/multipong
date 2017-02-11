@@ -8,6 +8,7 @@ import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.messages.AvailableMessage;
 import com.multipong.net.messages.CancelMessage;
+import com.multipong.net.messages.DiscoverMessage;
 import com.multipong.net.messages.JoinMessage;
 import com.multipong.net.messages.Message;
 import com.multipong.net.messages.StartingMessage;
@@ -42,6 +43,9 @@ public class Participant implements Actor {
     @Override
     public synchronized void receive(String type, JSONObject message, InetAddress sender) {
         switch (type) {
+            case Host.MessageType.TELL_IP:
+                onReceivingHostIp(sender);
+                break;
             case Host.MessageType.AVAILABLE:
                 onAvailableMessageReceived(message, sender);
                 break;
@@ -77,6 +81,12 @@ public class Participant implements Actor {
         public static final String DISCOVER = "DISCOVER";
         public static final String JOIN = "JOIN";
         public static final String CANCEL = "CANCEL";
+    }
+
+    private void onReceivingHostIp(InetAddress sender) {
+        DiscoverMessage message = new DiscoverMessage().withIp(sender.getHostAddress());
+        AddressedContent content = new AddressedContent(message, sender);
+        activity.addMessageToQueue(content);
     }
 
     private void onAvailableMessageReceived(JSONObject message, InetAddress sender) {

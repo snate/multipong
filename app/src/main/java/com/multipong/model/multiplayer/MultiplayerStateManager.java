@@ -1,6 +1,6 @@
 package com.multipong.model.multiplayer;
 
-import com.multipong.model.MultiplayerGame;
+import com.multipong.model.game.MultiplayerGame;
 
 import java.util.ArrayList;
 

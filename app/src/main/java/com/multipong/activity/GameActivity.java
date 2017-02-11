@@ -1,8 +1,11 @@
 package com.multipong.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -11,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.multipong.R;
 import com.multipong.model.Game;
@@ -53,12 +57,25 @@ public class GameActivity extends AppCompatActivity {
 
         mSurfaceView = (PongView) findViewById(R.id.game_surface);
         mLayout = (RelativeLayout) findViewById(R.id.activity_game);
-        mBar = (SeekBar) findViewById(R.id.paletteScroll);
+        //mBar = (SeekBar) findViewById(R.id.paletteScroll);
         mScore = (TextView) findViewById(R.id.score_tv);
         mEndTextView = (TextView) findViewById(R.id.end_tv);
         mEndButton = (Button) findViewById(R.id.end_bt);
 
-        mBar.setOnSeekBarChangeListener(new PaletteListener());
+
+        mLayout.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                int max = mSurfaceView.getRight(); // range: 0 to max (0=mSurfaceView.getLeft(), max=mSurfaceView.getRight()
+                double progress = event.getX(); // range:
+                if (progress < 0) progress = 0.0;
+                if (progress > max) progress = max;
+                double percentProgress = (progress) / (double) max;
+                game.providePalettePosition(percentProgress);
+                mSurfaceView.movePalette(percentProgress);
+                return true;
+            }
+        });
+
         mSurfaceView.setPaletteWidth(PALETTE_WIDTH);
         mScore.setText("0");
         MultipongDatabase database = new MultipongDatabase(this);
@@ -129,23 +146,6 @@ public class GameActivity extends AppCompatActivity {
             }
         });
         // TODO: Add code to end game
-    }
-
-    private class PaletteListener implements SeekBar.OnSeekBarChangeListener {
-
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            int max = seekBar.getMax();
-            double percentProgress = (double) (seekBar.getProgress() - 1) / (double) max;
-            game.providePalettePosition(percentProgress);
-            mSurfaceView.movePalette(percentProgress);
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) { }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) { }
     }
 
     private void showShortToast(String toastText) {

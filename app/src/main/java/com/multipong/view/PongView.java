@@ -8,17 +8,21 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.multipong.R;
+import com.multipong.activity.GameActivity;
+import com.multipong.activity.MainActivity;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Paint paint = new Paint();
-    private int borderSize = 5;
+    private Paint borderColor = new Paint();
+    private int borderSize = 40;
 
     private double paletteWidthPerc = 200; // was: 200
     private int paletteHeight = 40;
@@ -60,7 +64,10 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void setPaletteH(double relativePosition) {
         int pWidth = getPaletteWidth();
-        paletteH = (int) (left() + (right() - pWidth - left()) * relativePosition) + borderSize;
+        int maxLeft = getLeft() + borderSize + pWidth/2;
+        int maxRight = getRight() - borderSize - pWidth/2;
+        paletteH = (int) (maxLeft + (maxRight-maxLeft)*relativePosition);
+        //paletteH = (int) (left() + (right() - pWidth - left()) * relativePosition) + borderSize;
     }
 
     public void moveBall(double relX, double relY) {
@@ -70,17 +77,28 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void setBallX(double relX) {
-        ballX.set((int) (left() + (right() - ballSize - left()) * relX) + borderSize);
+        if (relX < 0.0) relX = 0.0;
+        if (relX > 1.0) relX = 1.0;
+        int maxLeft = getLeft()+borderSize;
+        int maxRight = getRight() - ballSize - borderSize;
+        ballX.set( (int) (maxLeft + (maxRight-maxLeft)*relX) );
+
+        //ballX.set((int) (left() + (right() - ballSize - left()) * relX) + borderSize);
+        //Log.d(""+relX,""+((int) (left() + (right() - ballSize - left()) * relX) + borderSize));
     }
 
     private void setBallY(double relY) {
-        if (relY <= 0.0) relY = 0.0;
-        ballY.set(getTop() + (int) ((getTop() + scrollTop()) * relY));
+        // Da rivedere, mi aspetto che relY e relX siano compresi fra 0 e 1
+        if (relY < 0.0) relY = 0.0;
+        if (relY > 1.0) relY = 1.0;
+        int maxTop = getTop() + borderSize;
+        int maxBottom = getBottom() - ballSize - borderSize - 2*paletteHeight;
+        ballY.set( (int) (maxTop + (maxBottom-maxTop)*relY) );
     }
 
     public void removeBall() {
-        ballX.getAndSet(-100);
-        ballY.getAndSet(-100);
+        //ballX.getAndSet(-100);
+        //ballY.getAndSet(-100);
         doDraw();
     }
 
@@ -108,20 +126,26 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void drawFrame(Canvas canvas) {
-        paint.setColor(Color.GRAY);
-        canvas.drawRect(left(), scrollTop(), right(), scrollBottom(), paint);
-        canvas.drawRect(left(), getTop(), left() + borderSize, scrollBottom(), paint);
-        canvas.drawRect(right() - borderSize, getTop(), right(), scrollBottom(), paint);
-        canvas.drawRect(left(), getTop(), right(), getTop() + borderSize, paint);
+        paint.setColor(Color.WHITE);
+        borderColor.setColor(Color.parseColor("#446688")); // Hardcoded
+        canvas.drawRect(getLeft(), getTop(), getRight(), getBottom(), borderColor);
+        canvas.drawRect(getLeft()+borderSize,
+                        getTop()+borderSize,
+                        getRight()-borderSize,
+                        getBottom()-borderSize, //R.dimen.pongview_space_at_bottom
+                        paint);
     }
 
     private void drawPalette(Canvas canvas) {
         paint.setColor(Color.BLACK);
-        int startH = paletteH;
+        int pWidth = getPaletteWidth();
+        int startH = paletteH - pWidth/2;
+        /*
         if (startH < left()) startH = left() + borderSize;
         if (startH > right() - getPaletteWidth()) startH = right() - getPaletteWidth();
-        int endH   = startH + getPaletteWidth();
-        int startV = scrollTop() - paletteHeight - 20;
+        */
+        int endH   = startH + pWidth;
+        int startV = getBottom() - borderSize - 2*paletteHeight;
         int endV   = startV + paletteHeight;
         canvas.drawRect(new Rect(startH, startV, endH, endV), paint);
     }
@@ -146,6 +170,6 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     private int left()         { return getLeft(); }
     private int right()        { return getWidth(); }
-    private int scrollTop ()   { return getTop()+(getBottom()-getTop())*4/5; }
+    private int scrollTop ()   { return getTop()+(getBottom()-getTop())/*4/5*/; }
     private int scrollBottom() { return getBottom(); }
 }

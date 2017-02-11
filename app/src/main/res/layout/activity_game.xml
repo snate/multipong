@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_game"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -11,67 +11,75 @@
     android:background="#FFFFFF"
     tools:context="com.multipong.activity.GameActivity">
 
-    <com.multipong.view.PongView
-        android:id="@+id/game_surface"
+
+    <RelativeLayout
+        android:id="@+id/game_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/pongview_height"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
-    <SeekBar
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:id="@+id/paletteScroll"
-        android:max="100"
-        android:layout_width="250sp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="35dp"
-        android:progress="0" />
+        <com.multipong.view.PongView
+            android:id="@+id/game_surface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true" />
 
-    <TextView
-        android:text="debug_tv"
-        android:layout_below="@id/game_surface"
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/text_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pongview_space_at_bottom"
+        android:layout_below="@id/game_wrapper"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:id="@+id/debug_tv"
+            android:text="debug_text"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="@dimen/text_distance_from_pongview"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/score_tv"
+            android:text="Score Text"
+            android:textColor="@color/black_overlay"
+            android:layout_marginTop="@dimen/text_distance_from_pongview"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:id="@+id/debug_tv" />
+        android:layout_centerVertical="true">
+        <TextView
+            android:id="@+id/end_tv"
+            android:text=""
+            android:visibility="invisible"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+        <Button
+            android:id="@+id/end_bt"
+            android:text="Go back"
+            android:clickable="false"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/end_tv"
+            android:layout_marginTop="31dp" />
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/score_tv"
-        android:text="TextView"
-        android:textColor="@color/black_overlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/debug_tv"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp" />
-
-    <TextView
-        android:id="@+id/end_tv"
-        android:text=""
-        android:visibility="invisible"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/score_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="129dp" />
-
-    <Button
-        android:id="@+id/end_bt"
-        android:text="Go back"
-        android:clickable="false"
-        android:visibility="invisible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/end_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp" />
 
 </RelativeLayout>

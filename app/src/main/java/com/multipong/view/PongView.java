@@ -22,15 +22,15 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Paint paint = new Paint();
     private Paint borderColor = new Paint();
-    private int borderSize = 40;
+    private int borderSize = getContext().getResources().getInteger(R.integer.border_size);
 
-    private double paletteWidthPerc = 200; // was: 200
-    private int paletteHeight = 40;
+    private double paletteWidthPerc = getContext().getResources().getInteger(R.integer.palette_width); // in %
+    private int paletteHeight = getContext().getResources().getInteger(R.integer.palette_height);
     private int paletteH = 0;
 
     private AtomicInteger ballX = new AtomicInteger(50);
     private AtomicInteger ballY = new AtomicInteger(50);
-    private int ballSize = 50;
+    private int ballSize = getContext().getResources().getInteger(R.integer.ball_size);
 
     private Object canvasLock = new Object();
     private Object ball = new Object();

@@ -66,16 +66,28 @@ public class GameActivity extends AppCompatActivity {
         mEndTextView = (TextView) findViewById(R.id.end_tv);
         mEndButton = (Button) findViewById(R.id.end_bt);
 
-
         mLayout.setOnTouchListener(new View.OnTouchListener() {
+            int max, touchLimLeft,touchLimRight;
+            double progress, relProgress,percentProgress;
+            int offset = getResources().getInteger(R.integer.touch_offset);
+            double touchOffset = offset*0.01;
             public boolean onTouch(View v, MotionEvent event) {
-                int max = mSurfaceView.getRight(); // range: 0 to max (0=mSurfaceView.getLeft(), max=mSurfaceView.getRight()
-                double progress = event.getX(); // range:
-                if (progress < 0) progress = 0.0;
-                if (progress > max) progress = max;
-                double percentProgress = (progress) / (double) max;
+                max = mLayout.getRight(); // range: 0 to max (0=mSurfaceView.getLeft(), max=mSurfaceView.getRight()
+                touchLimLeft = (int) (max*touchOffset);
+                touchLimRight = max - touchLimLeft;
+                progress = event.getX();
+                if (progress < touchLimLeft) progress = touchLimLeft;
+                if (progress > touchLimRight) progress = touchLimRight;
+                relProgress = progress - touchLimLeft;
+                percentProgress = (relProgress) / (touchLimRight-touchLimLeft);
                 game.providePalettePosition(percentProgress);
                 mSurfaceView.movePalette(percentProgress);
+                Log.d("offsetR________",""+offset);
+                Log.d("offsetD________",""+touchOffset);
+                Log.d("range__________",""+touchLimLeft+"-"+touchLimRight);
+                Log.d("getX()_________",""+progress);
+                Log.d("relProgress____",""+relProgress);
+                Log.d("percentProgress",""+percentProgress);
                 return true;
             }
         });

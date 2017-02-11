@@ -1,10 +1,17 @@
 package com.multipong.model.multiplayer;
 
+import com.multipong.model.Actor;
+import com.multipong.model.Coordination;
 import com.multipong.model.game.MultiplayerGame;
+import com.multipong.net.messages.Message;
+import com.multipong.net.messages.game.BallInfoMessage;
 
+import org.json.JSONObject;
+
+import java.net.InetAddress;
 import java.util.ArrayList;
 
-public class MultiplayerStateManager {
+public class MultiplayerStateManager implements Actor {
 
     private MultiplayerGame game;
     private State state;
@@ -17,19 +24,21 @@ public class MultiplayerStateManager {
     public void sendBallToNext(BallInfo ballInfo){
         PlayerExtractor extractor = new ConsecutivePlayerExtractor();
         extractor.getNext(state.activePlayers, state.me);
-        // TODO: Send ball info to coordinator via net
+        // Send ball info to coordinator via net
+        // TODO: Add actual ball info to the message
+        Message ballInfoMessage = new BallInfoMessage();
+        Coordination.INSTANCE.sendToCoordinator(ballInfoMessage);
         // TODO: Remove the following stub call
         receiveData(ballInfo);
     }
 
-    public void receiveData(BallInfo info) {
-        game.newTurn(info);
+    @Override
+    public void receive(String type, JSONObject message, InetAddress sender) {
+
     }
 
-    public static BallInfo createBallInfo(double speedX, double speedY, double position) {
-        return new BallInfo().withBallSpeedX(speedX)
-                             .withBallSpeedY(speedY)
-                             .withPosition(position);
+    public void receiveData(BallInfo info) {
+        game.newTurn(info);
     }
 
     private class State {
@@ -106,5 +115,15 @@ public class MultiplayerStateManager {
             this.position = position;
             return this;
         }
+    }
+
+    public static BallInfo createBallInfo(double speedX, double speedY, double position) {
+        return new BallInfo().withBallSpeedX(speedX)
+                .withBallSpeedY(speedY)
+                .withPosition(position);
+    }
+
+    public class MessageType {
+        public static final String BALL_INFO = "BALL_INFO";
     }
 }

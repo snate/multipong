@@ -61,8 +61,8 @@ public class Participant implements Actor {
         currentHost = hostId;
         InetAddress address = NameResolutor.INSTANCE.getNodeByHash(hostId);
         JoinMessage joinMessage = new JoinMessage();
-        AddressedContent content = new AddressedContent(joinMessage, address);
-        activity.addMessageToQueue(content);
+        AddressedContent joinRequest = new AddressedContent(joinMessage, address);
+        activity.addMessageToQueue(joinRequest);
     }
 
     public class MessageType {

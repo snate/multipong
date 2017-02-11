@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -19,6 +20,10 @@ import com.multipong.activity.MainActivity;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PongView extends SurfaceView implements SurfaceHolder.Callback {
+
+    private int playerColor = ContextCompat.getColor(getContext(), R.color.player_color);
+    private int backgroundColor = ContextCompat.getColor(getContext(), R.color.background_color);
+    private int ballColor = ContextCompat.getColor(getContext(), R.color.ball_color);
 
     private Paint paint = new Paint();
     private Paint borderColor = new Paint();
@@ -126,8 +131,8 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void drawFrame(Canvas canvas) {
-        paint.setColor(Color.WHITE);
-        borderColor.setColor(Color.parseColor("#446688")); // Hardcoded
+        paint.setColor(backgroundColor);
+        borderColor.setColor(playerColor);
         canvas.drawRect(getLeft(), getTop(), getRight(), getBottom(), borderColor);
         canvas.drawRect(getLeft()+borderSize,
                         getTop()+borderSize,
@@ -137,13 +142,9 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void drawPalette(Canvas canvas) {
-        paint.setColor(Color.BLACK);
+        paint.setColor(playerColor);
         int pWidth = getPaletteWidth();
         int startH = paletteH - pWidth/2;
-        /*
-        if (startH < left()) startH = left() + borderSize;
-        if (startH > right() - getPaletteWidth()) startH = right() - getPaletteWidth();
-        */
         int endH   = startH + pWidth;
         int startV = getBottom() - borderSize - 2*paletteHeight;
         int endV   = startV + paletteHeight;
@@ -152,7 +153,7 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void drawBall(Canvas canvas) {
         if (ballX == null || ballY == null) return;
-        paint.setColor(Color.BLACK);
+        paint.setColor(ballColor);
         canvas.drawCircle(ballX.get()+ballSize/2, ballY.get()+ballSize/2, ballSize/2, paint);
     }
 

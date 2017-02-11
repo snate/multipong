@@ -1,8 +1,9 @@
-package com.multipong.net;
+package com.multipong.net.receive;
 
 import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
+import com.multipong.net.Utils;
 import com.multipong.net.messages.Message;
 
 import org.json.JSONException;

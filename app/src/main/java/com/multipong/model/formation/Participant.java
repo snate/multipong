@@ -1,7 +1,5 @@
 package com.multipong.model.formation;
 
-import android.util.Log;
-
 import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.activity.MultiplayerGameJoinActivity;
 import com.multipong.model.Actor;
@@ -71,6 +69,9 @@ public class Participant implements Actor {
             case MessageType.ARE_YOU_THE_HOST:
                 tellKnownHostsTo(sender);
                 break;
+            case MessageType.KNOWN_HOSTS:
+                pingHosts(message);
+                break;
             case Host.MessageType.TELL_IP:
                 onReceivingHostIp(sender);
                 break;
@@ -90,6 +91,17 @@ public class Participant implements Actor {
         activity.addMessageToQueue(reply);
     }
 
+    private void pingHosts(JSONObject json) {
+        KnownHostsMessage knownHostsMessage = KnownHostsMessage.createMessageFromJSON(json);
+        Map<String, Object> fields= knownHostsMessage.decode();
+        Collection<InetAddress> addresses = (Collection<InetAddress>) fields.get(KnownHostsMessage.KNOWN_HOSTS_FIELD);
+        for (InetAddress address : addresses) {
+            DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
+            AddressedContent content = new AddressedContent(message, address);
+            activity.addMessageToQueue(content);
+        }
+    }
+
     private void onReceivingHostIp(InetAddress sender) {
         if (!known_hosts.contains(sender)) known_hosts.add(sender);
         DiscoverMessage message = new DiscoverMessage().withIp(sender.getHostAddress());
@@ -98,6 +110,7 @@ public class Participant implements Actor {
     }
 
     private void onAvailableMessageReceived(JSONObject message, InetAddress sender) {
+        if (!known_hosts.contains(sender)) known_hosts.add(sender);
         AvailableMessage msg = AvailableMessage.createMessageFromJSON(message);
         Map<String, Object> msgInfo = msg.decode();
         participants = (ArrayList<String>) msgInfo.get(AvailableMessage.PARTICIPANTS_FIELD);

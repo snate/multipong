@@ -10,6 +10,9 @@ import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class WifiP2pListener extends BroadcastReceiver {
 
     private WifiP2pManager mManager;
@@ -23,17 +26,25 @@ public class WifiP2pListener extends BroadcastReceiver {
         mChannel = channel;
         mListener = new PeerExplorer(activity).withManager(manager).withChannel(channel);
         mActivity = activity;
-        mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
-                mManager.requestPeers(mChannel, mListener);
-            }
 
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
             @Override
-            public void onFailure(int reason) {
+            public void run() {
+                mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
+                    @Override
+                    public void onSuccess() {
+                        mManager.requestPeers(mChannel, mListener);
+                    }
 
+                    @Override
+                    public void onFailure(int reason) {
+
+                    }
+                });
             }
-        });
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, 10000);
     }
 
     @Override

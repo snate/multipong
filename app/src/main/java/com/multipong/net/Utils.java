@@ -11,6 +11,7 @@ import android.util.Log;
 import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.net.Sender.AddressedContent;
 import com.multipong.net.messages.DiscoverMessage;
+import com.multipong.net.messages.TellIPMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,6 +57,7 @@ public class Utils {
 
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
+        /*
             final InetAddress address = info.groupOwnerAddress;
             Timer timer = new Timer();
             TimerTask timerTask = new TimerTask() {
@@ -68,10 +70,26 @@ public class Utils {
                 }
             };
             timer.scheduleAtFixedRate(timerTask, 0, 7000);
-            /*DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
-            AddressedContent content = new AddressedContent(message, address);
-            mActivity.addMessageToQueue(content);*/
+            // DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
+            // AddressedContent content = new AddressedContent(message, address);
+            // mActivity.addMessageToQueue(content);
             Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
+            */
+            InetAddress address = info.groupOwnerAddress;
+            Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
+            // GO does not know other IP: do nothing
+            if (info.isGroupOwner) return;
+            // Participant sends discovery message to host because knows its IP
+            if (!mActivity.isHost()) {
+                DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
+                AddressedContent content = new AddressedContent(message, address);
+                mActivity.addMessageToQueue(content);
+                return;
+            }
+            // Otw, Host has to tell its IP to participant
+            TellIPMessage message = new TellIPMessage();
+            AddressedContent content = new AddressedContent(message, address);
+            mActivity.addMessageToQueue(content);
         }
     }
 

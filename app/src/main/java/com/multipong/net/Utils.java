@@ -21,6 +21,9 @@ import java.net.InetAddress;
 public class Utils {
 
     public static final int PORT = 8888;
+    public static final int UDP_PORT = 9054;
+    public static final String UDP_ACK = "ACK";
+    public static final int MTU = 1500;
 
     private static MultiplayerGameFormationActivity activity;
 

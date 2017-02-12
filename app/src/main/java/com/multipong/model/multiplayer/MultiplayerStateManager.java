@@ -28,11 +28,11 @@ public class MultiplayerStateManager implements Actor {
         PlayerExtractor extractor = new ConsecutivePlayerExtractor();
         extractor.getNext(state.activePlayers, state.me);
         // Send ball info to coordinator via net
-        BallInfoMessage ballInfoMessage = new BallInfoMessage();
-        ballInfoMessage.addBallInfo(ballInfo);
-        InetAddress address = null;
+        BallInfoMessage ballInfoMessage = new BallInfoMessage()
+                                             .addBallInfo(ballInfo)
+                                             .forCoordinator(true);
         try {
-            address = InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
+            InetAddress address = InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
             AddressedContent content = new AddressedContent(ballInfoMessage, address);
             activity.addMessageToQueue(content);
         } catch (UnknownHostException e) {

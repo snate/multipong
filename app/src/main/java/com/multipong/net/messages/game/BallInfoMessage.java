@@ -13,13 +13,14 @@ public class BallInfoMessage extends Message {
     public static final String SPEED_Y_FIELD  = "sY";
     public static final String POSITION_FIELD = "pos";
     public static final String STILL_IN_GAME_FIELD = "sIG";
+    public static final String TO_COORDINATOR_FIELD = "tCoo";
 
     @Override
     protected String getMessageType() {
         return MultiplayerStateManager.MessageType.BALL_INFO;
     }
 
-    public void addBallInfo(BallInfo ballInfo) {
+    public BallInfoMessage addBallInfo(BallInfo ballInfo) {
         double speedX   = ballInfo.getBallSpeedX();
         double speedY   = ballInfo.getBallSpeedY();
         double position = ballInfo.getPosition();
@@ -32,6 +33,16 @@ public class BallInfoMessage extends Message {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return this;
+    }
+
+    public BallInfoMessage forCoordinator(boolean forCoordinator) {
+        try {
+            object.put(TO_COORDINATOR_FIELD, forCoordinator);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return this;
     }
 
 }

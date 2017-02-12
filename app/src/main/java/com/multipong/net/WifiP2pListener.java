@@ -20,7 +20,7 @@ public class WifiP2pListener extends BroadcastReceiver {
     private Channel mChannel;
     private PeerListListener mListener;
     private MultiplayerGameFormationActivity mActivity;
-    private static Timer timer;
+    private static Timer timer = new Timer();
 
     public WifiP2pListener(WifiP2pManager manager, Channel channel,
                            MultiplayerGameFormationActivity activity) {
@@ -33,7 +33,6 @@ public class WifiP2pListener extends BroadcastReceiver {
             if (timer != null) {
                 timer.cancel();
             }
-            timer = new Timer();
         }
         TimerTask timerTask = new TimerTask() {
             @Override

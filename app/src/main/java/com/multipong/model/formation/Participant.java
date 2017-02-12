@@ -160,6 +160,7 @@ public class Participant implements Actor {
         Map<String, Object> object = joinMessage.decode();
         Integer newId = (Integer) object.get(JoinMessage.ID_FIELD);
         String name = (String) object.get(Message.NAME_FIELD);
+        NameResolutor.INSTANCE.addNode(newId, sender);
         AvailableMessage response = new AvailableMessage();
         participants.put(newId, name);
         response.addParticipants(participants);

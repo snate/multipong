@@ -54,7 +54,7 @@ public class MultiplayerGame extends Game {
         private double newX;
         private double newY = -100; // big enough to make it wait
 
-        private Object forBallToComeBack = new Object();
+        private final Object forBallToComeBack = new Object();
 
         public MultiplayerGameThread(String playerName, GameActivity activity) {
             super(playerName, activity);
@@ -63,13 +63,7 @@ public class MultiplayerGame extends Game {
         @Override
         public void ballOnTopOfTheField() {
             activity.makeBallDisappear();
-            synchronized (forBallToComeBack) {
-                try {
-                    forBallToComeBack.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            waitForBallToComeBack();
         }
 
         // TODO: Before starting the game, be careful to set newY to 0.0 in the starting node
@@ -77,13 +71,7 @@ public class MultiplayerGame extends Game {
         @Override
         public void initialBallPosition() {
             if(started) return;
-            synchronized(forBallToComeBack) {
-                try {
-                    forBallToComeBack.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            waitForBallToComeBack();
             setX(newX);
             setY(newY);
         }
@@ -130,6 +118,16 @@ public class MultiplayerGame extends Game {
             BallInfo info = MultiplayerStateManager.createBallInfo(newSpeedX, newSpeedY, newPos);
             info = info.tellIfStillInGame(stillAlive);
             msm.sendBallToNext(info);
+        }
+
+        private void waitForBallToComeBack() {
+            synchronized(forBallToComeBack) {
+                try {
+                    forBallToComeBack.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

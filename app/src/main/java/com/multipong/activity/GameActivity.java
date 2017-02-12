@@ -90,12 +90,6 @@ public class GameActivity extends NetworkingActivity {
                 percentProgress = (relProgress) / (touchLimRight-touchLimLeft);
                 game.providePalettePosition(percentProgress);
                 mSurfaceView.movePalette(percentProgress);
-                Log.d("offsetR________",""+offset);
-                Log.d("offsetD________",""+touchOffset);
-                Log.d("range__________",""+touchLimLeft+"-"+touchLimRight);
-                Log.d("getX()_________",""+progress);
-                Log.d("relProgress____",""+relProgress);
-                Log.d("percentProgress",""+percentProgress);
                 return true;
             }
         });

@@ -9,7 +9,6 @@ import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
-import com.multipong.activity.NetworkingActivity;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.net.messages.gameformation.AreYouTheHostMessage;
 import com.multipong.net.messages.gameformation.TellIPMessage;
@@ -44,19 +43,19 @@ public class Utils {
             public void onSuccess() {
                 Log.d("Utils", "Connected to " + device.deviceName + " that has address "
                         + device.deviceAddress);
-                manager.requestConnectionInfo(channel, new MyConnectionListener(gameFormationActivity));
+                manager.requestConnectionInfo(channel, new FormationListener(gameFormationActivity));
             }
             @Override
             public void onFailure(int reason) { }
         });
     }
 
-    private static class MyConnectionListener implements ConnectionInfoListener {
+    private static class FormationListener implements ConnectionInfoListener {
 
         private MultiplayerGameFormationActivity mActivity;
 
 
-        public MyConnectionListener(MultiplayerGameFormationActivity context) {
+        public FormationListener(MultiplayerGameFormationActivity context) {
             mActivity = context;
         }
 

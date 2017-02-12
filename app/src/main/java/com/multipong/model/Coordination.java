@@ -37,7 +37,7 @@ public class Coordination implements Actor {
                 AddressedContent content = new AddressedContent(message, address);
                 // Avoid sending ball info to local MSM
                 // && Avoid sending ball info to sender too (not necessary)
-                if (!id.equals(DeviceIdUtility.getId()) && !(address.equals(sender))
+                if (!id.equals(DeviceIdUtility.getId()) && !(address.equals(sender)))
                     activity.addMessageToQueue(content);
             }
             // Forward message to local MSM

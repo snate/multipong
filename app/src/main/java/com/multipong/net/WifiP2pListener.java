@@ -30,10 +30,9 @@ public class WifiP2pListener extends BroadcastReceiver {
         mActivity = activity;
 
         synchronized (timer) {
-            if (timer != null) {
-                timer.cancel();
-            }
+            timer.cancel();
         }
+        timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {

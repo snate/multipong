@@ -17,6 +17,7 @@ public class BallInfoMessage extends Message {
     public static final String POSITION_FIELD = "pos";
     public static final String STILL_IN_GAME_FIELD = "sIG";
     public static final String TO_COORDINATOR_FIELD = "tCoo";
+    public static final String NEXT_FIELD = "nP";
 
     @Override
     protected String getMessageType() {
@@ -32,6 +33,7 @@ public class BallInfoMessage extends Message {
             result.put(POSITION_FIELD, object.getDouble(POSITION_FIELD));
             result.put(STILL_IN_GAME_FIELD, object.getBoolean(STILL_IN_GAME_FIELD));
             result.put(TO_COORDINATOR_FIELD, object.getBoolean(TO_COORDINATOR_FIELD));
+            result.put(NEXT_FIELD, object.getInt(NEXT_FIELD));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -43,11 +45,13 @@ public class BallInfoMessage extends Message {
         double speedY   = ballInfo.getBallSpeedY();
         double position = ballInfo.getPosition();
         boolean stillInGame = ballInfo.getStillInGame();
+        int nextPlayer = ballInfo.getNextPlayer();
         try {
             object.put(SPEED_X_FIELD, speedX);
             object.put(SPEED_Y_FIELD, speedY);
             object.put(POSITION_FIELD, position);
             object.put(STILL_IN_GAME_FIELD, stillInGame);
+            object.put(NEXT_FIELD, nextPlayer);
         } catch (JSONException e) {
             e.printStackTrace();
         }

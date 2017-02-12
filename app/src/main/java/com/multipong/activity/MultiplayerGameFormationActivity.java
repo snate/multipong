@@ -14,6 +14,8 @@ import com.multipong.net.WifiP2pListener;
  */
 public abstract class MultiplayerGameFormationActivity extends NetworkingActivity {
 
+    private WifiP2pListener listener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,12 +23,13 @@ public abstract class MultiplayerGameFormationActivity extends NetworkingActivit
 
         WifiP2pManager manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         WifiP2pManager.Channel channel = manager.initialize(this, getMainLooper(), null);
-        new WifiP2pListener(manager, channel, this);
+        listener = new WifiP2pListener(manager, channel, this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        listener.cancelDiscovery();
     }
 
     public abstract boolean isHost();

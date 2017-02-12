@@ -31,7 +31,7 @@ import com.multipong.persistence.save.StatsSaver;
 import com.multipong.utility.PlayerNameUtility;
 import com.multipong.view.PongView;
 
-public class GameActivity extends AppCompatActivity implements ActivityWithActor {
+public class GameActivity extends NetworkingActivity {
 
     private PongView mSurfaceView;
     private SeekBar mBar;

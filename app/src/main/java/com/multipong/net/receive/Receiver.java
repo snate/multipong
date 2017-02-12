@@ -3,6 +3,7 @@ package com.multipong.net.receive;
 import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
+import com.multipong.activity.NetworkingActivity;
 import com.multipong.net.Utils;
 import com.multipong.net.messages.Message;
 
@@ -15,10 +16,10 @@ import java.util.concurrent.Executors;
 
 public abstract class Receiver implements Runnable {
 
-    private MultiplayerGameFormationActivity activity;
+    private NetworkingActivity activity;
     private ExecutorService executor;
 
-    public Receiver(MultiplayerGameFormationActivity activity) {
+    public Receiver(NetworkingActivity activity) {
         this.activity = activity;
     }
 

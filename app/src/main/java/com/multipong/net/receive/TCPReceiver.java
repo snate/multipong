@@ -3,6 +3,7 @@ package com.multipong.net.receive;
 import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
+import com.multipong.activity.NetworkingActivity;
 import com.multipong.net.Utils;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class TCPReceiver extends Receiver {
 
     private ServerSocket serverSocket;
 
-    public TCPReceiver(MultiplayerGameFormationActivity activity) {
+    public TCPReceiver(NetworkingActivity activity) {
         super(activity);
     }
 

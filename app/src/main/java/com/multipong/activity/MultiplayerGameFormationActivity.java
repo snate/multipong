@@ -1,83 +1,26 @@
 package com.multipong.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.multipong.model.Actor;
-import com.multipong.net.NameResolutor;
-import com.multipong.net.receive.Receiver;
-import com.multipong.net.receive.TCPReceiver;
-import com.multipong.net.send.Sender;
 import com.multipong.net.Utils;
-import com.multipong.net.send.Sender.AddressedContent;
-import com.multipong.net.send.TCPSender;
-import com.multipong.utility.DeviceIdUtility;
-
-import java.util.UUID;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 /**
  * @author Marco Zanella
  * @version 0.01
  * @since 0.01
  */
-public abstract class MultiplayerGameFormationActivity extends AppCompatActivity
-    implements ActivityWithActor {
-
-    private Receiver receiver;
-    private Sender sender;
-    private BlockingQueue<AddressedContent> messagesQueue = new ArrayBlockingQueue<>(10);
-    private Actor actor;
+public abstract class MultiplayerGameFormationActivity extends NetworkingActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.setActivity(this);
-
-        Integer myID = DeviceIdUtility.getId();
-        if (myID == null) {
-            String uniqueID = UUID.randomUUID().toString();
-            myID = NameResolutor.hashOf(uniqueID);
-            DeviceIdUtility.setId(myID);
-        }
-
-        sender = new TCPSender(messagesQueue);
-        new Thread(sender).start();
-
-        receiver = new TCPReceiver(this);
-        new Thread(receiver).start();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(receiver != null) receiver.stop();
-        if(sender != null) {
-            sender.stop();
-            // add new null content to make the sender interrupt abruptly
-            try {
-                messagesQueue.put(new AddressedContent(null, null));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void addMessageToQueue(AddressedContent content) {
-        try {
-            messagesQueue.put(content);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setActor(Actor actor) {
-        this.actor = actor;
-    }
-
-    public Actor getActor() {
-        return actor;
     }
 
     public abstract boolean isHost();

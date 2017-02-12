@@ -79,16 +79,16 @@ public class MultiplayerGame extends Game {
         public void initialBallPosition() {
             if(started) return;
             waitForBallToComeBack();
-            setX(newX);
-            setY(newY);
+            started = true;
         }
 
         public void newPlayerTurn(BallInfo info) {
             newX = info.getPosition();
             newY = 0.0;
+            setX(newX);
+            setY(newY);
             setXFactor(info.getBallSpeedX());
             setYFactor(info.getBallSpeedY());
-            initialBallPosition();
             synchronized (forBallToComeBack) {
                 forBallToComeBack.notifyAll();
             }

@@ -3,6 +3,7 @@ package com.multipong.net.receive;
 import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
+import com.multipong.activity.NetworkingActivity;
 import com.multipong.net.Utils;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ public class AckUDPReceiver extends Receiver {
 
     private DatagramSocket serverSocket;
 
-    public AckUDPReceiver(MultiplayerGameFormationActivity activity) {
+    public AckUDPReceiver(NetworkingActivity activity) {
         super(activity);
     }
 

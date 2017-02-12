@@ -1,19 +1,23 @@
 package com.multipong.model.formation;
 
+import android.content.Context;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pGroup;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameHostActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
-import com.multipong.net.send.Sender;
+import com.multipong.net.messages.Message;
 import com.multipong.net.messages.gameformation.AvailableMessage;
 import com.multipong.net.messages.gameformation.CancelMessage;
 import com.multipong.net.messages.gameformation.DiscoverMessage;
 import com.multipong.net.messages.gameformation.JoinMessage;
-import com.multipong.net.messages.Message;
-import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.net.messages.gameformation.StartingMessage;
 import com.multipong.net.messages.gameformation.TellIPMessage;
+import com.multipong.net.send.Sender;
+import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.PlayerNameUtility;
 
@@ -51,6 +55,18 @@ public class Host implements Actor {
             AddressedContent content = new Sender.AddressedContent(response, recipient);
             activity.addMessageToQueue(content);
         }
+
+        //TODO remove -> only debug purpose -> print group info on match start
+        WifiP2pManager wifiP2pManager = (WifiP2pManager) activity.
+                getSystemService(Context.WIFI_P2P_SERVICE);
+        WifiP2pManager.Channel channel = wifiP2pManager.initialize(activity,
+                activity.getMainLooper(), null);
+        wifiP2pManager.requestGroupInfo(channel, new WifiP2pManager.GroupInfoListener() {
+            @Override
+            public void onGroupInfoAvailable(WifiP2pGroup group) {
+                Log.d("Device List", group.toString());
+            }
+        });
     }
 
     @Override

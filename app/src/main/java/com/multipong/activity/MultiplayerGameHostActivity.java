@@ -2,6 +2,7 @@ package com.multipong.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.os.Bundle;
@@ -17,7 +18,6 @@ import android.widget.Toast;
 
 import com.multipong.R;
 import com.multipong.model.formation.Host;
-import com.multipong.net.Utils;
 import com.multipong.net.WifiP2pListener;
 import com.multipong.utility.PlayerNameUtility;
 
@@ -113,6 +113,7 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
     private class HostGameStarter implements View.OnClickListener {
 
         private ListView mPlayerList;
+        public static final String PLAYER_NAME = "com.multipong.PLAYER_NAME";
 
         public HostGameStarter(ListView playerList) {
             mPlayerList = playerList;
@@ -121,12 +122,17 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
         @Override
         public void onClick(View v) {
             ListAdapter listAdapter = mPlayerList.getAdapter();
-            if (mPlayerList.getAdapter() == null || listAdapter.getCount() <= 1) {
+            //TODO -> remove comment symbols -> put in comment for debug purpose
+            /*if (mPlayerList.getAdapter() == null || listAdapter.getCount() <= 1) {
                 showShortToast("There should be at least two players in the game");
                 return;
-            }
+            }*/
             Host host = (Host) getActor();
             host.startGame();
+
+            Intent intent = new Intent(getApplicationContext(), GameActivity.class)
+                    .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName());
+            startActivity(intent);
         }
     }
 }

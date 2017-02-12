@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/background_color"
     tools:context="com.multipong.activity.MainActivity">
 
     <TextView
@@ -66,7 +67,7 @@
                 android:layout_gravity="end|bottom"
                 android:layout_margin="16dp"
                 android:src="@drawable/ic_multiplayer"
-                app:backgroundTint="@color/black"/>
+                app:backgroundTint="@color/mode_button_color"/>
 
         <View
                 android:id="@+id/dummy"
@@ -84,7 +85,7 @@
                 android:src="@drawable/ic_singleplayer"
                 app:layout_anchor="@id/dummy"
                 app:layout_anchorGravity="top|right|end"
-                app:backgroundTint="@color/black"/>
+                app:backgroundTint="@color/mode_button_color"/>
 
     </android.support.design.widget.CoordinatorLayout>
 

@@ -2,7 +2,8 @@ package com.multipong.model;
 
 import android.util.Log;
 
-import com.multipong.activity.NetworkingActivity;
+import com.multipong.activity.GameActivity;
+import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.multiplayer.MultiplayerStateManager;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.messages.game.BallInfoMessage;
@@ -16,9 +17,9 @@ import java.util.Collection;
 
 public class Coordination implements Actor {
 
-    private NetworkingActivity activity;
+    private GameActivity activity;
 
-    public Coordination(NetworkingActivity activity) {
+    public Coordination(GameActivity activity) {
         this.activity = activity;
     }
 
@@ -34,29 +35,21 @@ public class Coordination implements Actor {
 
     private void spreadToParticipants(JSONObject json, InetAddress sender) {
         BallInfoMessage message = BallInfoMessage.createFromJson(json);
-        if (message.isForCoordinator()) {
-            message.forCoordinator(false);
-            MultiplayerStateManager msm = (MultiplayerStateManager) activity.getActor();
-            // Send message to participants
-            Collection<Integer> ids = msm.getActivePlayers();
-            for (Integer id : ids) {
-                InetAddress address = NameResolutor.INSTANCE.getNodeByHash(id);
-                AddressedContent content = new AddressedContent(message, address);
-                // Avoid sending ball info to local MSM
-                // && Avoid sending ball info to sender too (not necessary)
-                if (!id.equals(DeviceIdUtility.getId()) && !(address.equals(sender)))
-                    activity.addMessageToQueue(content);
-            }
-            // Forward message to local MSM
-            Actor actor = activity.getActor();
-            actor.receive(MultiplayerStateManager.MessageType.BALL_INFO, json, sender);
-        } else {
-            Actor actor = activity.getActor();
-            actor.receive(MultiplayerStateManager.MessageType.BALL_INFO, json, sender);
+        message.forCoordinator(false);
+        MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
+        MultiplayerStateManager msm = multiplayerGame.getMSM();
+        // Send message to participants
+        Collection<Integer> ids = msm.getActivePlayers();
+        for (Integer id : ids) {
+            InetAddress address = NameResolutor.INSTANCE.getNodeByHash(id);
+            AddressedContent content = new AddressedContent(message, address);
+            // Avoid sending ball info to local MSM
+            // && Avoid sending ball info to sender too (not necessary)
+            if (!id.equals(DeviceIdUtility.getId()) && !(address.equals(sender)))
+                activity.addMessageToQueue(content);
         }
-    }
-
-    public void setActivity(NetworkingActivity activity) {
-        this.activity = activity;
+        // Forward message to local MSM
+        Actor actor = activity.getActor();
+        actor.receive(MultiplayerStateManager.MessageType.BALL_INFO, json, sender);
     }
 }

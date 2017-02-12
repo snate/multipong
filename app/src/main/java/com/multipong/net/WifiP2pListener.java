@@ -20,6 +20,7 @@ public class WifiP2pListener extends BroadcastReceiver {
     private Channel mChannel;
     private PeerListListener mListener;
     private MultiplayerGameFormationActivity mActivity;
+    private static Timer timer;
 
     public WifiP2pListener(WifiP2pManager manager, Channel channel,
                            MultiplayerGameFormationActivity activity) {
@@ -28,7 +29,12 @@ public class WifiP2pListener extends BroadcastReceiver {
         mListener = new PeerExplorer(activity).withManager(manager).withChannel(channel);
         mActivity = activity;
 
-        Timer timer = new Timer();
+        synchronized (timer) {
+            if (timer != null) {
+                timer.cancel();
+            }
+            timer = new Timer();
+        }
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {

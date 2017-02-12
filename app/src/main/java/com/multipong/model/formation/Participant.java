@@ -1,17 +1,22 @@
 package com.multipong.model.formation;
 
+import android.content.Intent;
+import android.util.Log;
+
+import com.multipong.activity.GameActivity;
 import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.activity.MultiplayerGameJoinActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
+import com.multipong.net.messages.Message;
 import com.multipong.net.messages.gameformation.AvailableMessage;
 import com.multipong.net.messages.gameformation.CancelMessage;
 import com.multipong.net.messages.gameformation.DiscoverMessage;
 import com.multipong.net.messages.gameformation.JoinMessage;
 import com.multipong.net.messages.gameformation.KnownHostsMessage;
-import com.multipong.net.messages.Message;
 import com.multipong.net.messages.gameformation.StartingMessage;
 import com.multipong.net.send.Sender.AddressedContent;
+import com.multipong.utility.PlayerNameUtility;
 
 import org.json.JSONObject;
 
@@ -71,6 +76,7 @@ public class Participant implements Actor {
                 onAvailableMessageReceived(message, sender);
                 break;
             case Host.MessageType.STARTING:
+                Log.d("startingmsg", "received");
                 onStartingMessageReceived(message, sender);
                 break;
         }
@@ -113,11 +119,16 @@ public class Participant implements Actor {
         ((MultiplayerGameJoinActivity)activity).receiveList(id, hostName, participants);
     }
 
+    public static final String PLAYER_NAME = "com.multipong.PLAYER_NAME";
     private void onStartingMessageReceived(JSONObject message, InetAddress sender) {
+        Log.d("startingmsg", "start1");
         StartingMessage msg = StartingMessage.createMessageFromJSON(message);
-        Map<String, Object> msgInfo = msg.decode();
-        //TODO -> do something with msgInfo
-        //probably start the game
+        Log.d("startingmsg", "start2");
+        //Map<String, Object> msgInfo = msg.decode();
+        Log.d("startingmsg", "start3");
+        Intent intent = new Intent(activity.getApplicationContext(), GameActivity.class)
+                .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName());
+        activity.startActivity(intent);
     }
 
     public class MessageType {

@@ -38,6 +38,8 @@ public class Coordination implements Actor {
         message.forCoordinator(false);
         MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
         MultiplayerStateManager msm = multiplayerGame.getMSM();
+        // Forward message to local MSM
+        msm.receive(MultiplayerStateManager.MessageType.BALL_INFO, json, sender);
         // Send message to participants
         Collection<Integer> ids = msm.getActivePlayers();
         for (Integer id : ids) {
@@ -48,8 +50,5 @@ public class Coordination implements Actor {
             if (!id.equals(DeviceIdUtility.getId()) && !(address.equals(sender)))
                 activity.addMessageToQueue(content);
         }
-        // Forward message to local MSM
-        Actor actor = activity.getActor();
-        actor.receive(MultiplayerStateManager.MessageType.BALL_INFO, json, sender);
     }
 }

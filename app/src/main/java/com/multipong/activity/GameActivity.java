@@ -21,10 +21,13 @@ import com.multipong.model.formation.Participant;
 import com.multipong.model.game.Game;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.game.SingleGame;
+import com.multipong.model.multiplayer.GameRouter;
 import com.multipong.net.receive.AckUDPReceiver;
 import com.multipong.net.receive.Receiver;
+import com.multipong.net.receive.TCPReceiver;
 import com.multipong.net.send.AckUDPSender;
 import com.multipong.net.send.Sender;
+import com.multipong.net.send.TCPSender;
 import com.multipong.persistence.MultipongDatabase;
 import com.multipong.persistence.pojos.Stats;
 import com.multipong.persistence.read.StatsReader;
@@ -47,10 +50,9 @@ public class GameActivity extends NetworkingActivity {
     private Boolean isMultiplayer;
     private List<Integer> playerIDs = null;
     private Boolean isHost;
-    private Game game;
+    private volatile Game game;
     private StatsSaver saver;
     private volatile boolean gameEnded = false;
-    private Actor actor;
 
     private final double PALETTE_WIDTH = 0.2;
 
@@ -115,16 +117,22 @@ public class GameActivity extends NetworkingActivity {
                 finish();
             }
         });
+
+        setActor(new GameRouter(this));
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     @Override
     protected Sender getSender() {
-        return new AckUDPSender();
+        return new TCPSender();
     }
 
     @Override
     protected Receiver getReceiver() {
-        return new AckUDPReceiver(this);
+        return new TCPReceiver(this);
     }
 
     @Override
@@ -134,7 +142,6 @@ public class GameActivity extends NetworkingActivity {
         if(game == null) {
             if (isMultiplayer) {
                 game = new MultiplayerGame(this);
-                Log.e("START", (actor instanceof Host) + "");
                 ((MultiplayerGame)game).setStartingPlayer(isHost);
                 ((MultiplayerGame)game).setAllPlayers(playerIDs);
             }
@@ -202,15 +209,5 @@ public class GameActivity extends NetworkingActivity {
         CharSequence text = toastText;
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(context, text, duration).show();
-    }
-
-    @Override
-    public Actor getActor() {
-        return actor;
-    }
-
-    @Override
-    public void setActor(Actor actor) {
-        this.actor = actor;
     }
 }

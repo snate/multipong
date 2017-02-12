@@ -3,6 +3,7 @@ package com.multipong.net.messages.game;
 import com.multipong.net.messages.Message;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -38,6 +39,16 @@ public abstract class GameMessage extends Message {
         boolean answer = true;
         try {
             answer = object.getBoolean(TO_COORDINATOR_FIELD);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return answer;
+    }
+
+    public static boolean isForCoordinator(JSONObject jsonObject) {
+        boolean answer = true;
+        try {
+            answer = jsonObject.getBoolean(TO_COORDINATOR_FIELD);
         } catch (JSONException e) {
             e.printStackTrace();
         }

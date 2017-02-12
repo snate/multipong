@@ -66,7 +66,7 @@ public abstract class AbsGameThread implements Runnable {
                 double ricochetAngle = computeCollision();
                 if (ricochetAngle >= - 1 && ricochetAngle <= 1) {
                     Log.d("GameThread", "Bounce");
-                    if (delay > 11) decrementDelay();
+                    decrementDelay();
                     // trust me, I've done the math
                     xFactor = ricochetAngle;
                     yFactor = -(1 - (1 - paletteWidth) * ricochetAngle);
@@ -107,7 +107,8 @@ public abstract class AbsGameThread implements Runnable {
     }
 
     protected void decrementDelay() {
-        delay -= 10;
+        if (delay > 11)
+            delay -= 10;
     }
 
     public void setPalettePosition(double palettePosition) {

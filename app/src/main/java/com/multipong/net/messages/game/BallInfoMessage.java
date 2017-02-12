@@ -8,6 +8,7 @@ import org.json.JSONException;
 
 public class BallInfoMessage extends Message {
 
+    // shorter strings so they are lighter when sent with UDP
     public static final String SPEED_X_FIELD  = "sX";
     public static final String SPEED_Y_FIELD  = "sY";
     public static final String POSITION_FIELD = "pos";

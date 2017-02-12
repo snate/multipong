@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.multipong.activity.GameActivity;
+import com.multipong.activity.MainActivity;
 import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.activity.MultiplayerGameJoinActivity;
 import com.multipong.model.Actor;
@@ -126,7 +127,8 @@ public class Participant implements Actor {
         Map<String, Object> msgInfo = msg.decode();
         Log.d("Participant", "Starting...");
         Intent intent = new Intent(activity.getApplicationContext(), GameActivity.class)
-                .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName());
+                .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName())
+                .putExtra(MainActivity.IS_MULTI, true);
         activity.startActivity(intent);
     }
 

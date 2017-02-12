@@ -6,6 +6,10 @@ import android.os.Bundle;
 
 import com.multipong.net.Utils;
 import com.multipong.net.WifiP2pListener;
+import com.multipong.net.receive.Receiver;
+import com.multipong.net.receive.TCPReceiver;
+import com.multipong.net.send.Sender;
+import com.multipong.net.send.TCPSender;
 
 /**
  * @author Marco Zanella
@@ -43,4 +47,14 @@ public abstract class MultiplayerGameFormationActivity extends NetworkingActivit
     }
 
     public abstract boolean isHost();
+
+    @Override
+    public Sender getSender() {
+        return new TCPSender();
+    }
+
+    @Override
+    public Receiver getReceiver() {
+        return new TCPReceiver(this);
+    }
 }

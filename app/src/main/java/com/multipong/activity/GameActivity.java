@@ -21,6 +21,10 @@ import com.multipong.model.formation.Participant;
 import com.multipong.model.game.Game;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.game.SingleGame;
+import com.multipong.net.receive.AckUDPReceiver;
+import com.multipong.net.receive.Receiver;
+import com.multipong.net.send.AckUDPSender;
+import com.multipong.net.send.Sender;
 import com.multipong.persistence.MultipongDatabase;
 import com.multipong.persistence.pojos.Stats;
 import com.multipong.persistence.read.StatsReader;
@@ -111,6 +115,16 @@ public class GameActivity extends NetworkingActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected Sender getSender() {
+        return new AckUDPSender();
+    }
+
+    @Override
+    protected Receiver getReceiver() {
+        return new AckUDPReceiver(this);
     }
 
     @Override

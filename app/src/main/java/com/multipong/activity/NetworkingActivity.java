@@ -5,11 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
-import com.multipong.net.Utils;
 import com.multipong.net.receive.Receiver;
-import com.multipong.net.receive.TCPReceiver;
 import com.multipong.net.send.Sender;
-import com.multipong.net.send.TCPSender;
 import com.multipong.utility.DeviceIdUtility;
 
 import java.util.UUID;
@@ -34,12 +31,15 @@ public abstract class NetworkingActivity extends AppCompatActivity implements Ac
             DeviceIdUtility.setId(myID);
         }
 
-        sender = new TCPSender(messagesQueue);
+        sender = getSender().withQueue(messagesQueue);
         new Thread(sender).start();
 
-        receiver = new TCPReceiver(this);
+        receiver = getReceiver();
         new Thread(receiver).start();
     }
+
+    protected abstract Sender getSender();
+    protected abstract Receiver getReceiver();
 
     @Override
     protected void onDestroy() {

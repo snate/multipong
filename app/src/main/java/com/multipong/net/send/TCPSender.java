@@ -13,9 +13,6 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
 public class TCPSender extends Sender {
-    public TCPSender(BlockingQueue<AddressedContent> queue) {
-        super(queue);
-    }
 
     @Override
     public void send(AddressedContent content) {

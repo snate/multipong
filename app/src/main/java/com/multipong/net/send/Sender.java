@@ -13,11 +13,12 @@ public abstract class Sender implements Runnable {
 
     protected static final int SOCKET_TIMEOUT = 5000;
 
-    private final BlockingQueue<AddressedContent> messages;
+    private BlockingQueue<AddressedContent> messages;
     private volatile boolean stop = false;
 
-    public Sender(BlockingQueue<AddressedContent> queue) {
-        messages = queue;
+    public Sender withQueue(BlockingQueue<AddressedContent> queue) {
+        this.messages = queue;
+        return this;
     }
 
     @Override

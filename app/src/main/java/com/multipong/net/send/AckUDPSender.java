@@ -16,10 +16,6 @@ public class AckUDPSender extends Sender {
 
     private static final int UDP_TIMEOUT = 400;
 
-    public AckUDPSender(BlockingQueue<AddressedContent> queue) {
-        super(queue);
-    }
-
     @Override
     public void send(AddressedContent content) {
         int attempts = 0;

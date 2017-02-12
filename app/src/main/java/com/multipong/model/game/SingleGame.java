@@ -1,8 +1,5 @@
 package com.multipong.model.game;
 
-import android.widget.Toast;
-import android.util.Log;
-
 import com.multipong.activity.GameActivity;
 import com.multipong.persistence.MultipongDatabase;
 
@@ -53,6 +50,6 @@ public class SingleGame extends Game {
             setY(0.0);
         }
 
-        public void ballBounced() { }
+        public void ballBounced(boolean bounced) { }
     }
 }

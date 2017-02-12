@@ -51,11 +51,6 @@ public class MultiplayerGame extends Game {
         @Override
         public void ballOnTopOfTheField() {
             activity.makeBallDisappear();
-            double newSpeedX = getXFactor() * - 1;
-            double newSpeedY = getYFactor() * - 1;
-            double newPos = 1 - getFinalX();
-            BallInfo info = MultiplayerStateManager.createBallInfo(newSpeedX, newSpeedY, newPos);
-            msm.sendBallToNext(info);
             synchronized (forBallToComeBack) {
                 try {
                     forBallToComeBack.wait();
@@ -85,7 +80,7 @@ public class MultiplayerGame extends Game {
         }
 
         @Override
-        public void ballBounced() {
+        public void ballBounced(boolean bounced) {
             double posX = getX();
             double speedX = getXFactor();
             double speedY = getYFactor() * (-1.0);
@@ -99,9 +94,22 @@ public class MultiplayerGame extends Game {
             int leftEdge = (int) Math.floor(xFinalPosition);
             xFinalPosition = xFinalPosition - leftEdge;
             if (leftEdge % 2 != 0) xFinalPosition = 1 - xFinalPosition;
-            if (0 <= xFinalPosition && xFinalPosition <= 1) {
+            if (0 <= xFinalPosition && xFinalPosition <= 1)
                 Log.d("Predictor", "Predicted: " + xFinalPosition);
+
+            // now send info to other players
+            double newSpeedX = speedX * -1;
+            double newSpeedY = getYFactor() * - 1;
+            double newPos = 1 - xFinalPosition;
+            boolean stillAlive = getNumberOfLives() > 0;
+            if (bounced) {
+                newSpeedX = Math.random();
+                newSpeedY = Math.random();
+                newPos    = Math.random();
             }
+            BallInfo info = MultiplayerStateManager.createBallInfo(newSpeedX, newSpeedY, newPos);
+            info = info.tellIfStillInGame(stillAlive);
+            msm.sendBallToNext(info);
         }
     }
 }

@@ -69,9 +69,10 @@ public abstract class AbsGameThread implements Runnable {
                     yFactor = -(1 - (1 - paletteWidth) * ricochetAngle);
                     activity.updateScore(++score);
                     y = 1.0;
-                    ballBounced();
+                    ballBounced(true);
                 } else {
                     decrementNumberOfLives();
+                    ballBounced(false);
                     lose = (getNumberOfLives() == 0);
                     if (!lose) {
                         activity.runOnUiThread(new Runnable() {
@@ -125,6 +126,6 @@ public abstract class AbsGameThread implements Runnable {
 
     public void resetGame(){}
 
-    public abstract void ballBounced();
+    public abstract void ballBounced(boolean b);
 }
 

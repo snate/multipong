@@ -61,6 +61,7 @@ public abstract class AbsGameThread implements Runnable {
             if (x <= 0.0) { x = 0.0; xFactor *= -1; }
             if (x >= 1.0) { x = 1.0; xFactor *= -1; }
             if (y <= 0.0)             ballOnTopOfTheField();
+            activity.moveBall(x, y);
             if (!lose && y >= 1.0) {
                 double ricochetAngle = computeCollision();
                 if (ricochetAngle >= - 1 && ricochetAngle <= 1) {
@@ -96,7 +97,6 @@ public abstract class AbsGameThread implements Runnable {
                     }
                 }
             }
-            activity.moveBall(x, y);
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {

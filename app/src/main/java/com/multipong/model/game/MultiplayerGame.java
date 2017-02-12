@@ -20,6 +20,7 @@ public class MultiplayerGame extends Game {
     private MultiplayerStateManager msm;
 
     public MultiplayerGame(GameActivity activity) {
+        this.activity = activity;
         msm = new MultiplayerStateManager(this, activity);
         activity.setActor(msm);
     }

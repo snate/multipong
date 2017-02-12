@@ -1,15 +1,10 @@
 package com.multipong.activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,11 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Log;
 
 import com.multipong.R;
 import com.multipong.model.Actor;
 import com.multipong.model.game.Game;
+import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.game.SingleGame;
 import com.multipong.persistence.MultipongDatabase;
 import com.multipong.persistence.pojos.Stats;
@@ -41,6 +36,7 @@ public class GameActivity extends NetworkingActivity {
     private Button mEndButton;
 
     private String playerName;
+    private Boolean isMultiplayer;
     private Game game;
     private StatsSaver saver;
     private volatile boolean gameEnded = false;
@@ -57,8 +53,8 @@ public class GameActivity extends NetworkingActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
 
-        /*Intent intent = getIntent();
-        playerName = intent.getCharSequenceExtra(MainActivity.PLAYER_NAME).toString();*/
+        Intent intent = getIntent();
+        isMultiplayer = intent.getBooleanExtra(MainActivity.IS_MULTI, false);
         playerName = PlayerNameUtility.getPlayerName();
 
         mSurfaceView = (PongView) findViewById(R.id.game_surface);
@@ -97,12 +93,14 @@ public class GameActivity extends NetworkingActivity {
         mSurfaceView.setPaletteWidth(PALETTE_WIDTH);
         mScore.setText("0");
         MultipongDatabase database = new MultipongDatabase(this);
-        saver = new StatsSaver(database);
-        Stats best = new StatsReader(database).getBestScoreFor(Stats.Modality.SINGLE_PLAYER);
-        if(best == null)
-            showShortToast("No best score available");
-        else
-            showShortToast("BEST: " + best.getName() + " with score " + best.getScore());
+        if (!isMultiplayer) {
+            saver = new StatsSaver(database);
+            Stats best = new StatsReader(database).getBestScoreFor(Stats.Modality.SINGLE_PLAYER);
+            if (best == null)
+                showShortToast("No best score available");
+            else
+                showShortToast("BEST: " + best.getName() + " with score " + best.getScore());
+        }
         mEndButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +114,10 @@ public class GameActivity extends NetworkingActivity {
         super.onResume();
         // TODO: parameterize single game or multiplayer game choice
         if(game == null) {
-            game = new SingleGame(this);
+            if (isMultiplayer)
+                game = new MultiplayerGame(this);
+            else
+                game = new SingleGame(this);
             game.start(playerName);
             game.setPaletteWidth(PALETTE_WIDTH);
         }
@@ -154,10 +155,12 @@ public class GameActivity extends NetworkingActivity {
 
     public void endGame(final int score) {
         makeBallDisappear();
-        Stats stats = new Stats().withModality(Stats.Modality.SINGLE_PLAYER)
-                                 .withName(playerName)
-                                 .withScore(score);
-        saver.save(stats);
+        if (!isMultiplayer) {
+            Stats stats = new Stats().withModality(Stats.Modality.SINGLE_PLAYER)
+                    .withName(playerName)
+                    .withScore(score);
+            saver.save(stats);
+        }
         gameEnded = true;
         runOnUiThread(new Runnable() {
             @Override

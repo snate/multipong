@@ -18,6 +18,7 @@ import com.multipong.utility.PlayerNameUtility;
 public class MainActivity extends AppCompatActivity {
 
     public static final String PLAYER_NAME = "com.multipong.PLAYER_NAME";
+    public static final String IS_MULTI = "is_multiplayer_match";
 
     private TextView mCredits;
     private TextView mNameTextView;
@@ -90,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
             PlayerNameUtility.setPlayerName(playerName.toString());
             Intent intent = new Intent(getApplicationContext(), GameActivity.class)
-                    .putExtra(PLAYER_NAME, playerName);
+                    .putExtra(PLAYER_NAME, playerName)
+                    .putExtra(IS_MULTI, false);
             startActivity(intent);
         }
     }

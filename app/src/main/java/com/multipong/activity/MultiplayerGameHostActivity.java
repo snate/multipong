@@ -118,11 +118,10 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
         @Override
         public void onClick(View v) {
             ListAdapter listAdapter = mPlayerList.getAdapter();
-            //TODO -> remove comment symbols -> put in comment for debug purpose
-            /*if (mPlayerList.getAdapter() == null || listAdapter.getCount() <= 1) {
+            if (mPlayerList.getAdapter() == null || listAdapter.getCount() <= 1) {
                 showShortToast("There should be at least two players in the game");
                 return;
-            }*/
+            }
             Host host = (Host) getActor();
             host.startGame();
 

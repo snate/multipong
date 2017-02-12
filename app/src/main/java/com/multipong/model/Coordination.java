@@ -8,7 +8,6 @@ import com.multipong.net.send.Sender.AddressedContent;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 public class Coordination implements Actor {
 

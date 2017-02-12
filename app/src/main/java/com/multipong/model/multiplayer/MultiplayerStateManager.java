@@ -1,14 +1,11 @@
 package com.multipong.model.multiplayer;
 
 import com.multipong.activity.GameActivity;
-import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.model.Actor;
-import com.multipong.model.Coordination;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.net.Utils;
-import com.multipong.net.messages.Message;
 import com.multipong.net.messages.game.BallInfoMessage;
-import com.multipong.net.send.Sender;
+import com.multipong.net.send.Sender.AddressedContent;
 
 import org.json.JSONObject;
 
@@ -36,7 +33,7 @@ public class MultiplayerStateManager implements Actor {
         InetAddress address = null;
         try {
             address = InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
-            Sender.AddressedContent content = new Sender.AddressedContent(ballInfoMessage, address);
+            AddressedContent content = new AddressedContent(ballInfoMessage, address);
             activity.addMessageToQueue(content);
         } catch (UnknownHostException e) {
             e.printStackTrace();

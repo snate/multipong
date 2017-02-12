@@ -20,6 +20,11 @@ public abstract class MultiplayerGameFormationActivity extends NetworkingActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.setGameFormationActivity(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         WifiP2pManager manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         WifiP2pManager.Channel channel = manager.initialize(this, getMainLooper(), null);
@@ -29,6 +34,11 @@ public abstract class MultiplayerGameFormationActivity extends NetworkingActivit
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         listener.cancelDiscovery();
     }
 

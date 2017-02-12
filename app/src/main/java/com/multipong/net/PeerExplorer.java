@@ -38,13 +38,10 @@ public class PeerExplorer implements WifiP2pManager.PeerListListener {
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peerList) {
         Collection<WifiP2pDevice> refreshedPeers = peerList.getDeviceList();
-        if (!peers.containsAll(refreshedPeers) ||
-                !refreshedPeers.containsAll(peers)) {
-            peers.clear();
-            peers.addAll(refreshedPeers);
-            for (WifiP2pDevice device : peers)
-                Utils.connectTo(device, mManager, mChannel);
-        }
+        peers.clear();
+        peers.addAll(refreshedPeers);
+        for (WifiP2pDevice device : peers)
+            Utils.connectTo(device, mManager, mChannel);
 
         if (peers.size() == 0)
             Log.d("PEER_EXPLORER", "No devices found");

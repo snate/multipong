@@ -27,10 +27,13 @@ public class MultiplayerStateManager implements Actor {
     public void sendBallToNext(BallInfo ballInfo){
         PlayerExtractor extractor = new ConsecutivePlayerExtractor();
         extractor.getNext(state.activePlayers, state.me);
+        Player next = extractor.getNext(state.activePlayers, state.me);
         // Send ball info to coordinator via net
         BallInfoMessage ballInfoMessage = new BallInfoMessage()
                                              .addBallInfo(ballInfo)
                                              .forCoordinator(true);
+                                             .forCoordinator(true)
+                                             .addNextPlayerInfo(next.id);
         try {
             InetAddress address = InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
             AddressedContent content = new AddressedContent(ballInfoMessage, address);

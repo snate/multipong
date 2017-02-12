@@ -34,8 +34,8 @@ public class MultiplayerStateManager implements Actor {
         // Send ball info to coordinator via net
         BallInfoMessage ballInfoMessage = new BallInfoMessage()
                                              .addBallInfo(ballInfo)
-                                             .forCoordinator(true)
                                              .addNextPlayerInfo(next.id);
+        ballInfoMessage.forCoordinator(true);
         try {
             InetAddress address = InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
             AddressedContent content = new AddressedContent(ballInfoMessage, address);

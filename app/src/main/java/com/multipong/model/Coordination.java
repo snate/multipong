@@ -1,5 +1,7 @@
 package com.multipong.model;
 
+import android.util.Log;
+
 import com.multipong.activity.NetworkingActivity;
 import com.multipong.model.multiplayer.MultiplayerStateManager;
 import com.multipong.net.NameResolutor;
@@ -18,6 +20,7 @@ public class Coordination implements Actor {
 
     @Override
     public synchronized void receive(String type, JSONObject message, InetAddress sender) {
+        Log.d("Coordination", "Message received");
         switch (type) {
             case MultiplayerStateManager.MessageType.BALL_INFO:
                 spreadToParticipants(message, sender);
@@ -28,7 +31,7 @@ public class Coordination implements Actor {
     private void spreadToParticipants(JSONObject json, InetAddress sender) {
         BallInfoMessage message = BallInfoMessage.createFromJson(json);
         if (message.isForCoordinator()) {
-            message = message.forCoordinator(false);
+            message.forCoordinator(false);
             MultiplayerStateManager msm = (MultiplayerStateManager) activity.getActor();
             // Send message to participants
             Collection<Integer> ids = msm.getActivePlayers();

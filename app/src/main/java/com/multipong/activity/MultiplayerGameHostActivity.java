@@ -45,10 +45,6 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
 
         setActor(new Host(this));
         mButton.setOnClickListener(new HostGameStarter(playerList));
-
-        WifiP2pManager wifiP2pManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-        Channel channel = wifiP2pManager.initialize(this, getMainLooper(), null);
-        new WifiP2pListener(wifiP2pManager, channel, this);
     }
 
     public void receiveList(Collection<String> players) {

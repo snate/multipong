@@ -1,22 +1,28 @@
 package com.multipong.model.multiplayer;
 
+import com.multipong.activity.GameActivity;
+import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.model.Actor;
 import com.multipong.model.Coordination;
 import com.multipong.model.game.MultiplayerGame;
+import com.multipong.net.Utils;
 import com.multipong.net.messages.Message;
 import com.multipong.net.messages.game.BallInfoMessage;
+import com.multipong.net.send.Sender;
 
 import org.json.JSONObject;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class MultiplayerStateManager implements Actor {
 
+    private GameActivity activity;
     private MultiplayerGame game;
     private State state;
 
-    public MultiplayerStateManager(MultiplayerGame multiplayerGameThread) {
+    public MultiplayerStateManager(MultiplayerGame multiplayerGameThread, GameActivity activity) {
         game = multiplayerGameThread;
         state = new State();
     }
@@ -27,7 +33,14 @@ public class MultiplayerStateManager implements Actor {
         // Send ball info to coordinator via net
         BallInfoMessage ballInfoMessage = new BallInfoMessage();
         ballInfoMessage.addBallInfo(ballInfo);
-        Coordination.INSTANCE.sendToCoordinator(ballInfoMessage);
+        InetAddress address = null;
+        try {
+            address = InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
+            Sender.AddressedContent content = new Sender.AddressedContent(ballInfoMessage, address);
+            activity.addMessageToQueue(content);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         // TODO: Remove the following stub call
         receiveData(ballInfo);
     }

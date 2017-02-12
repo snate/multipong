@@ -20,7 +20,7 @@ public class MultiplayerGame extends Game {
     private MultiplayerStateManager msm;
 
     public MultiplayerGame() {
-        msm = new MultiplayerStateManager(this);
+        msm = new MultiplayerStateManager(this, activity);
     }
 
     @Override

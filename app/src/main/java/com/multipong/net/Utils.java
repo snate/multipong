@@ -25,6 +25,9 @@ public class Utils {
     public static final String UDP_ACK = "ACK";
     public static final int MTU = 1500;
 
+    public static final String WIFI_P2P_GROUP_OWNER_ADDRESS = "192.168.49.1";
+    public static final String WIFI_P2P_BROADCAST = "192.168.49.255";
+
     private static MultiplayerGameFormationActivity activity;
 
     public static void setActivity(MultiplayerGameFormationActivity activity) {

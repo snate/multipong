@@ -40,8 +40,6 @@ public class MultiplayerStateManager implements Actor {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        // TODO: Remove the following stub call
-        receiveData(ballInfo);
     }
 
     @Override

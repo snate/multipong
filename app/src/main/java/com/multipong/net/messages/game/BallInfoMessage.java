@@ -5,6 +5,9 @@ import com.multipong.model.multiplayer.MultiplayerStateManager.BallInfo;
 import com.multipong.net.messages.Message;
 
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
 
 public class BallInfoMessage extends Message {
 
@@ -18,6 +21,21 @@ public class BallInfoMessage extends Message {
     @Override
     protected String getMessageType() {
         return MultiplayerStateManager.MessageType.BALL_INFO;
+    }
+
+    @Override
+    public Map<String, Object> decode() {
+        Map<String, Object> result = super.decode();
+        try {
+            result.put(SPEED_X_FIELD, object.getDouble(SPEED_X_FIELD));
+            result.put(SPEED_Y_FIELD, object.getDouble(SPEED_Y_FIELD));
+            result.put(POSITION_FIELD, object.getDouble(POSITION_FIELD));
+            result.put(STILL_IN_GAME_FIELD, object.getBoolean(STILL_IN_GAME_FIELD));
+            result.put(TO_COORDINATOR_FIELD, object.getBoolean(TO_COORDINATOR_FIELD));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public BallInfoMessage addBallInfo(BallInfo ballInfo) {
@@ -43,6 +61,22 @@ public class BallInfoMessage extends Message {
             e.printStackTrace();
         }
         return this;
+    }
+
+    public boolean isForCoordinator() {
+        boolean answer = true;
+        try {
+            answer = object.getBoolean(TO_COORDINATOR_FIELD);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return answer;
+    }
+
+    public static BallInfoMessage createFromJson(JSONObject jsonObject) {
+        BallInfoMessage ballInfoMessage = new BallInfoMessage();
+        ballInfoMessage.object = jsonObject;
+        return ballInfoMessage;
     }
 
 }

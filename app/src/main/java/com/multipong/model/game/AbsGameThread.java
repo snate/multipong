@@ -1,5 +1,6 @@
 package com.multipong.model.game;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.multipong.activity.GameActivity;
@@ -57,11 +58,13 @@ public abstract class AbsGameThread implements Runnable {
             initialBallPosition();
             x += xFactor / range;
             y += yFactor / range;
-            if (x <= 0.0 || x >= 1.0) xFactor *= -1;
+            if (x <= 0.0) { x = 0.0; xFactor *= -1; }
+            if (x >= 1.0) { x = 1.0; xFactor *= -1; }
             if (y <= 0.0)             ballOnTopOfTheField();
             if (!lose && y >= 1.0) {
                 double ricochetAngle = computeCollision();
                 if (ricochetAngle >= - 1 && ricochetAngle <= 1) {
+                    Log.d("GameThread", "Bounce");
                     if (delay > 11) delay -= 10;
                     // trust me, I've done the math
                     xFactor = ricochetAngle;
@@ -70,6 +73,7 @@ public abstract class AbsGameThread implements Runnable {
                     y = 1.0;
                     ballBounced(true);
                 } else {
+                    Log.d("GameThread", "Miss");
                     decrementNumberOfLives();
                     ballBounced(false);
                     lose = (getNumberOfLives() == 0);

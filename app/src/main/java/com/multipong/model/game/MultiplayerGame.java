@@ -125,6 +125,7 @@ public class MultiplayerGame extends Game {
         }
 
         private void waitForBallToComeBack() {
+            Log.d("MULTI", "Waiting...");
             synchronized(forBallToComeBack) {
                 try {
                     forBallToComeBack.wait();

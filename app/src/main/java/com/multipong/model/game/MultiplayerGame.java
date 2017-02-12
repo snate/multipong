@@ -39,6 +39,10 @@ public class MultiplayerGame extends Game {
         msm.addPlayers(ids);
     }
 
+    public void increaseSpeed() {
+        currentGame.decrementDelay();
+    }
+
     @Override
     public void start(String playerName) {
         this.playerName = playerName;

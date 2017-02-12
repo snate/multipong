@@ -72,6 +72,7 @@ public class MultiplayerStateManager implements Actor {
         if (!previousIsStillInGame)
             state.removePlayer((Player) fields.get(BallInfoMessage.ID_FIELD));
         state.currentActivePlayer = (Player) fields.get(BallInfoMessage.NEXT_FIELD);
+        game.increaseSpeed();
     }
 
     public Collection<Integer> getActivePlayers() {

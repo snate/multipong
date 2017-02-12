@@ -78,7 +78,7 @@ public class Utils {
             }
             // Otw, Host has to tell its IP to participant
             // Send available to participant GO
-            AvailableMessage message = new AvailableMessage();
+            TellIPMessage message = new TellIPMessage();
             AddressedContent content = new AddressedContent(message, address);
             mActivity.addMessageToQueue(content);
         }

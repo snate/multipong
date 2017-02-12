@@ -1,11 +1,14 @@
 package com.multipong.model.multiplayer;
 
+import android.util.Log;
+
 import com.multipong.activity.GameActivity;
 import com.multipong.model.Actor;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.net.Utils;
 import com.multipong.net.messages.game.BallInfoMessage;
 import com.multipong.net.send.Sender.AddressedContent;
+import com.multipong.utility.DeviceIdUtility;
 
 import org.json.JSONObject;
 
@@ -26,6 +29,8 @@ public class MultiplayerStateManager implements Actor {
         this.activity = activity;
         game = multiplayerGameThread;
         state = new State();
+        state.setMe(new Player(DeviceIdUtility.getId()
+        ));
     }
 
     public void sendBallToNext(BallInfo ballInfo){
@@ -58,8 +63,11 @@ public class MultiplayerStateManager implements Actor {
         BallInfoMessage message = BallInfoMessage.createFromJson(json);
         Map<String, Object> fields = message.decode();
         Player nextPlayer = new Player((Integer) fields.get(BallInfoMessage.NEXT_FIELD));
+        Log.d("Next", nextPlayer.toString());
+        Log.d("Me", state.me.toString());
         // If next player is me, invoke receiveData method
         if (nextPlayer.equals(state.me)) {
+            Log.d("Ball", "Incoming");
             double speedX = (double) fields.get(BallInfoMessage.SPEED_X_FIELD);
             double speedY = (double) fields.get(BallInfoMessage.SPEED_Y_FIELD);
             double startingPosition = (double) fields.get(BallInfoMessage.POSITION_FIELD);

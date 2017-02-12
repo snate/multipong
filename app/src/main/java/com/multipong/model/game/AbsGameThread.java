@@ -13,7 +13,7 @@ import com.multipong.activity.GameActivity;
  * this class uses Template method pattern for manage singleplayer and multiplayer game
  */
 public abstract class AbsGameThread implements Runnable {
-    private double x = 0;         // ball x position
+    private double x = Math.random();         // ball x position
     private double y = 0;         // ball y position
     private double range = 25;    // see the game frame as a square of range x range
     private double xFactor = 1.0; // ball horizontal multiplier

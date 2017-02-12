@@ -37,10 +37,8 @@ public class SingleGame extends Game {
 
         @Override
         public void initialBallPosition() {
-            if (notStartedYet) {
-                setX(Math.random());
+            if (notStartedYet)
                 notStartedYet = false;
-            }
         }
 
         @Override

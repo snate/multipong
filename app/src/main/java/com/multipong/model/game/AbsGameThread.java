@@ -40,7 +40,6 @@ public abstract class AbsGameThread implements Runnable {
     public double getYFactor() {return yFactor;}
     public double getXFactor() {return xFactor;}
     public double getRange() {return range;}
-    public double getFinalX() { return getX(); } // TODO: See #20
 
     public void setX(double x) {this.x = x;}
     public void setY(double y) {this.y = y;}

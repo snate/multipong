@@ -26,6 +26,8 @@ public class AckUDPSender extends Sender {
                 String message = content.getMessage().getMsg().toString();
                 byte[] data = new byte[message.length()];
                 byte[] receiveData = new byte[message.length()];
+                Log.d("AckUDPSender", "Sending " + message);
+                Log.d("AckUDPSender", "To " + addr.getHostAddress());
                 data = message.getBytes();
                 DatagramPacket sendPacket = new DatagramPacket(data, data.length, addr, Utils.UDP_PORT);
                 clientSocket.send(sendPacket);

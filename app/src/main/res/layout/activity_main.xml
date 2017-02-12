@@ -67,7 +67,7 @@
                 android:layout_gravity="end|bottom"
                 android:layout_margin="16dp"
                 android:src="@drawable/ic_multiplayer"
-                app:backgroundTint="@color/mode_button_color"/>
+                app:backgroundTint="@color/colorPrimary"/>
 
         <View
                 android:id="@+id/dummy"
@@ -85,7 +85,7 @@
                 android:src="@drawable/ic_singleplayer"
                 app:layout_anchor="@id/dummy"
                 app:layout_anchorGravity="top|right|end"
-                app:backgroundTint="@color/mode_button_color"/>
+                app:backgroundTint="@color/colorPrimary"/>
 
     </android.support.design.widget.CoordinatorLayout>
 

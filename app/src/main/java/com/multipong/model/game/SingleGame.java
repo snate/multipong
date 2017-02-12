@@ -49,7 +49,7 @@ public class SingleGame extends Game {
 
         @Override
         public void resetGame() {
-            started = true;
+            notStartedYet = true;
             setY(0.0);
         }
 

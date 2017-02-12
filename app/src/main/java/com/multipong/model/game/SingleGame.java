@@ -13,7 +13,6 @@ public class SingleGame extends Game {
         this.activity = activity;
     }
 
-    //TODO invoke setNumberOfLives before start  on SingleGame to have a game with more than one live
     @Override
     public void start(String playerName) {
         this.playerName = playerName;

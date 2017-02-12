@@ -21,6 +21,7 @@ import android.widget.Toast;
 import android.util.Log;
 
 import com.multipong.R;
+import com.multipong.model.Actor;
 import com.multipong.model.game.Game;
 import com.multipong.model.game.SingleGame;
 import com.multipong.persistence.MultipongDatabase;
@@ -30,7 +31,7 @@ import com.multipong.persistence.save.StatsSaver;
 import com.multipong.utility.PlayerNameUtility;
 import com.multipong.view.PongView;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements ActivityWithActor {
 
     private PongView mSurfaceView;
     private SeekBar mBar;
@@ -43,6 +44,7 @@ public class GameActivity extends AppCompatActivity {
     private Game game;
     private StatsSaver saver;
     private volatile boolean gameEnded = false;
+    private Actor actor;
 
     private final double PALETTE_WIDTH = 0.2;
 
@@ -173,5 +175,15 @@ public class GameActivity extends AppCompatActivity {
         CharSequence text = toastText;
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(context, text, duration).show();
+    }
+
+    @Override
+    public Actor getActor() {
+        return actor;
+    }
+
+    @Override
+    public void setActor(Actor actor) {
+        this.actor = actor;
     }
 }

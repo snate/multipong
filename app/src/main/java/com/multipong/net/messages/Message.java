@@ -1,6 +1,5 @@
 package com.multipong.net.messages;
 
-import com.multipong.model.multiplayer.MultiplayerStateManager;
 import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.PlayerNameUtility;
 

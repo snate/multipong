@@ -22,7 +22,8 @@ import java.util.concurrent.BlockingQueue;
  * @version 0.01
  * @since 0.01
  */
-public abstract class MultiplayerGameFormationActivity extends AppCompatActivity{
+public abstract class MultiplayerGameFormationActivity extends AppCompatActivity
+    implements ActivityWithActor {
 
     private Receiver receiver;
     private Sender sender;

@@ -101,9 +101,7 @@ public class GameActivity extends NetworkingActivity {
                 return true;
             }
         });
-
         mSurfaceView.setPaletteWidth(PALETTE_WIDTH);
-        mScore.setText("0");
         MultipongDatabase database = new MultipongDatabase(this);
         if (!isMultiplayer) {
             saver = new StatsSaver(database);

@@ -133,7 +133,9 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
     private void drawFrame(Canvas canvas) {
         paint.setColor(backgroundColor);
         borderColor.setColor(playerColor);
+        // Draw border rectangle
         canvas.drawRect(getLeft(), getTop(), getRight(), getBottom(), borderColor);
+        // Draw internal ball movements rectangle area
         canvas.drawRect(getLeft()+borderSize,
                         getTop()+borderSize,
                         getRight()-borderSize,
@@ -155,6 +157,10 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
         if (ballX == null || ballY == null) return;
         paint.setColor(ballColor);
         canvas.drawCircle(ballX.get()+ballSize/2, ballY.get()+ballSize/2, ballSize/2, paint);
+        if (true) { //If game is multiplayer drow the cover for top of the screen
+            paint.setColor(backgroundColor);
+            canvas.drawRect(getLeft(), getTop(), getRight(), getTop()+borderSize+ballSize, paint);
+        }
     }
 
     @Override

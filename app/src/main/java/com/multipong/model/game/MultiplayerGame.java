@@ -19,8 +19,9 @@ public class MultiplayerGame extends Game {
     private MultipongDatabase database;
     private MultiplayerStateManager msm;
 
-    public MultiplayerGame() {
+    public MultiplayerGame(GameActivity activity) {
         msm = new MultiplayerStateManager(this, activity);
+        activity.setActor(msm);
     }
 
     @Override

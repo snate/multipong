@@ -4,9 +4,10 @@ import android.util.Log;
 
 import com.multipong.activity.GameActivity;
 import com.multipong.model.multiplayer.MultiplayerStateManager;
+import com.multipong.model.multiplayer.MultiplayerStateManager.BallInfo;
 import com.multipong.persistence.MultipongDatabase;
 
-import com.multipong.model.multiplayer.MultiplayerStateManager.BallInfo;
+import java.util.List;
 
 /**
  * @author Marco Zanella
@@ -28,6 +29,10 @@ public class MultiplayerGame extends Game {
 
     public void setStartingPlayer(boolean isStarting) {
         this.started = isStarting;
+    }
+
+    public void setAllPlayers(List<Integer> ids) {
+        msm.addPlayers(ids);
     }
 
     @Override

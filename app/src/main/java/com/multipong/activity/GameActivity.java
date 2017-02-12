@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.multipong.R;
 import com.multipong.model.Actor;
 import com.multipong.model.formation.Host;
+import com.multipong.model.formation.Participant;
 import com.multipong.model.game.Game;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.game.SingleGame;
@@ -26,6 +27,8 @@ import com.multipong.persistence.read.StatsReader;
 import com.multipong.persistence.save.StatsSaver;
 import com.multipong.utility.PlayerNameUtility;
 import com.multipong.view.PongView;
+
+import java.util.List;
 
 public class GameActivity extends NetworkingActivity {
 
@@ -38,6 +41,7 @@ public class GameActivity extends NetworkingActivity {
 
     private String playerName;
     private Boolean isMultiplayer;
+    private List<Integer> playerIDs = null;
     private Boolean isHost;
     private Game game;
     private StatsSaver saver;
@@ -58,6 +62,9 @@ public class GameActivity extends NetworkingActivity {
         Intent intent = getIntent();
         isMultiplayer = intent.getBooleanExtra(MainActivity.IS_MULTI, false);
         isHost = intent.getBooleanExtra(MultiplayerGameHostActivity.IS_HOST, false);
+        if (isMultiplayer) {
+            playerIDs = intent.getIntegerArrayListExtra(Participant.PLAYERS);
+        }
         playerName = PlayerNameUtility.getPlayerName();
 
         mSurfaceView = (PongView) findViewById(R.id.game_surface);
@@ -121,6 +128,7 @@ public class GameActivity extends NetworkingActivity {
                 game = new MultiplayerGame(this);
                 Log.e("START", (actor instanceof Host) + "");
                 ((MultiplayerGame)game).setStartingPlayer(isHost);
+                ((MultiplayerGame)game).setAllPlayers(playerIDs);
             }
             else
                 game = new SingleGame(this);

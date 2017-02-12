@@ -1,7 +1,6 @@
 package com.multipong.model.formation;
 
 import android.content.Context;
-import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
@@ -137,6 +136,12 @@ public class Host implements Actor {
         TellIPMessage message = new TellIPMessage();
         AddressedContent content = new AddressedContent(message, sender);
         activity.addMessageToQueue(content);
+    }
+
+    public ArrayList<Integer> getPlayerIDs() {
+        ArrayList<Integer> ids = new ArrayList<>();
+        ids.addAll(participants.keySet());
+        return ids;
     }
 
     public class MessageType {

@@ -19,6 +19,7 @@ import com.multipong.net.messages.gameformation.StartingMessage;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.PlayerNameUtility;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
@@ -120,7 +121,22 @@ public class Participant implements Actor {
         ((MultiplayerGameJoinActivity)activity).receiveList(id, hostName, participants);
     }
 
+    public ArrayList<Integer> getPlayerIDs() {
+        ArrayList<Integer> ids = new ArrayList<>();
+        JSONObject participantObj;
+        for (String p : participants) {
+            try {
+                participantObj = new JSONObject(p);
+                ids.add(participantObj.getInt("id"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return ids;
+    }
+
     public static final String PLAYER_NAME = "com.multipong.PLAYER_NAME";
+    public static final String PLAYERS = "player_list";
 
     private void onStartingMessageReceived(JSONObject message, InetAddress sender) {
         StartingMessage msg = StartingMessage.createMessageFromJSON(message);
@@ -128,7 +144,8 @@ public class Participant implements Actor {
         Log.d("Participant", "Starting...");
         Intent intent = new Intent(activity.getApplicationContext(), GameActivity.class)
                 .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName())
-                .putExtra(MainActivity.IS_MULTI, true);
+                .putExtra(MainActivity.IS_MULTI, true)
+                .putIntegerArrayListExtra(PLAYERS, getPlayerIDs());
         activity.startActivity(intent);
     }
 

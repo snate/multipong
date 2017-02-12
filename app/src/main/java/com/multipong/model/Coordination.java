@@ -30,7 +30,10 @@ public class Coordination implements Actor {
         if (message.isForCoordinator()) {
             // TODO: Send message to peers
             // TODO: Avoid sending ball info to sender too (not necessary)
-            // TODO: Avoid sending ball info to coordinator node (but deliver the message to MSM!)
+            // TODO: Avoid sending ball info to local MSM
+            // Forward message to local MSM
+            Actor actor = activity.getActor();
+            actor.receive(MultiplayerStateManager.MessageType.BALL_INFO, json, sender);
         } else {
             Actor actor = activity.getActor();
             actor.receive(MultiplayerStateManager.MessageType.BALL_INFO, json, sender);

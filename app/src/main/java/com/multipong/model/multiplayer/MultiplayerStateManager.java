@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MultiplayerStateManager implements Actor {
 
@@ -26,12 +27,10 @@ public class MultiplayerStateManager implements Actor {
 
     public void sendBallToNext(BallInfo ballInfo){
         PlayerExtractor extractor = new ConsecutivePlayerExtractor();
-        extractor.getNext(state.activePlayers, state.me);
         Player next = extractor.getNext(state.activePlayers, state.me);
         // Send ball info to coordinator via net
         BallInfoMessage ballInfoMessage = new BallInfoMessage()
                                              .addBallInfo(ballInfo)
-                                             .forCoordinator(true);
                                              .forCoordinator(true)
                                              .addNextPlayerInfo(next.id);
         try {
@@ -49,13 +48,31 @@ public class MultiplayerStateManager implements Actor {
     public void receive(String type, JSONObject message, InetAddress sender) {
         switch (type) {
             case MessageType.BALL_INFO:
-                // TODO: Update state
-                // TODO: If next player is me, invoke receiveData method
+                handleBallInfo(message);
                 break;
         }
     }
 
-    public void receiveData(BallInfo info) {
+    private void handleBallInfo(JSONObject json) {
+        BallInfoMessage message = BallInfoMessage.createFromJson(json);
+        Map<String, Object> fields = message.decode();
+        Player nextPlayer = new Player((Integer) fields.get(BallInfoMessage.NEXT_FIELD));
+        // If next player is me, invoke receiveData method
+        if (nextPlayer.equals(state.me)) {
+            double speedX = (double) fields.get(BallInfoMessage.SPEED_X_FIELD);
+            double speedY = (double) fields.get(BallInfoMessage.SPEED_Y_FIELD);
+            double startingPosition = (double) fields.get(BallInfoMessage.POSITION_FIELD);
+            BallInfo ballInfo = createBallInfo(speedX, speedY, startingPosition);
+            receiveData(ballInfo);
+        })
+        // TODO: Update state
+        // TODO: Needs review for robustness
+        boolean previousIsStillInGame = (boolean) fields.get(BallInfoMessage.STILL_IN_GAME_FIELD);
+        if (!previousIsStillInGame)
+            state.removePlayer(state.currentActivePlayer);
+    }
+
+    private void receiveData(BallInfo info) {
         game.newTurn(info);
     }
 

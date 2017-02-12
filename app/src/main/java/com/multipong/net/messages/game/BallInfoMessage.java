@@ -28,7 +28,6 @@ public class BallInfoMessage extends Message {
             object.put(SPEED_Y_FIELD, speedY);
             object.put(POSITION_FIELD, position);
             object.put(STILL_IN_GAME_FIELD, stillInGame);
-            // TODO: Add implementation
         } catch (JSONException e) {
             e.printStackTrace();
         }

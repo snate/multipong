@@ -1,5 +1,7 @@
 package com.multipong.net.messages.gameformation;
 
+import android.util.Log;
+
 import com.multipong.model.formation.Participant;
 import com.multipong.net.messages.Message;
 
@@ -16,15 +18,11 @@ import java.util.Map;
 
 public class KnownHostsMessage extends Message {
 
-    public static final String KNOWN_HOSTS_FIELD = "knownHosts";
+    public static final String KNOWN_HOST_FIELD = "knownHost";
 
-    public void addHosts(Collection<InetAddress> hosts) {
-        ArrayList<String> hostsStrings = new ArrayList<>();
-        for (InetAddress host : hosts)
-        hostsStrings.add(host.getCanonicalHostName());
-        JSONArray jsonArray = new JSONArray(Arrays.asList(hosts));
+    public void addHost(InetAddress host) {
         try {
-            object.put(KNOWN_HOSTS_FIELD, jsonArray);
+            object.put(KNOWN_HOST_FIELD, host.getHostAddress());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -34,16 +32,13 @@ public class KnownHostsMessage extends Message {
     public Map<String, Object> decode() {
         Map<String, Object> result = super.decode();
         try {
-            Collection<InetAddress> hosts = new ArrayList<>();
-            JSONArray array = object.getJSONArray(KNOWN_HOSTS_FIELD);
-            for (int i = 0; i < array.length(); i++)
-                try {
-                    hosts.add(InetAddress.getByName(array.getString(i)));
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                }
-            result.put(KNOWN_HOSTS_FIELD, hosts);
+            InetAddress host;
+            String hostString = object.getString(KNOWN_HOST_FIELD);
+            host = InetAddress.getByName(hostString);
+            result.put(KNOWN_HOST_FIELD, host);
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
             e.printStackTrace();
         }
         return result;

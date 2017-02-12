@@ -32,6 +32,7 @@ public abstract class Receiver implements Runnable {
 
     void process(String json, final InetAddress address) {
         try {
+            Log.d("JSON", json);
             if (!Utils.isJsonObject(json)) return;
             final JSONObject jsonObject = new JSONObject(json);
             if(!jsonObject.has(Message.APP_FIELD)) return;

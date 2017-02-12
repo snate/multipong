@@ -16,6 +16,7 @@ import com.multipong.net.messages.gameformation.DiscoverMessage;
 import com.multipong.net.messages.gameformation.JoinMessage;
 import com.multipong.net.messages.gameformation.KnownHostsMessage;
 import com.multipong.net.messages.gameformation.StartingMessage;
+import com.multipong.net.send.Sender;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.PlayerNameUtility;
 
@@ -34,7 +35,7 @@ public class Participant implements Actor {
     private MultiplayerGameFormationActivity activity;
     private Map<Integer, String> participants;
     private Map<Integer, String> hosts = new HashMap<>();
-    private Collection<InetAddress> known_hosts = new ArrayList<>();
+    private InetAddress known_host;
     private Integer currentHost;
 
     public Participant(MultiplayerGameFormationActivity activity) {
@@ -82,12 +83,18 @@ public class Participant implements Actor {
                 Log.d("startingmsg", "received");
                 onStartingMessageReceived(message, sender);
                 break;
+            case MessageType.DISCOVER:
+                forwardDiscover(sender);
+                break;
+            case MessageType.JOIN:
+                forwardJoin(message, sender);
+                break;
         }
     }
 
     private void tellKnownHostsTo(InetAddress sender) {
         KnownHostsMessage message = new KnownHostsMessage();
-        message.addHosts(known_hosts);
+        message.addHost(known_host);
         AddressedContent reply = new AddressedContent(message, sender);
         activity.addMessageToQueue(reply);
     }
@@ -95,23 +102,21 @@ public class Participant implements Actor {
     private void pingHosts(JSONObject json) {
         KnownHostsMessage knownHostsMessage = KnownHostsMessage.createMessageFromJSON(json);
         Map<String, Object> fields= knownHostsMessage.decode();
-        Collection<InetAddress> addresses = (Collection<InetAddress>) fields.get(KnownHostsMessage.KNOWN_HOSTS_FIELD);
-        for (InetAddress address : addresses) {
-            DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
-            AddressedContent content = new AddressedContent(message, address);
-            activity.addMessageToQueue(content);
-        }
+        InetAddress address = (InetAddress) fields.get(KnownHostsMessage.KNOWN_HOST_FIELD);
+        DiscoverMessage message = new DiscoverMessage().withIp(address.getHostAddress());
+        AddressedContent content = new AddressedContent(message, address);
+        activity.addMessageToQueue(content);
     }
 
     private void onReceivingHostIp(InetAddress sender) {
-        if (!known_hosts.contains(sender)) known_hosts.add(sender);
+        if (known_host != sender) known_host = sender;
         DiscoverMessage message = new DiscoverMessage().withIp(sender.getHostAddress());
         AddressedContent content = new AddressedContent(message, sender);
         activity.addMessageToQueue(content);
     }
 
     private void onAvailableMessageReceived(JSONObject message, InetAddress sender) {
-        if (!known_hosts.contains(sender)) known_hosts.add(sender);
+        if (known_host != sender) known_host = sender;
         AvailableMessage msg = AvailableMessage.createMessageFromJSON(message);
         Map<String, Object> msgInfo = msg.decode();
         participants = (Map<Integer, String>) msgInfo.get(AvailableMessage.PARTICIPANTS_FIELD);
@@ -127,14 +132,6 @@ public class Participant implements Actor {
         ((MultiplayerGameJoinActivity)activity).receiveList(id, hostName, names);
     }
 
-    public ArrayList<Integer> getPlayerIDs() {
-        ArrayList<Integer> ids = new ArrayList<>(participants.keySet());
-        return ids;
-    }
-
-    public static final String PLAYER_NAME = "com.multipong.PLAYER_NAME";
-    public static final String PLAYERS = "player_list";
-
     private void onStartingMessageReceived(JSONObject message, InetAddress sender) {
         StartingMessage msg = StartingMessage.createMessageFromJSON(message);
         Map<String, Object> msgInfo = msg.decode();
@@ -145,6 +142,38 @@ public class Participant implements Actor {
                 .putIntegerArrayListExtra(PLAYERS, getPlayerIDs());
         activity.startActivity(intent);
     }
+
+    private void forwardDiscover(InetAddress sender) {
+        AvailableMessage response = new AvailableMessage();
+        response.addParticipants(participants);
+        AddressedContent content = new Sender.AddressedContent(response, sender);
+        activity.addMessageToQueue(content);
+    }
+
+    private void forwardJoin(JSONObject json, InetAddress sender) {
+        if (known_host == null) return;
+        // forward request
+        JoinMessage joinMessage = JoinMessage.createFromJson(json);
+        AddressedContent joinRequest = new AddressedContent(joinMessage, known_host);
+        activity.addMessageToQueue(joinRequest);
+        // send available information back to other participant
+        Map<String, Object> object = joinMessage.decode();
+        Integer newId = (Integer) object.get(JoinMessage.ID_FIELD);
+        String name = (String) object.get(Message.NAME_FIELD);
+        AvailableMessage response = new AvailableMessage();
+        participants.put(newId, name);
+        response.addParticipants(participants);
+        AddressedContent content = new Sender.AddressedContent(response, sender);
+        activity.addMessageToQueue(content);
+    }
+
+    public ArrayList<Integer> getPlayerIDs() {
+        ArrayList<Integer> ids = new ArrayList<>(participants.keySet());
+        return ids;
+    }
+
+    public static final String PLAYER_NAME = "com.multipong.PLAYER_NAME";
+    public static final String PLAYERS = "player_list";
 
     public class MessageType {
         public static final String ARE_YOU_THE_HOST = "ARE_U_HOST";

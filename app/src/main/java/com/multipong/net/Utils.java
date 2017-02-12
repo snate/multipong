@@ -9,6 +9,7 @@ import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
+import com.multipong.net.messages.gameformation.AvailableMessage;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.net.messages.gameformation.AreYouTheHostMessage;
 import com.multipong.net.messages.gameformation.TellIPMessage;
@@ -76,7 +77,8 @@ public class Utils {
                 return;
             }
             // Otw, Host has to tell its IP to participant
-            TellIPMessage message = new TellIPMessage();
+            // Send available to participant GO
+            AvailableMessage message = new AvailableMessage();
             AddressedContent content = new AddressedContent(message, address);
             mActivity.addMessageToQueue(content);
         }

@@ -117,7 +117,7 @@ public class MultiplayerGame extends Game {
             double newSpeedY = getYFactor() * - 1;
             double newPos = 1 - xFinalPosition;
             boolean stillAlive = getNumberOfLives() > 0;
-            if (bounced) {
+            if (!bounced) {
                 newSpeedX = Math.random();
                 newSpeedY = Math.random();
                 newPos    = Math.random();

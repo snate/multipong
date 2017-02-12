@@ -44,10 +44,6 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
         matchesList.setAdapter(adapter);
 
         setActor(new Participant(this));
-
-        WifiP2pManager manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-        Channel channel = manager.initialize(this, getMainLooper(), null);
-        new WifiP2pListener(manager, channel, this);
     }
 
     @Override

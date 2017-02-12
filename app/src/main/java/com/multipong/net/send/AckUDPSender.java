@@ -3,10 +3,9 @@ package com.multipong.net.send;
 import android.util.Log;
 
 import com.multipong.net.Utils;
+import com.multipong.net.messages.Message;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -47,6 +46,20 @@ public class AckUDPSender extends Sender {
                 attempts++;
             } catch (IOException e) {
             }
+        }
+    }
+
+    public class ReliablyDeliverableAddressedContent extends AddressedContent {
+
+        private Boolean b;
+
+        public ReliablyDeliverableAddressedContent(Message message, InetAddress address) {
+            super(message, address);
+        }
+
+        public ReliablyDeliverableAddressedContent withRendezvous(Boolean b) {
+            this.b = b;
+            return this;
         }
     }
 }

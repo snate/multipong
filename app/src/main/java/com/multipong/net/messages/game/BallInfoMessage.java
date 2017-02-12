@@ -58,6 +58,15 @@ public class BallInfoMessage extends Message {
         return this;
     }
 
+    public BallInfoMessage addNextPlayerInfo(int playerId) {
+        try {
+            object.put(NEXT_FIELD, playerId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
     public BallInfoMessage forCoordinator(boolean forCoordinator) {
         try {
             object.put(TO_COORDINATOR_FIELD, forCoordinator);

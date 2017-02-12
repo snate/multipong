@@ -25,7 +25,8 @@ public class TCPSender extends Sender {
         try {
             socket.bind(null);
             socket.connect(new InetSocketAddress(host, Utils.PORT), SOCKET_TIMEOUT);
-            Log.d("Sender", "Client socket - " + socket.isConnected());
+            Log.d("TCP Sender", "Sending " + jsonObjectString);
+            Log.d("TCP Sender", "To " + host);
             OutputStream stream = socket.getOutputStream();
             stream.write(jsonObjectString.getBytes(), 0, jsonObjectString.length());
             stream.close();

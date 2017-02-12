@@ -23,7 +23,6 @@ public class MultiplayerGame extends Game {
         msm = new MultiplayerStateManager(this);
     }
 
-    //TODO invoke setNumberOfLives before start on MultiGame to have a game with more than one live
     @Override
     public void start(String playerName) {
         this.playerName = playerName;

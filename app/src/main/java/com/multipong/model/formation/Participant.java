@@ -120,12 +120,11 @@ public class Participant implements Actor {
     }
 
     public static final String PLAYER_NAME = "com.multipong.PLAYER_NAME";
+
     private void onStartingMessageReceived(JSONObject message, InetAddress sender) {
-        Log.d("startingmsg", "start1");
         StartingMessage msg = StartingMessage.createMessageFromJSON(message);
-        Log.d("startingmsg", "start2");
-        //Map<String, Object> msgInfo = msg.decode();
-        Log.d("startingmsg", "start3");
+        Map<String, Object> msgInfo = msg.decode();
+        Log.d("Participant", "Starting...");
         Intent intent = new Intent(activity.getApplicationContext(), GameActivity.class)
                 .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName());
         activity.startActivity(intent);

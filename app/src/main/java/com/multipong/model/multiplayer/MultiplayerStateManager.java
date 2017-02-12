@@ -62,12 +62,13 @@ public class MultiplayerStateManager implements Actor {
             double startingPosition = (double) fields.get(BallInfoMessage.POSITION_FIELD);
             BallInfo ballInfo = createBallInfo(speedX, speedY, startingPosition);
             game.newTurn(ballInfo);
-        })
-        // TODO: Update state
+        }
+        // Update state
         // TODO: Needs review for robustness
         boolean previousIsStillInGame = (boolean) fields.get(BallInfoMessage.STILL_IN_GAME_FIELD);
         if (!previousIsStillInGame)
-            state.removePlayer(state.currentActivePlayer);
+            state.removePlayer((Player) fields.get(BallInfoMessage.ID_FIELD));
+        state.currentActivePlayer = (Player) fields.get(BallInfoMessage.NEXT_FIELD);
     }
 
     private class State {

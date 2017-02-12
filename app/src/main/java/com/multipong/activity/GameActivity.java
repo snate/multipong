@@ -124,8 +124,10 @@ public class GameActivity extends NetworkingActivity {
 
     @Override
     public void onBackPressed() {
-        if(gameEnded)
-            super.onBackPressed();
+        if(gameEnded){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void showPlayerName(String name) {

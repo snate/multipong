@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class StartingMessage extends Message {
             ArrayList<StartingGameInfo> gameInfos = new ArrayList<>();
             JSONArray array = object.getJSONArray(PARTICIPANTS_FIELD);
             for (int i = 0; i < array.length(); i++)
-                gameInfos.add((StartingGameInfo) array.get(i));
+                gameInfos.add(StartingGameInfo.fromJson(array.getJSONObject(i)));
             result.put(PARTICIPANTS_FIELD, gameInfos);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -62,14 +63,14 @@ public class StartingMessage extends Message {
         return object.toString();
     }
 
-    public class StartingGameInfo {
+    public static class StartingGameInfo {
         private final Integer id;
         private final String name;
         private final InetAddress address;
 
-        private final String ID   = "id";
-        private final String NAME = "name";
-        private final String ADDR = "address";
+        private static final String ID   = "id";
+        private static final String NAME = "name";
+        private static final String ADDR = "address";
 
         StartingGameInfo(Integer id, String name, InetAddress address) {
             this.id = id;
@@ -77,7 +78,7 @@ public class StartingMessage extends Message {
             this.address = address;
         }
 
-        public JSONObject toJson() {
+        JSONObject toJson() {
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put(ID, id);
@@ -87,6 +88,24 @@ public class StartingMessage extends Message {
                 e.printStackTrace();
             }
             return jsonObject;
+        }
+
+        static StartingGameInfo fromJson(JSONObject jsonObject) {
+            StartingGameInfo result = null;
+            try {
+                Integer id = jsonObject.getInt(ID);
+                String name = jsonObject.getString(NAME);
+                InetAddress address = null;
+                result = new StartingGameInfo(id, name, address);
+                try {
+                    address = InetAddress.getByName(jsonObject.getString(ADDR));
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return result;
         }
     }
 }

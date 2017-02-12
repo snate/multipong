@@ -44,7 +44,12 @@ public class MultiplayerStateManager implements Actor {
 
     @Override
     public void receive(String type, JSONObject message, InetAddress sender) {
-
+        switch (type) {
+            case MessageType.BALL_INFO:
+                // TODO: Update state
+                // TODO: If next player is me, invoke receiveData method
+                break;
+        }
     }
 
     public void receiveData(BallInfo info) {

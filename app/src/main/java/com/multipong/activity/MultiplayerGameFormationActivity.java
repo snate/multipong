@@ -2,7 +2,6 @@ package com.multipong.activity;
 
 import android.os.Bundle;
 
-import com.multipong.model.Actor;
 import com.multipong.net.Utils;
 
 /**
@@ -15,7 +14,7 @@ public abstract class MultiplayerGameFormationActivity extends NetworkingActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.setActivity(this);
+        Utils.setGameFormationActivity(this);
     }
 
     @Override

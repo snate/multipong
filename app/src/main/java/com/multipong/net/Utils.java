@@ -29,10 +29,10 @@ public class Utils {
     public static final String WIFI_P2P_GROUP_OWNER_ADDRESS = "192.168.49.1";
     public static final String WIFI_P2P_BROADCAST = "192.168.49.255";
 
-    private static MultiplayerGameFormationActivity activity;
+    private static MultiplayerGameFormationActivity gameFormationActivity;
 
-    public static void setActivity(MultiplayerGameFormationActivity activity) {
-        Utils.activity = activity;
+    public static void setGameFormationActivity(MultiplayerGameFormationActivity activity) {
+        Utils.gameFormationActivity = activity;
     }
 
     public static void connectTo(final WifiP2pDevice device, final WifiP2pManager manager,
@@ -44,7 +44,7 @@ public class Utils {
             public void onSuccess() {
                 Log.d("Utils", "Connected to " + device.deviceName + " that has address "
                         + device.deviceAddress);
-                manager.requestConnectionInfo(channel, new MyConnectionListener(activity));
+                manager.requestConnectionInfo(channel, new MyConnectionListener(gameFormationActivity));
             }
             @Override
             public void onFailure(int reason) { }

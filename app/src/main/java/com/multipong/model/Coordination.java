@@ -13,7 +13,6 @@ import java.net.InetAddress;
 
 public class Coordination implements Actor {
 
-    // TODO: Refactor to give proper type to activity
     private NetworkingActivity activity;
 
     @Override

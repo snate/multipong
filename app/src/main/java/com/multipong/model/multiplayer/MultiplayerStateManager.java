@@ -89,6 +89,7 @@ public class MultiplayerStateManager implements Actor {
         private double ballSpeedX;
         private double ballSpeedY;
         private double position;
+        private boolean stillInGame;
 
         public double getBallSpeedX() {
             return ballSpeedX;
@@ -114,6 +115,15 @@ public class MultiplayerStateManager implements Actor {
 
         public BallInfo withPosition(double position) {
             this.position = position;
+            return this;
+        }
+
+        public boolean getStillInGame() {
+            return stillInGame;
+        }
+
+        public BallInfo tellIfStillInGame(boolean yesOrNo) {
+            stillInGame = yesOrNo;
             return this;
         }
     }

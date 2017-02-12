@@ -24,10 +24,10 @@ public class MultiplayerGameParticipantsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_partecipants);
+        setContentView(R.layout.activity_participants);
 
         Intent intent = getIntent();
-        List<String> partecipants = intent.getStringArrayListExtra("participants");
+        List<String> participants = intent.getStringArrayListExtra("participants");
         String host = intent.getStringExtra("hostName");
 
         TextView text = (TextView)findViewById(R.id.host_name_text);
@@ -35,28 +35,28 @@ public class MultiplayerGameParticipantsActivity extends AppCompatActivity {
                 .append(" ").append(host).toString();
         text.setText(cs);
 
-        ListView list = (ListView)findViewById(R.id.partecipants_list);
-        list.setAdapter(new PartecipantsAdapter(this, partecipants));
+        ListView list = (ListView)findViewById(R.id.participants_list);
+        list.setAdapter(new ParticipantsAdapter(this, participants));
     }
 
-    private class PartecipantsAdapter extends BaseAdapter {
+    private class ParticipantsAdapter extends BaseAdapter {
 
-        private List<String> partecipants;
+        private List<String> participants;
         private Activity activity;
 
-        public PartecipantsAdapter(Activity activity, List<String> partecipants) {
-            this.partecipants = partecipants;
+        public ParticipantsAdapter(Activity activity, List<String> participants) {
+            this.participants = participants;
             this.activity = activity;
         }
 
         @Override
         public int getCount() {
-            return partecipants.size();
+            return participants.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return partecipants.get(position);
+            return participants.get(position);
         }
 
         @Override
@@ -68,12 +68,12 @@ public class MultiplayerGameParticipantsActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             if(convertView == null){
                 convertView = LayoutInflater.from(activity)
-                        .inflate(R.layout.row_partecipant_item, null);
+                        .inflate(R.layout.row_participant_item, null);
             }
-            final String partecipantName = (String) getItem(position);
-            TextView partecipantNameTextView =
-                    (TextView) convertView.findViewById(R.id.partecipant_name_text);
-            partecipantNameTextView.setText(partecipantName);
+            final String participantName = (String) getItem(position);
+            TextView participantNameTextView =
+                    (TextView) convertView.findViewById(R.id.participant_name_text);
+            participantNameTextView.setText(participantName);
             return convertView;
         }
     }

@@ -18,6 +18,7 @@ public class MultiplayerGame extends Game {
     private String playerName;
     private MultipongDatabase database;
     private MultiplayerStateManager msm;
+    private volatile Boolean started;
 
     public MultiplayerGame(GameActivity activity) {
         this.activity = activity;
@@ -25,11 +26,16 @@ public class MultiplayerGame extends Game {
         activity.setActor(msm);
     }
 
+    public void setStartingPlayer(boolean isStarting) {
+        this.started = isStarting;
+    }
+
     @Override
     public void start(String playerName) {
         this.playerName = playerName;
         if (currentGame == null) {
             currentGame = new MultiplayerGameThread(playerName, activity);
+            Log.e("START", started + "");
             new Thread(currentGame).start();
         }
 
@@ -65,6 +71,14 @@ public class MultiplayerGame extends Game {
         //       (See #21)
         @Override
         public void initialBallPosition() {
+            if(started) return;
+            synchronized(forBallToComeBack) {
+                try {
+                    forBallToComeBack.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             setX(newX);
             setY(newY);
         }

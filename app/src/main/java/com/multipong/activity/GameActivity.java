@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.multipong.R;
 import com.multipong.model.Actor;
+import com.multipong.model.formation.Host;
 import com.multipong.model.game.Game;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.game.SingleGame;
@@ -37,6 +38,7 @@ public class GameActivity extends NetworkingActivity {
 
     private String playerName;
     private Boolean isMultiplayer;
+    private Boolean isHost;
     private Game game;
     private StatsSaver saver;
     private volatile boolean gameEnded = false;
@@ -55,6 +57,7 @@ public class GameActivity extends NetworkingActivity {
 
         Intent intent = getIntent();
         isMultiplayer = intent.getBooleanExtra(MainActivity.IS_MULTI, false);
+        isHost = intent.getBooleanExtra(MultiplayerGameHostActivity.IS_HOST, false);
         playerName = PlayerNameUtility.getPlayerName();
 
         mSurfaceView = (PongView) findViewById(R.id.game_surface);
@@ -114,8 +117,11 @@ public class GameActivity extends NetworkingActivity {
         super.onResume();
         // TODO: parameterize single game or multiplayer game choice
         if(game == null) {
-            if (isMultiplayer)
+            if (isMultiplayer) {
                 game = new MultiplayerGame(this);
+                Log.e("START", (actor instanceof Host) + "");
+                ((MultiplayerGame)game).setStartingPlayer(isHost);
+            }
             else
                 game = new SingleGame(this);
             game.start(playerName);

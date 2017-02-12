@@ -104,6 +104,7 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
     }
 
     public static final String IS_HOST = "is_Host";
+    public static final String PLAYERS = "player_list";
 
     private class HostGameStarter implements View.OnClickListener {
 
@@ -128,7 +129,8 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
             Intent intent = new Intent(getApplicationContext(), GameActivity.class)
                     .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName())
                     .putExtra(MainActivity.IS_MULTI, true)
-                    .putExtra(IS_HOST, true);
+                    .putExtra(IS_HOST, true)
+                    .putIntegerArrayListExtra(PLAYERS, ((Host)getActor()).getPlayerIDs());
             startActivity(intent);
         }
     }

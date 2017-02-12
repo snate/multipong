@@ -13,6 +13,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class MultiplayerStateManager implements Actor {
@@ -22,6 +23,7 @@ public class MultiplayerStateManager implements Actor {
     private State state;
 
     public MultiplayerStateManager(MultiplayerGame multiplayerGameThread, GameActivity activity) {
+        this.activity = activity;
         game = multiplayerGameThread;
         state = new State();
     }
@@ -77,6 +79,11 @@ public class MultiplayerStateManager implements Actor {
         for (Player player : state.activePlayers)
             ids.add(player.id);
         return ids;
+    }
+
+    public void addPlayers(List<Integer> ids) {
+        for (int i : ids)
+            state.addPlayer(new Player(i));
     }
 
     private class State {

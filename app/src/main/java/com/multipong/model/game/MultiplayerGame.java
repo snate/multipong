@@ -27,6 +27,10 @@ public class MultiplayerGame extends Game {
         activity.setActor(msm);
     }
 
+    public MultiplayerStateManager getMSM() {
+        return msm;
+    }
+
     public void setStartingPlayer(boolean isStarting) {
         this.started = isStarting;
     }

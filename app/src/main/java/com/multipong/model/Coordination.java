@@ -18,6 +18,10 @@ public class Coordination implements Actor {
 
     private NetworkingActivity activity;
 
+    public Coordination(NetworkingActivity activity) {
+        this.activity = activity;
+    }
+
     @Override
     public synchronized void receive(String type, JSONObject message, InetAddress sender) {
         Log.d("Coordination", "Message received");

@@ -26,12 +26,13 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Participant implements Actor {
 
     private MultiplayerGameFormationActivity activity;
-    private ArrayList<String> participants;
+    private Map<Integer, String> participants;
     private Map<Integer, String> hosts = new HashMap<>();
     private Collection<InetAddress> known_hosts = new ArrayList<>();
     private Integer currentHost;
@@ -113,25 +114,21 @@ public class Participant implements Actor {
         if (!known_hosts.contains(sender)) known_hosts.add(sender);
         AvailableMessage msg = AvailableMessage.createMessageFromJSON(message);
         Map<String, Object> msgInfo = msg.decode();
-        participants = (ArrayList<String>) msgInfo.get(AvailableMessage.PARTICIPANTS_FIELD);
+        participants = (Map<Integer, String>) msgInfo.get(AvailableMessage.PARTICIPANTS_FIELD);
+        Log.d("Participant - 1", message.toString());
+        Log.d("Participant - 2", msgInfo.get(AvailableMessage.PARTICIPANTS_FIELD).toString());
+        Log.d("Participant - 3", participants.values().toString());
         Integer id = (Integer) msgInfo.get(Message.ID_FIELD);
         String hostName = (String) msgInfo.get(Message.NAME_FIELD);
         hosts.put(id, hostName);
         NameResolutor.INSTANCE.addNode(id, sender);
-        ((MultiplayerGameJoinActivity)activity).receiveList(id, hostName, participants);
+
+        List<String> names = new ArrayList<>(participants.values());
+        ((MultiplayerGameJoinActivity)activity).receiveList(id, hostName, names);
     }
 
     public ArrayList<Integer> getPlayerIDs() {
-        ArrayList<Integer> ids = new ArrayList<>();
-        JSONObject participantObj;
-        for (String p : participants) {
-            try {
-                participantObj = new JSONObject(p);
-                ids.add(participantObj.getInt("id"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+        ArrayList<Integer> ids = new ArrayList<>(participants.keySet());
         return ids;
     }
 

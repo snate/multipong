@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 public class MultiplayerStateManager implements Actor {
@@ -69,6 +70,13 @@ public class MultiplayerStateManager implements Actor {
         if (!previousIsStillInGame)
             state.removePlayer((Player) fields.get(BallInfoMessage.ID_FIELD));
         state.currentActivePlayer = (Player) fields.get(BallInfoMessage.NEXT_FIELD);
+    }
+
+    public Collection<Integer> getActivePlayers() {
+        Collection<Integer> ids = new ArrayList<>();
+        for (Player player : state.activePlayers)
+            ids.add(player.id);
+        return ids;
     }
 
     private class State {

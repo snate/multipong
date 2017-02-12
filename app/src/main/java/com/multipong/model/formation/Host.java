@@ -124,7 +124,7 @@ public class Host implements Actor {
 
     private void sendParticipantsListTo(Collection<InetAddress> addresses) {
         AvailableMessage response = new AvailableMessage();
-        response.addParticipants(participants.values());
+        response.addParticipants(participants);
         for (InetAddress recipient : addresses) {
             AddressedContent content = new Sender.AddressedContent(response, recipient);
             activity.addMessageToQueue(content);

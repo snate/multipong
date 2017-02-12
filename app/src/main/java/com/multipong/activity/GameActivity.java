@@ -127,12 +127,12 @@ public class GameActivity extends NetworkingActivity {
 
     @Override
     protected Sender getSender() {
-        return new TCPSender();
+        return new AckUDPSender();
     }
 
     @Override
     protected Receiver getReceiver() {
-        return new TCPReceiver(this);
+        return new AckUDPReceiver(this);
     }
 
     @Override

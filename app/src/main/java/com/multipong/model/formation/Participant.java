@@ -33,7 +33,7 @@ import java.util.Map;
 public class Participant implements Actor {
 
     private MultiplayerGameFormationActivity activity;
-    private Map<Integer, String> participants;
+    private Map<Integer, String> participants = new HashMap<>();
     private Map<Integer, String> hosts = new HashMap<>();
     private InetAddress known_host;
     private Integer currentHost;

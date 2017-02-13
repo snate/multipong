@@ -91,7 +91,7 @@ public class MultiplayerGame extends Game {
             setXFactor(info.getBallSpeedX());
             setYFactor(info.getBallSpeedY());
             synchronized (forBallToComeBack) {
-                forBallToComeBack.incrementAndGet();
+                forBallToComeBack.set(1);
                 forBallToComeBack.notifyAll();
             }
         }

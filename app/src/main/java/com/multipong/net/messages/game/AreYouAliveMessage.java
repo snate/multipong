@@ -2,9 +2,9 @@ package com.multipong.net.messages.game;
 
 import com.multipong.model.Coordination;
 
-public class AreYouAlive extends GameMessage {
+public class AreYouAliveMessage extends GameMessage {
 
-    public AreYouAlive() {
+    public AreYouAliveMessage() {
         super();
         forCoordination(true);
     }

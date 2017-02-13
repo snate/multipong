@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.multipong.R;
+import com.multipong.model.Actor;
 import com.multipong.model.formation.Participant;
 import com.multipong.model.game.Game;
 import com.multipong.model.game.MultiplayerGame;
@@ -115,6 +116,12 @@ public class GameActivity extends NetworkingActivity {
         });
 
         setActor(new GameRouter(this));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getActor().receive(Actor.MessageType.POISON_PILL, null, null);
     }
 
     public Game getGame() {

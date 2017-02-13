@@ -53,4 +53,8 @@ public class Coordination implements Actor {
                 activity.addMessageToQueue(content);
         }
     }
+
+    public class MessageType {
+        public static final String AYA = "AYA";
+    }
 }

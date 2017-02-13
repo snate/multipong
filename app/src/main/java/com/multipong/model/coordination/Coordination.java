@@ -101,30 +101,30 @@ public class Coordination implements Actor {
         }
     }
 
-    private class GOPinger extends TimerTask {
+    private class GOPinger extends Pinger {
+
+        GOPinger(GameActivity activity) {
+            super(activity);
+        }
+
         @Override
-        public void run() {
-            AreYouAliveMessage ayaMessage = new AreYouAliveMessage();
-            InetAddress address = null;
+        protected int getAttempts() {
+            return 5;
+        }
+
+        @Override
+        protected InetAddress getPinged() {
             try {
-                address = InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
+                return InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
-            ReliablyDeliverableAddressedContent rdac =
-                    new ReliablyDeliverableAddressedContent(ayaMessage, address);
-            Boolean messagehasBeenSent = rdac.getB();
-            activity.addMessageToQueue(rdac);
-            synchronized (messagehasBeenSent) {
-                try {
-                    messagehasBeenSent.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (!messagehasBeenSent)
-                // TODO: GO has crashed
-                return;
+            return null;
+        }
+
+        @Override
+        protected void pingedIsNotAlive() {
+            // TODO: GO has crashed
         }
     }
 

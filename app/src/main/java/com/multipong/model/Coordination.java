@@ -5,8 +5,11 @@ import android.util.Log;
 import com.multipong.activity.GameActivity;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.multiplayer.MultiplayerStateManager;
+import com.multipong.model.multiplayer.MultiplayerStateManager.Player;
 import com.multipong.net.NameResolutor;
+import com.multipong.net.messages.game.AreYouAliveMessage;
 import com.multipong.net.messages.game.BallInfoMessage;
+import com.multipong.net.send.AckUDPSender.ReliablyDeliverableAddressedContent;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.DeviceIdUtility;
 
@@ -73,7 +76,26 @@ public class Coordination implements Actor {
     private class NGOPinger extends TimerTask {
         @Override
         public void run() {
-            // TODO: Add implementation
+            MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
+            MultiplayerStateManager msm = multiplayerGame.getMSM();
+            Player currentPlayer = msm.getCurrentPlayer();
+            AreYouAliveMessage ayaMessage = new AreYouAliveMessage();
+            InetAddress address = NameResolutor.INSTANCE.getNodeByHash(currentPlayer.getId());
+            ReliablyDeliverableAddressedContent rdac =
+                    new ReliablyDeliverableAddressedContent(ayaMessage, address);
+            activity.addMessageToQueue(rdac);
+            Boolean messagehasBeenSent = rdac.getB();
+            synchronized (messagehasBeenSent) {
+                try {
+                    messagehasBeenSent.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (!messagehasBeenSent) {
+                // TODO: Remove player and send ball to next
+                // TODO: be careful to concurrent accesses to players' list!!!
+            }
         }
     }
 

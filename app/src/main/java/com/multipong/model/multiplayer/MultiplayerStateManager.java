@@ -59,7 +59,7 @@ public class MultiplayerStateManager implements Actor {
         }
     }
 
-    private void handleBallInfo(JSONObject json) {
+    private synchronized void handleBallInfo(JSONObject json) {
         BallInfoMessage message = BallInfoMessage.createFromJson(json);
         Map<String, Object> fields = message.decode();
         Player nextPlayer = new Player((Integer) fields.get(BallInfoMessage.NEXT_FIELD));
@@ -106,6 +106,11 @@ public class MultiplayerStateManager implements Actor {
 
     public Player getCurrentPlayer() {
         return state.currentActivePlayer;
+    }
+
+    public synchronized void removePlayer(Player player) {
+        if (player.equals(state.currentActivePlayer))
+            state.removePlayer(player);
     }
 
     private class State {

@@ -42,8 +42,10 @@ public class Coordination implements Actor {
         msm.receive(MultiplayerStateManager.MessageType.BALL_INFO, json, sender);
         // Send message to participants
         Collection<Integer> ids = msm.getActivePlayers();
+        Log.d("a", ids.toString());
         for (Integer id : ids) {
             InetAddress address = NameResolutor.INSTANCE.getNodeByHash(id);
+            Log.d("a", address.getHostAddress());
             AddressedContent content = new AddressedContent(message, address);
             // Avoid sending ball info to local MSM
             // && Avoid sending ball info to sender too (not necessary)

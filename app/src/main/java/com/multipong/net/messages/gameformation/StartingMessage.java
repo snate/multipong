@@ -78,6 +78,18 @@ public class StartingMessage extends Message {
             this.address = address;
         }
 
+        public InetAddress getAddress() {
+            return address;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
         JSONObject toJson() {
             JSONObject jsonObject = new JSONObject();
             try {
@@ -96,12 +108,12 @@ public class StartingMessage extends Message {
                 Integer id = jsonObject.getInt(ID);
                 String name = jsonObject.getString(NAME);
                 InetAddress address = null;
-                result = new StartingGameInfo(id, name, address);
                 try {
                     address = InetAddress.getByName(jsonObject.getString(ADDR));
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 }
+                result = new StartingGameInfo(id, name, address);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

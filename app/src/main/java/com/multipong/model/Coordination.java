@@ -92,10 +92,8 @@ public class Coordination implements Actor {
                     e.printStackTrace();
                 }
             }
-            if (!messagehasBeenSent) {
-                // TODO: Remove player and send ball to next
-                // TODO: be careful to concurrent accesses to players' list!!!
-            }
+            if (!messagehasBeenSent)
+                msm.removePlayer(currentPlayer);
         }
     }
 

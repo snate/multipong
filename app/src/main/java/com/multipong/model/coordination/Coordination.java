@@ -3,6 +3,7 @@ package com.multipong.model.coordination;
 import android.util.Log;
 
 import com.multipong.activity.GameActivity;
+import com.multipong.activity.NetworkingActivity;
 import com.multipong.model.Actor;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.multiplayer.MultiplayerStateManager;
@@ -35,9 +36,9 @@ public class Coordination implements Actor {
         }
         pinger = new Timer();
         if (Math.random() > 0.5) // TODO: if(imTheGO) { ... }
-            pinger.scheduleAtFixedRate(new NGOPinger(), 0, 2000);
+            pinger.scheduleAtFixedRate(new NGOPinger(activity), 0, 2500);
         else
-            pinger.scheduleAtFixedRate(new GOPinger(), 0, 6000);
+            pinger.scheduleAtFixedRate(new GOPinger(), (long) (Math.random()*8500), 8500);
     }
 
     @Override
@@ -75,27 +76,28 @@ public class Coordination implements Actor {
         pinger.cancel();
     }
 
-    private class NGOPinger extends TimerTask {
+    private class NGOPinger extends Pinger {
+
+        Player currentPlayer;
+
+        NGOPinger(GameActivity activity) {
+            super(activity);
+        }
+
         @Override
-        public void run() {
-            MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
-            MultiplayerStateManager msm = multiplayerGame.getMSM();
-            Player currentPlayer = msm.getCurrentPlayer();
-            AreYouAliveMessage ayaMessage = new AreYouAliveMessage();
-            InetAddress address = NameResolutor.INSTANCE.getNodeByHash(currentPlayer.getId());
-            ReliablyDeliverableAddressedContent rdac =
-                    new ReliablyDeliverableAddressedContent(ayaMessage, address);
-            activity.addMessageToQueue(rdac);
-            Boolean messagehasBeenSent = rdac.getB();
-            synchronized (messagehasBeenSent) {
-                try {
-                    messagehasBeenSent.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (!messagehasBeenSent)
-                msm.removePlayer(currentPlayer);
+        protected int getAttempts() {
+            return 2;
+        }
+
+        @Override
+        protected InetAddress getPinged() {
+            currentPlayer = msm.getCurrentPlayer();
+            return NameResolutor.INSTANCE.getNodeByHash(currentPlayer.getId());
+        }
+
+        @Override
+        protected void pingedIsNotAlive() {
+            msm.removePlayer(currentPlayer);
         }
     }
 

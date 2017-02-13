@@ -20,6 +20,8 @@ public class AckUDPSender extends Sender {
     @Override
     public void send(AddressedContent content) {
         int attempts = 0;
+        if (content instanceof ReliablyDeliverableAddressedContent)
+            ((ReliablyDeliverableAddressedContent) content).setB(false);
         while (attempts < 4) {
             try {
                 DatagramSocket clientSocket = new DatagramSocket();
@@ -38,7 +40,8 @@ public class AckUDPSender extends Sender {
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 clientSocket.receive(receivePacket);
                 attempts = 4;
-                // TODO: if instance of RDAC ...
+                if (content instanceof ReliablyDeliverableAddressedContent)
+                    ((ReliablyDeliverableAddressedContent) content).setB(true);
                 String ack = new String(receivePacket.getData());
                 Log.d("AckUDPSender", "Received " + ack + " as a response");
                 clientSocket.close();
@@ -47,6 +50,8 @@ public class AckUDPSender extends Sender {
             } catch (IOException e) {
             }
         }
+        if (content instanceof ReliablyDeliverableAddressedContent)
+            ((ReliablyDeliverableAddressedContent) content).b.notifyAll();
     }
 
     public static class ReliablyDeliverableAddressedContent extends AddressedContent {
@@ -55,11 +60,14 @@ public class AckUDPSender extends Sender {
 
         public ReliablyDeliverableAddressedContent(Message message, InetAddress address) {
             super(message, address);
-            b = false;
         }
 
         public Boolean getB() {
             return b;
+        }
+
+        public void setB(boolean newB) {
+            b = newB;
         }
     }
 }

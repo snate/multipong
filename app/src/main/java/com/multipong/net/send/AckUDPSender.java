@@ -14,7 +14,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class AckUDPSender extends Sender {
 
-    private static final int UDP_TIMEOUT = 400;
+    private static final int UDP_TIMEOUT = 500;
 
     @Override
     public void send(AddressedContent content) {

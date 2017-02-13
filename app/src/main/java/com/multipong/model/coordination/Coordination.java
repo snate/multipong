@@ -3,16 +3,13 @@ package com.multipong.model.coordination;
 import android.util.Log;
 
 import com.multipong.activity.GameActivity;
-import com.multipong.activity.NetworkingActivity;
 import com.multipong.model.Actor;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.multiplayer.MultiplayerStateManager;
 import com.multipong.model.multiplayer.MultiplayerStateManager.Player;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.Utils;
-import com.multipong.net.messages.game.AreYouAliveMessage;
 import com.multipong.net.messages.game.BallInfoMessage;
-import com.multipong.net.send.AckUDPSender.ReliablyDeliverableAddressedContent;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.DeviceIdUtility;
 
@@ -22,7 +19,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class Coordination implements Actor {
 
@@ -98,9 +94,16 @@ public class Coordination implements Actor {
         @Override
         protected void pingedIsNotAlive() {
             boolean wasRemoved = msm.removePlayer(currentPlayer);
-            if (wasRemoved)
-                //TODO: Notify other players that currentPlayer died
-                return;
+            if (wasRemoved) {
+                Collection<Integer> players = msm.getActivePlayers();
+                for (Integer player : players) {
+                    // TODO: Notify other players of player's death
+                }
+                // TODO: Send ball to next player after `currentPlayer died by using last BallInfo msg
+
+                //TODO: What if current coordinator has just been elected? (lastBallInfo == null)
+                //      => compute ballInfo randomly
+            }
         }
     }
 

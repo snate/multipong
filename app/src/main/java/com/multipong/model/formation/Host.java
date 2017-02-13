@@ -27,7 +27,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,6 +67,8 @@ public class Host implements Actor {
                 Log.d("Device List", group.toString());
             }
         });
+        //block to start game
+        activity.waitForEmptyMessageQueue();
     }
 
     @Override

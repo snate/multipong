@@ -38,7 +38,7 @@ public class Coordination implements Actor {
         if (Math.random() > 0.5) // TODO: if(imTheGO) { ... }
             pinger.scheduleAtFixedRate(new NGOPinger(activity), 0, 2500);
         else
-            pinger.scheduleAtFixedRate(new GOPinger(), (long) (Math.random()*8500), 8500);
+            pinger.scheduleAtFixedRate(new GOPinger(activity), (long) (Math.random()*8500), 8500);
     }
 
     @Override

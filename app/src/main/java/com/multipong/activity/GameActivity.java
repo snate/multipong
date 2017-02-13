@@ -187,6 +187,7 @@ public class GameActivity extends NetworkingActivity {
 
     public void endGame(final int score, final boolean win) {
         makeBallDisappear();
+        gameEnded = true;
         if (!win) {
             if (!isMultiplayer) {
                 Stats stats = new Stats().withModality(Stats.Modality.SINGLE_PLAYER)
@@ -195,14 +196,22 @@ public class GameActivity extends NetworkingActivity {
                 saver.save(stats);
             }
 
-            gameEnded = true;
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     showShortToast("DONE");
-                    (findViewById(R.id.image_lose)).setVisibility(View.VISIBLE);
+                    if (isMultiplayer) {
+                        ImageView image = (ImageView) findViewById(R.id.image_end_game);
+                        image.setBackgroundResource(R.drawable.lose_game);
+                        image.setVisibility(View.VISIBLE);
+                    }
                     mEndTextView.setVisibility(View.VISIBLE);
-                    mEndTextView.setText(playerName + ", your score is " + score);
+                    mEndTextView.setText(new StringBuffer()
+                            .append(playerName)
+                            .append(", ")
+                            .append(getString(R.string.your_score_is))
+                            .append(" ")
+                            .append(score).toString());
                     mEndButton.setVisibility(View.VISIBLE);
                     mEndButton.setClickable(true);
                 }
@@ -211,9 +220,19 @@ public class GameActivity extends NetworkingActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    ImageView image = (ImageView) findViewById(R.id.image_end_game);
+                    image.setBackgroundResource(R.drawable.win_image);
+                    image.setVisibility(View.VISIBLE);
                     showShortToast("DONE");
                     mEndTextView.setVisibility(View.VISIBLE);
-                    mEndTextView.setText(playerName + ", YOU WIN\nyour score is " + score);
+                    mEndTextView.setText(new StringBuffer()
+                            .append(playerName)
+                            .append(", ")
+                            .append(getString(R.string.you_win))
+                            .append("\n")
+                            .append(getString(R.string.your_score_is))
+                            .append(" ")
+                            .append(score).toString());
                     mEndButton.setVisibility(View.VISIBLE);
                     mEndButton.setClickable(true);
                 }

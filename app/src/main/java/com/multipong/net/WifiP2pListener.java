@@ -50,7 +50,7 @@ public class WifiP2pListener extends BroadcastReceiver {
                 });
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 0, 10000);
+        timer.scheduleAtFixedRate(timerTask, 0, 20000);
     }
 
     public void cancelDiscovery() {

@@ -34,4 +34,7 @@
     <string name="create_new_match">Create new match</string>
     <string name="join">join</string>
     <string name="participants">participants</string>
+
+    <string name="your_score_is">your score is</string>
+    <string name="you_win">YOU WIN!!!</string>
 </resources>

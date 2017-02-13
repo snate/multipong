@@ -62,6 +62,17 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
 
+        <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/image_end_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:maxWidth="120dp"
+                android:maxHeight="120dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:layout_centerHorizontal="true"/>
+
         <TextView
                 android:id="@+id/end_tv"
                 android:text=""
@@ -69,33 +80,8 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"/>
-
-        <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/image_win"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:maxWidth="120dp"
-                android:maxHeight="120dp"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:src="@drawable/win_image"
                 android:layout_centerHorizontal="true"
-                android:layout_above="@id/end_tv"/>
-
-        <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/image_lose"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:maxWidth="120dp"
-                android:maxHeight="120dp"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:src="@drawable/win_image"
-                android:layout_centerHorizontal="true"
-                android:layout_above="@id/end_tv"/>
+                android:layout_below="@id/image_end_game"/>
 
         <Button
             android:id="@+id/end_bt"

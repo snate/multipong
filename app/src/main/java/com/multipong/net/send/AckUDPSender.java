@@ -48,7 +48,7 @@ public class AckUDPSender extends Sender {
         }
     }
 
-    public class ReliablyDeliverableAddressedContent extends AddressedContent {
+    public static class ReliablyDeliverableAddressedContent extends AddressedContent {
 
         private AtomicBoolean b = new AtomicBoolean();
 

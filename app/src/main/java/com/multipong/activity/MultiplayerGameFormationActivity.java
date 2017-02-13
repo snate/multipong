@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.multipong.net.Utils;
 import com.multipong.net.WifiP2pListener;
+import com.multipong.net.messages.PoisonPillMessage;
 import com.multipong.net.receive.Receiver;
 import com.multipong.net.receive.TCPReceiver;
 import com.multipong.net.send.Sender;
@@ -56,5 +57,18 @@ public abstract class MultiplayerGameFormationActivity extends NetworkingActivit
     @Override
     public Receiver getReceiver() {
         return new TCPReceiver(this);
+    }
+
+    public void waitForEmptyMessageQueue() {
+        try {
+            PoisonPillMessage die = new PoisonPillMessage();
+            Sender.AddressedContent content = new Sender.AddressedContent(die, null);
+            addMessageToQueue(content);
+            synchronized (die) {
+                die.wait();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

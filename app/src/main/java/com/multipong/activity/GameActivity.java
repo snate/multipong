@@ -153,6 +153,7 @@ public class GameActivity extends NetworkingActivity {
             game.start(playerName);
             game.setPaletteWidth(PALETTE_WIDTH);
         }
+        // TODO: Move ifMultiplayer -> setActor() here
     }
 
     @Override

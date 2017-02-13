@@ -28,13 +28,10 @@ public class Coordination implements Actor {
             cancelDiscovery();
         }
         pinger = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                // TODO: Add implementation
-            }
-        };
-        pinger.scheduleAtFixedRate(timerTask, 0, 2000);
+        if (Math.random() > 0.5) // TODO: if(imTheGO) { ... }
+            pinger.scheduleAtFixedRate(new NGOPinger(), 0, 2000);
+        else
+            pinger.scheduleAtFixedRate(new GOPinger(), 0, 2000);
 
     }
 
@@ -71,6 +68,20 @@ public class Coordination implements Actor {
 
     public void cancelDiscovery() {
         pinger.cancel();
+    }
+
+    private class NGOPinger extends TimerTask {
+        @Override
+        public void run() {
+            // TODO: Add implementation
+        }
+    }
+
+    private class GOPinger extends TimerTask {
+        @Override
+        public void run() {
+            // TODO: Add implementation
+        }
     }
 
     public class MessageType {

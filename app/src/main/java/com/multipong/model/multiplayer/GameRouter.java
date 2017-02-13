@@ -22,7 +22,7 @@ public class GameRouter implements Actor {
 
     @Override
     public void receive(String type, JSONObject message, InetAddress sender) {
-        if (GameMessage.isForCoordinator(message))
+        if (GameMessage.isForCoordination(message))
             coordinationRef.receive(type, message, sender);
         else {
             MultiplayerGame game = (MultiplayerGame) activity.getGame();

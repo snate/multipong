@@ -27,15 +27,15 @@ public abstract class GameMessage extends Message {
     }
 
 
-    public void forCoordinator(boolean forCoordinator) {
+    public void forCoordination(boolean forCoordination) {
         try {
-            object.put(TO_COORDINATOR_FIELD, forCoordinator);
+            object.put(TO_COORDINATOR_FIELD, forCoordination);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean isForCoordinator() {
+    public boolean isForCoordination() {
         boolean answer = true;
         try {
             answer = object.getBoolean(TO_COORDINATOR_FIELD);
@@ -45,7 +45,7 @@ public abstract class GameMessage extends Message {
         return answer;
     }
 
-    public static boolean isForCoordinator(JSONObject jsonObject) {
+    public static boolean isForCoordination(JSONObject jsonObject) {
         boolean answer = true;
         try {
             answer = jsonObject.getBoolean(TO_COORDINATOR_FIELD);

@@ -35,7 +35,7 @@ public class Coordination implements Actor {
 
     private void spreadToParticipants(JSONObject json, InetAddress sender) {
         BallInfoMessage message = BallInfoMessage.createFromJson(json);
-        message.forCoordinator(false);
+        message.forCoordination(false);
         MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
         MultiplayerStateManager msm = multiplayerGame.getMSM();
         // Forward message to local MSM

@@ -22,6 +22,10 @@ public class GameRouter implements Actor {
 
     @Override
     public void receive(String type, JSONObject message, InetAddress sender) {
+        if (type.equals(MessageType.POISON_PILL)) {
+            coordinationRef.cancelDiscovery();
+            return;
+        }
         if (GameMessage.isForCoordination(message))
             coordinationRef.receive(type, message, sender);
         else {

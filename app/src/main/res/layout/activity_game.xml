@@ -61,14 +61,42 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
+
         <TextView
-            android:id="@+id/end_tv"
-            android:text=""
-            android:visibility="invisible"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
+                android:id="@+id/end_tv"
+                android:text=""
+                android:visibility="invisible"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"/>
+
+        <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/image_win"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:maxWidth="120dp"
+                android:maxHeight="120dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:src="@drawable/win_image"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/end_tv"/>
+
+        <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/image_win"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:maxWidth="120dp"
+                android:maxHeight="120dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:src="@drawable/win_image"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/end_tv"/>
+
         <Button
             android:id="@+id/end_bt"
             android:text="Go back"

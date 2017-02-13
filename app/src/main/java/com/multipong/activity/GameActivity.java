@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -178,25 +179,40 @@ public class GameActivity extends NetworkingActivity {
         mSurfaceView.removeBall();
     }
 
-    public void endGame(final int score) {
+    public void endGame(final int score, final boolean win) {
         makeBallDisappear();
-        if (!isMultiplayer) {
-            Stats stats = new Stats().withModality(Stats.Modality.SINGLE_PLAYER)
-                    .withName(playerName)
-                    .withScore(score);
-            saver.save(stats);
-        }
-        gameEnded = true;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showShortToast("DONE");
-                mEndTextView.setVisibility(View.VISIBLE);
-                mEndTextView.setText(playerName + ", your score is " + score);
-                mEndButton.setVisibility(View.VISIBLE);
-                mEndButton.setClickable(true);
+        if (!win) {
+            if (!isMultiplayer) {
+                Stats stats = new Stats().withModality(Stats.Modality.SINGLE_PLAYER)
+                        .withName(playerName)
+                        .withScore(score);
+                saver.save(stats);
             }
-        });
+
+            gameEnded = true;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showShortToast("DONE");
+                    (findViewById(R.id.image_win)).setVisibility(View.VISIBLE);
+                    mEndTextView.setVisibility(View.VISIBLE);
+                    mEndTextView.setText(playerName + ", your score is " + score);
+                    mEndButton.setVisibility(View.VISIBLE);
+                    mEndButton.setClickable(true);
+                }
+            });
+        } else {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showShortToast("DONE");
+                    mEndTextView.setVisibility(View.VISIBLE);
+                    mEndTextView.setText(playerName + ", YOU WIN\nyour score is " + score);
+                    mEndButton.setVisibility(View.VISIBLE);
+                    mEndButton.setClickable(true);
+                }
+            });
+        }
         // TODO: Add code to end game
     }
 

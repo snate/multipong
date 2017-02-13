@@ -21,14 +21,11 @@ import com.multipong.net.send.Sender;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.PlayerNameUtility;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

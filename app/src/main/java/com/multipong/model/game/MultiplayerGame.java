@@ -43,6 +43,8 @@ public class MultiplayerGame extends Game {
         currentGame.decrementDelay();
     }
 
+    public int getScore() {return currentGame.getScore();}
+
     @Override
     public void start(String playerName) {
         this.playerName = playerName;

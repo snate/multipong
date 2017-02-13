@@ -50,6 +50,7 @@ public abstract class AbsGameThread implements Runnable {
     public synchronized int getNumberOfLives(){ return lives; }
     public synchronized void incrementNumberOfLives() { lives = lives + 1; }
     public synchronized void decrementNumberOfLives() { lives = lives - 1; }
+    public synchronized int getScore() {return score;}
 
     @Override
     public void run() {
@@ -103,7 +104,7 @@ public abstract class AbsGameThread implements Runnable {
                 e.printStackTrace();
             }
         }
-        activity.endGame(score);
+        activity.endGame(score, false);
     }
 
     protected void decrementDelay() {

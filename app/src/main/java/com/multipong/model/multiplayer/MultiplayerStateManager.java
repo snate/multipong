@@ -79,7 +79,7 @@ public class MultiplayerStateManager implements Actor {
         // TODO: Needs review for robustness
         boolean previousIsStillInGame = (boolean) fields.get(BallInfoMessage.STILL_IN_GAME_FIELD);
         if (!previousIsStillInGame)
-            state.removePlayer((Player) fields.get(BallInfoMessage.ID_FIELD));
+            state.removePlayer(new Player((Integer) fields.get(BallInfoMessage.ID_FIELD)));
         state.currentActivePlayer = new Player((Integer) fields.get(BallInfoMessage.NEXT_FIELD));
     }
 

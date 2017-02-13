@@ -60,20 +60,21 @@ public class GameActivity extends NetworkingActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
 
-        Intent intent = getIntent();
-        isMultiplayer = intent.getBooleanExtra(MainActivity.IS_MULTI, false);
-        isHost = intent.getBooleanExtra(MultiplayerGameHostActivity.IS_HOST, false);
-        if (isMultiplayer) {
-            playerIDs = intent.getIntegerArrayListExtra(Participant.PLAYERS);
-        }
-        playerName = PlayerNameUtility.getPlayerName();
-
         mSurfaceView = (PongView) findViewById(R.id.game_surface);
         mLayout = (RelativeLayout) findViewById(R.id.activity_game);
         //mBar = (SeekBar) findViewById(R.id.paletteScroll);
         mScore = (TextView) findViewById(R.id.score_tv);
         mEndTextView = (TextView) findViewById(R.id.end_tv);
         mEndButton = (Button) findViewById(R.id.end_bt);
+
+        Intent intent = getIntent();
+        isMultiplayer = intent.getBooleanExtra(MainActivity.IS_MULTI, false);
+        isHost = intent.getBooleanExtra(MultiplayerGameHostActivity.IS_HOST, false);
+        if (isMultiplayer) {
+            playerIDs = intent.getIntegerArrayListExtra(Participant.PLAYERS);
+            // TODO: Notify PongView that this game is a multiplayer game
+        }
+        playerName = PlayerNameUtility.getPlayerName();
 
         mLayout.setOnTouchListener(new View.OnTouchListener() {
             int max, touchLimLeft,touchLimRight;

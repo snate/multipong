@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Timer;
@@ -115,10 +116,21 @@ public class Coordination implements Actor {
                 for (Integer player : players) {
                     // TODO: Notify other players of player's death
                 }
-                // TODO: Send ball to next player after `currentPlayer died by using last BallInfo msg
-
-                //TODO: What if current coordinator has just been elected? (lastBallInfo == null)
-                //      => compute ballInfo randomly
+                // Send ball to next player after `currentPlayer died by using last BallInfo msg
+                BallInfoMessage message = new BallInfoMessage();
+                if (lastInfo == null) {
+                    // What if current coordinator has just been elected? (lastBallInfo == null)
+                    //      => compute ballInfo randomly
+                    // (first player died)
+                    BallInfo info = MultiplayerStateManager.createBallInfo(Math.random(), Math.random(), Math.random())
+                            .tellIfStillInGame(true).withNextPlayer(oldPlayers.get(0).getId());
+                }
+                message.addBallInfo(lastInfo);
+                ArrayList<Integer> ids = new ArrayList<>(msm.getActivePlayers());
+                Player nextPlayer = msm.getExtractor().getNext(oldPlayers, currentPlayer);
+                InetAddress address = NameResolutor.INSTANCE.getNodeByHash(nextPlayer.getId());
+                AddressedContent content = new AddressedContent(message, address);
+                activity.addMessageToQueue(content);
             }
         }
     }

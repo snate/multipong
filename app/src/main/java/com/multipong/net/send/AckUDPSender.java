@@ -50,11 +50,15 @@ public class AckUDPSender extends Sender {
 
     public static class ReliablyDeliverableAddressedContent extends AddressedContent {
 
-        private AtomicBoolean b = new AtomicBoolean();
+        private volatile Boolean b;
 
         public ReliablyDeliverableAddressedContent(Message message, InetAddress address) {
             super(message, address);
-            b.set(false);
+            b = false;
+        }
+
+        public Boolean getB() {
+            return b;
         }
     }
 }

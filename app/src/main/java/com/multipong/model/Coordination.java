@@ -5,8 +5,11 @@ import android.util.Log;
 import com.multipong.activity.GameActivity;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.multiplayer.MultiplayerStateManager;
+import com.multipong.model.multiplayer.MultiplayerStateManager.Player;
 import com.multipong.net.NameResolutor;
+import com.multipong.net.messages.game.AreYouAliveMessage;
 import com.multipong.net.messages.game.BallInfoMessage;
+import com.multipong.net.send.AckUDPSender.ReliablyDeliverableAddressedContent;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.DeviceIdUtility;
 
@@ -14,13 +17,25 @@ import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.util.Collection;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Coordination implements Actor {
 
     private GameActivity activity;
+    private static Timer pinger = new Timer();
 
     public Coordination(GameActivity activity) {
         this.activity = activity;
+        synchronized (pinger) {
+            cancelDiscovery();
+        }
+        pinger = new Timer();
+        if (Math.random() > 0.5) // TODO: if(imTheGO) { ... }
+            pinger.scheduleAtFixedRate(new NGOPinger(), 0, 2000);
+        else
+            pinger.scheduleAtFixedRate(new GOPinger(), 0, 2000);
+
     }
 
     @Override
@@ -35,7 +50,7 @@ public class Coordination implements Actor {
 
     private void spreadToParticipants(JSONObject json, InetAddress sender) {
         BallInfoMessage message = BallInfoMessage.createFromJson(json);
-        message.forCoordinator(false);
+        message.forCoordination(false);
         MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
         MultiplayerStateManager msm = multiplayerGame.getMSM();
         // Forward message to local MSM
@@ -52,5 +67,46 @@ public class Coordination implements Actor {
             if (!id.equals(DeviceIdUtility.getId()) && !(address.equals(sender)))
                 activity.addMessageToQueue(content);
         }
+    }
+
+    public void cancelDiscovery() {
+        pinger.cancel();
+    }
+
+    private class NGOPinger extends TimerTask {
+        @Override
+        public void run() {
+            MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
+            MultiplayerStateManager msm = multiplayerGame.getMSM();
+            Player currentPlayer = msm.getCurrentPlayer();
+            AreYouAliveMessage ayaMessage = new AreYouAliveMessage();
+            InetAddress address = NameResolutor.INSTANCE.getNodeByHash(currentPlayer.getId());
+            ReliablyDeliverableAddressedContent rdac =
+                    new ReliablyDeliverableAddressedContent(ayaMessage, address);
+            activity.addMessageToQueue(rdac);
+            Boolean messagehasBeenSent = rdac.getB();
+            synchronized (messagehasBeenSent) {
+                try {
+                    messagehasBeenSent.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (!messagehasBeenSent) {
+                // TODO: Remove player and send ball to next
+                // TODO: be careful to concurrent accesses to players' list!!!
+            }
+        }
+    }
+
+    private class GOPinger extends TimerTask {
+        @Override
+        public void run() {
+            // TODO: Add implementation
+        }
+    }
+
+    public class MessageType {
+        public static final String AYA = "AYA";
     }
 }

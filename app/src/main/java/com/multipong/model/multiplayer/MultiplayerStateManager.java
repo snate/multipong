@@ -40,7 +40,7 @@ public class MultiplayerStateManager implements Actor {
         BallInfoMessage ballInfoMessage = new BallInfoMessage()
                                              .addBallInfo(ballInfo)
                                              .addNextPlayerInfo(next.id);
-        ballInfoMessage.forCoordinator(true);
+        ballInfoMessage.forCoordination(true);
         try {
             InetAddress address = InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
             AddressedContent content = new AddressedContent(ballInfoMessage, address);
@@ -104,6 +104,10 @@ public class MultiplayerStateManager implements Actor {
             state.addPlayer(new Player(i));
     }
 
+    public Player getCurrentPlayer() {
+        return state.currentActivePlayer;
+    }
+
     private class State {
         public Player me;
         public Player currentActivePlayer;
@@ -144,6 +148,10 @@ public class MultiplayerStateManager implements Actor {
         @Override
         public String toString() {
             return String.valueOf(id.intValue());
+        }
+
+        public Integer getId() {
+            return id;
         }
     }
 

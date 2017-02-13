@@ -24,17 +24,21 @@ public class MultiplayerStateManager implements Actor {
     private GameActivity activity;
     private MultiplayerGame game;
     private State state;
+    private PlayerExtractor extractor;
 
     public MultiplayerStateManager(MultiplayerGame multiplayerGameThread, GameActivity activity) {
         this.activity = activity;
         game = multiplayerGameThread;
         state = new State();
-        state.setMe(new Player(DeviceIdUtility.getId()
-        ));
+        state.setMe(new Player(DeviceIdUtility.getId()));
+        extractor = new ConsecutivePlayerExtractor();
+    }
+
+    public PlayerExtractor getExtractor() {
+        return extractor;
     }
 
     public void sendBallToNext(BallInfo ballInfo){
-        PlayerExtractor extractor = new ConsecutivePlayerExtractor();
         Player next = extractor.getNext(state.activePlayers, state.me);
         // Send ball info to coordinator via net
         BallInfoMessage ballInfoMessage = new BallInfoMessage()
@@ -139,7 +143,7 @@ public class MultiplayerStateManager implements Actor {
     public static class Player {
         Integer id;
 
-        Player(Integer id) {
+        public Player(Integer id) {
             this.id = id;
         }
 

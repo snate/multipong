@@ -27,6 +27,8 @@ import org.json.JSONObject;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,15 +132,11 @@ public class Participant implements Actor {
     private void onStartingMessageReceived(JSONObject message, InetAddress sender) {
         StartingMessage msg = StartingMessage.createMessageFromJSON(message);
         Map<String, Object> msgInfo = msg.decode();
-        Log.e("a","1");
         ArrayList<StartingGameInfo> gameInfos =
                 (ArrayList<StartingGameInfo>) msgInfo.get(StartingMessage.PARTICIPANTS_FIELD);
-        Log.e("a","2");
         participants = new HashMap<>();
-        Log.e("a","3");
         for (StartingGameInfo sgi : gameInfos) {
             NameResolutor.INSTANCE.addNode(sgi.getId(), sgi.getAddress());
-            Log.e("a","4");
             participants.put(sgi.getId(), sgi.getName());
         }
         Log.d("Participant", "Starting...");
@@ -178,6 +176,7 @@ public class Participant implements Actor {
 
     public ArrayList<Integer> getPlayerIDs() {
         ArrayList<Integer> ids = new ArrayList<>(participants.keySet());
+        Collections.sort(ids);
         return ids;
     }
 

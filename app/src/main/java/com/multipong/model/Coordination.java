@@ -7,6 +7,7 @@ import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.multiplayer.MultiplayerStateManager;
 import com.multipong.model.multiplayer.MultiplayerStateManager.Player;
 import com.multipong.net.NameResolutor;
+import com.multipong.net.Utils;
 import com.multipong.net.messages.game.AreYouAliveMessage;
 import com.multipong.net.messages.game.BallInfoMessage;
 import com.multipong.net.send.AckUDPSender.ReliablyDeliverableAddressedContent;
@@ -16,6 +17,7 @@ import com.multipong.utility.DeviceIdUtility;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -99,7 +101,27 @@ public class Coordination implements Actor {
     private class GOPinger extends TimerTask {
         @Override
         public void run() {
-            // TODO: Add implementation
+            AreYouAliveMessage ayaMessage = new AreYouAliveMessage();
+            InetAddress address = null;
+            try {
+                address = InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+            ReliablyDeliverableAddressedContent rdac =
+                    new ReliablyDeliverableAddressedContent(ayaMessage, address);
+            Boolean messagehasBeenSent = rdac.getB();
+            activity.addMessageToQueue(rdac);
+            synchronized (messagehasBeenSent) {
+                try {
+                    messagehasBeenSent.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (!messagehasBeenSent)
+                // TODO: GO has crashed
+                return;
         }
     }
 

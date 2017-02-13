@@ -24,11 +24,11 @@ public abstract class Pinger extends TimerTask {
 
     @Override
     public void run() {
+        MultiplayerGame multiplayerGame = (MultiplayerGame) networkingActivity.getGame();
+        msm = multiplayerGame.getMSM();
         int attempts = getAttempts();
         boolean pong = false;
         while (!pong && attempts < getAttempts()) {
-            MultiplayerGame multiplayerGame = (MultiplayerGame) networkingActivity.getGame();
-            msm = multiplayerGame.getMSM();
             savePlayers(msm.getActivePlayers());
             AreYouAliveMessage ayaMessage = new AreYouAliveMessage();
             InetAddress address = getPinged();

@@ -23,7 +23,7 @@ public class DeathMessage extends GameMessage {
         return result;
     }
 
-    public DeathMessage isDead(Integer id) {
+    public DeathMessage withDead(Integer id) {
         try {
             object.put(DEAD_FIELD, id);
         } catch (JSONException e) {

@@ -74,6 +74,7 @@ public class GameActivity extends NetworkingActivity {
         isHost = intent.getBooleanExtra(MultiplayerGameHostActivity.IS_HOST, false);
         if (isMultiplayer) {
             playerIDs = intent.getIntegerArrayListExtra(Participant.PLAYERS);
+            setActor(new GameRouter(this));
             // TODO: Notify PongView that this game is a multiplayer game
         }
         playerName = PlayerNameUtility.getPlayerName();
@@ -115,8 +116,6 @@ public class GameActivity extends NetworkingActivity {
                 finish();
             }
         });
-
-        setActor(new GameRouter(this));
     }
 
     @Override
@@ -201,7 +200,7 @@ public class GameActivity extends NetworkingActivity {
                 @Override
                 public void run() {
                     showShortToast("DONE");
-                    (findViewById(R.id.image_win)).setVisibility(View.VISIBLE);
+                    (findViewById(R.id.image_lose)).setVisibility(View.VISIBLE);
                     mEndTextView.setVisibility(View.VISIBLE);
                     mEndTextView.setText(playerName + ", your score is " + score);
                     mEndButton.setVisibility(View.VISIBLE);

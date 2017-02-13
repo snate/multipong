@@ -44,6 +44,12 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
         mButton.setOnClickListener(new HostGameStarter(playerList));
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // TODO: Wait for sender to have no messages
+    }
+
     public void receiveList(Collection<String> players) {
         mAdapter.players = players;
         runOnUiThread(new Runnable() {

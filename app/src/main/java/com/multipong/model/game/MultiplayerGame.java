@@ -8,6 +8,7 @@ import com.multipong.model.multiplayer.MultiplayerStateManager.BallInfo;
 import com.multipong.persistence.MultipongDatabase;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Marco Zanella
@@ -61,7 +62,7 @@ public class MultiplayerGame extends Game {
         private double newX;
         private double newY = -100; // big enough to make it wait
 
-        private final Object forBallToComeBack = new Object();
+        private final AtomicInteger forBallToComeBack = new AtomicInteger(1);
 
         public MultiplayerGameThread(String playerName, GameActivity activity) {
             super(playerName, activity);
@@ -90,6 +91,7 @@ public class MultiplayerGame extends Game {
             setXFactor(info.getBallSpeedX());
             setYFactor(info.getBallSpeedY());
             synchronized (forBallToComeBack) {
+                forBallToComeBack.incrementAndGet();
                 forBallToComeBack.notifyAll();
             }
         }
@@ -129,9 +131,11 @@ public class MultiplayerGame extends Game {
 
         private void waitForBallToComeBack() {
             Log.d("MULTI", "Waiting...");
+            forBallToComeBack.decrementAndGet();
             synchronized(forBallToComeBack) {
                 try {
-                    forBallToComeBack.wait();
+                    while (forBallToComeBack.get() == 0)
+                        forBallToComeBack.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

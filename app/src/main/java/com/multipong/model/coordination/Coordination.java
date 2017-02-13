@@ -97,7 +97,10 @@ public class Coordination implements Actor {
 
         @Override
         protected void pingedIsNotAlive() {
-            msm.removePlayer(currentPlayer);
+            boolean wasRemoved = msm.removePlayer(currentPlayer);
+            if (wasRemoved)
+                //TODO: Notify other players that currentPlayer died
+                return;
         }
     }
 

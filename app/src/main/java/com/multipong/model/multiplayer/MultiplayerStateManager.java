@@ -108,9 +108,11 @@ public class MultiplayerStateManager implements Actor {
         return state.currentActivePlayer;
     }
 
-    public synchronized void removePlayer(Player player) {
-        if (player.equals(state.currentActivePlayer))
-            state.removePlayer(player);
+    public synchronized boolean removePlayer(Player player) {
+        if (!player.equals(state.currentActivePlayer))
+            return false;
+        state.removePlayer(player);
+        return true;
     }
 
     private class State {

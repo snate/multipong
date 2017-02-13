@@ -14,13 +14,28 @@ import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.util.Collection;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Coordination implements Actor {
 
     private GameActivity activity;
+    private static Timer pinger = new Timer();
 
     public Coordination(GameActivity activity) {
         this.activity = activity;
+        synchronized (pinger) {
+            cancelDiscovery();
+        }
+        pinger = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                // TODO: Add implementation
+            }
+        };
+        pinger.scheduleAtFixedRate(timerTask, 0, 20000);
+
     }
 
     @Override
@@ -52,6 +67,10 @@ public class Coordination implements Actor {
             if (!id.equals(DeviceIdUtility.getId()) && !(address.equals(sender)))
                 activity.addMessageToQueue(content);
         }
+    }
+
+    public void cancelDiscovery() {
+        pinger.cancel();
     }
 
     public class MessageType {

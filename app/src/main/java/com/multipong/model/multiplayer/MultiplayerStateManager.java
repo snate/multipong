@@ -72,6 +72,7 @@ public class MultiplayerStateManager implements Actor {
             double speedY = (double) fields.get(BallInfoMessage.SPEED_Y_FIELD);
             double startingPosition = (double) fields.get(BallInfoMessage.POSITION_FIELD);
             BallInfo ballInfo = createBallInfo(speedX, speedY, startingPosition);
+            game.increaseSpeed();
             game.newTurn(ballInfo);
         }
         // Update state
@@ -80,7 +81,6 @@ public class MultiplayerStateManager implements Actor {
         if (!previousIsStillInGame)
             state.removePlayer((Player) fields.get(BallInfoMessage.ID_FIELD));
         state.currentActivePlayer = new Player((Integer) fields.get(BallInfoMessage.NEXT_FIELD));
-        game.increaseSpeed();
     }
 
     public Collection<Integer> getActivePlayers() {

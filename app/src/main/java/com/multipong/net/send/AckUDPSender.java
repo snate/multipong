@@ -11,6 +11,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AckUDPSender extends Sender {
 
@@ -49,15 +50,11 @@ public class AckUDPSender extends Sender {
 
     public class ReliablyDeliverableAddressedContent extends AddressedContent {
 
-        private Boolean b;
+        private AtomicBoolean b = new AtomicBoolean();
 
         public ReliablyDeliverableAddressedContent(Message message, InetAddress address) {
             super(message, address);
-        }
-
-        public ReliablyDeliverableAddressedContent withRendezvous(Boolean b) {
-            this.b = b;
-            return this;
+            b.set(false);
         }
     }
 }

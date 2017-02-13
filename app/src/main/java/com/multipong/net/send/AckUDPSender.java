@@ -38,6 +38,7 @@ public class AckUDPSender extends Sender {
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 clientSocket.receive(receivePacket);
                 attempts = 4;
+                // TODO: if instance of RDAC ...
                 String ack = new String(receivePacket.getData());
                 Log.d("AckUDPSender", "Received " + ack + " as a response");
                 clientSocket.close();

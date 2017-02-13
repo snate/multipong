@@ -6,6 +6,7 @@ import com.multipong.activity.GameActivity;
 import com.multipong.model.Actor;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.multiplayer.MultiplayerStateManager;
+import com.multipong.model.multiplayer.MultiplayerStateManager.BallInfo;
 import com.multipong.model.multiplayer.MultiplayerStateManager.Player;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.Utils;
@@ -18,12 +19,14 @@ import org.json.JSONObject;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Timer;
 
 public class Coordination implements Actor {
 
     private GameActivity activity;
     private static Timer pinger = new Timer();
+    private BallInfo lastInfo;
 
     public Coordination(GameActivity activity) {
         this.activity = activity;
@@ -49,6 +52,7 @@ public class Coordination implements Actor {
 
     private void spreadToParticipants(JSONObject json, InetAddress sender) {
         BallInfoMessage message = BallInfoMessage.createFromJson(json);
+        saveLastBallInfo(message);
         message.forCoordination(false);
         MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
         MultiplayerStateManager msm = multiplayerGame.getMSM();
@@ -66,6 +70,18 @@ public class Coordination implements Actor {
             if (!id.equals(DeviceIdUtility.getId()) && !(address.equals(sender)))
                 activity.addMessageToQueue(content);
         }
+    }
+
+    private void saveLastBallInfo(BallInfoMessage message) {
+        Map<String, Object> fields = message.decode();
+        double speedX = (double) fields.get(BallInfoMessage.SPEED_X_FIELD);
+        double speedY = (double) fields.get(BallInfoMessage.SPEED_Y_FIELD);
+        double position = (double) fields.get(BallInfoMessage.POSITION_FIELD);
+        int nextPlayer = (Integer) fields.get(BallInfoMessage.NEXT_FIELD);
+        boolean stillInGame = (boolean) fields.get(BallInfoMessage.STILL_IN_GAME_FIELD);
+        lastInfo = MultiplayerStateManager.createBallInfo(speedX, speedY, position)
+                                          .withNextPlayer(nextPlayer)
+                                          .tellIfStillInGame(stillInGame);
     }
 
     public void cancelDiscovery() {

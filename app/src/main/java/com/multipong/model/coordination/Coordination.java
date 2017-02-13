@@ -164,5 +164,6 @@ public class Coordination implements Actor {
 
     public class MessageType {
         public static final String AYA = "AYA";
+        public static final String DEATH = "DEA";
     }
 }

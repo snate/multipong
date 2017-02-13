@@ -34,7 +34,7 @@ public class Coordination implements Actor {
                 // TODO: Add implementation
             }
         };
-        pinger.scheduleAtFixedRate(timerTask, 0, 20000);
+        pinger.scheduleAtFixedRate(timerTask, 0, 2000);
 
     }
 

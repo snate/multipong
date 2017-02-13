@@ -119,8 +119,11 @@ public class Coordination implements Actor {
                 // Send ball to next player after `currentPlayer died by using last BallInfo msg
                 BallInfoMessage message = new BallInfoMessage();
                 if (lastInfo == null) {
-                    //TODO: What if current coordinator has just been elected? (lastBallInfo == null)
+                    // What if current coordinator has just been elected? (lastBallInfo == null)
                     //      => compute ballInfo randomly
+                    // (first player died)
+                    BallInfo info = MultiplayerStateManager.createBallInfo(Math.random(), Math.random(), Math.random())
+                            .tellIfStillInGame(true).withNextPlayer(oldPlayers.get(0).getId());
                 }
                 message.addBallInfo(lastInfo);
                 ArrayList<Integer> ids = new ArrayList<>(msm.getActivePlayers());

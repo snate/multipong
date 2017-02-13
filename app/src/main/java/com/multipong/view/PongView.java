@@ -55,6 +55,11 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
         super(context, attrs, defStyle);
     }
 
+    public boolean setMultiplayer(boolean mode) {
+        isMultiplayer = mode;
+        return isMultiplayer;
+    }
+
     public void setPaletteWidth(double percentage) {
         paletteWidthPerc = percentage;
     }

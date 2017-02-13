@@ -1,6 +1,6 @@
 package com.multipong.net.messages.game;
 
-import com.multipong.model.Coordination;
+import com.multipong.model.coordination.Coordination;
 
 public class AreYouAliveMessage extends GameMessage {
 

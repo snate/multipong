@@ -1,8 +1,9 @@
-package com.multipong.model;
+package com.multipong.model.coordination;
 
 import android.util.Log;
 
 import com.multipong.activity.GameActivity;
+import com.multipong.model.Actor;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.multiplayer.MultiplayerStateManager;
 import com.multipong.model.multiplayer.MultiplayerStateManager.Player;

@@ -2,7 +2,7 @@ package com.multipong.model.multiplayer;
 
 import com.multipong.activity.GameActivity;
 import com.multipong.model.Actor;
-import com.multipong.model.Coordination;
+import com.multipong.model.coordination.Coordination;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.net.messages.game.GameMessage;
 

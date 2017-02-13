@@ -66,9 +66,11 @@ public class MultiplayerStateManager implements Actor {
         Log.d("Next", nextPlayer.toString());
         Log.d("Me", state.me.toString());
 
+        // Update state
         boolean previousIsStillInGame = (boolean) fields.get(BallInfoMessage.STILL_IN_GAME_FIELD);
         if (!previousIsStillInGame)
             state.removePlayer(new Player((Integer) fields.get(BallInfoMessage.ID_FIELD)));
+        state.currentActivePlayer = new Player((Integer) fields.get(BallInfoMessage.NEXT_FIELD));
 
         //If I'm the last player in the game
         if (state.activePlayers.size() == 1) {
@@ -85,10 +87,6 @@ public class MultiplayerStateManager implements Actor {
                 game.increaseSpeed();
                 game.newTurn(ballInfo);
             }
-            // Update state
-            // TODO: Needs review for robustness
-
-            state.currentActivePlayer = new Player((Integer) fields.get(BallInfoMessage.NEXT_FIELD));
         }
     }
 

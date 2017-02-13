@@ -21,6 +21,7 @@ import com.multipong.model.formation.Participant;
 import com.multipong.net.WifiP2pListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -29,7 +30,7 @@ import java.util.List;
  * @version 0.01
  * @since 0.01
  */
-public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivity {
+public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivity implements ParticipantActivity  {
 
     private ListView matchesList;
     private MatchAdapter adapter;
@@ -54,6 +55,7 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
         super.onDestroy();
     }
 
+    @Override
     public void receiveList(int hostID, String hostName, List<String> participants) {
         adapter.addMatch(hostID, hostName, participants);
     }
@@ -141,6 +143,13 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
                 public void onClick(View v) {
                     Participant participant = (Participant) getActor();
                     participant.join(match.hostId);
+                    Intent intent = new Intent(getApplicationContext(),
+                            MultiplayerGameParticipantsActivity.class);
+                    ArrayList<String> extra = new ArrayList<>(participants.size());
+                    extra.addAll(participants);
+                    intent.putStringArrayListExtra("participants", extra);
+                    intent.putExtra("hostName", matchName);
+                    startActivity(intent);
                 }
             });
 

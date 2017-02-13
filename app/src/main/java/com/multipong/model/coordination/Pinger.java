@@ -1,6 +1,8 @@
 package com.multipong.model.coordination;
 
-import com.multipong.activity.NetworkingActivity;
+import com.multipong.activity.GameActivity;
+import com.multipong.model.game.MultiplayerGame;
+import com.multipong.model.multiplayer.MultiplayerStateManager;
 import com.multipong.net.messages.game.AreYouAliveMessage;
 import com.multipong.net.send.AckUDPSender;
 
@@ -9,9 +11,10 @@ import java.util.TimerTask;
 
 public abstract class Pinger extends TimerTask {
 
-    private NetworkingActivity networkingActivity;
+    private GameActivity networkingActivity;
+    protected MultiplayerStateManager msm;
 
-    Pinger(NetworkingActivity activity) {
+    Pinger(GameActivity activity) {
         networkingActivity = activity;
     }
 
@@ -20,6 +23,8 @@ public abstract class Pinger extends TimerTask {
         int attempts = getAttempts();
         boolean pong = false;
         while (!pong && attempts < getAttempts()) {
+            MultiplayerGame multiplayerGame = (MultiplayerGame) networkingActivity.getGame();
+            msm = multiplayerGame.getMSM();
             AreYouAliveMessage ayaMessage = new AreYouAliveMessage();
             InetAddress address = getPinged();
             AckUDPSender.ReliablyDeliverableAddressedContent rdac =

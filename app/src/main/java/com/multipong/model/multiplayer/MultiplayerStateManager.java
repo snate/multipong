@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.multipong.activity.GameActivity;
 import com.multipong.model.Actor;
+import com.multipong.model.coordination.Coordination;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.net.Utils;
 import com.multipong.net.messages.game.BallInfoMessage;
@@ -60,6 +61,9 @@ public class MultiplayerStateManager implements Actor {
         switch (type) {
             case MessageType.BALL_INFO:
                 handleBallInfo(message);
+                break;
+            case Coordination.MessageType.DEATH:
+                // TODO: Implement response
                 break;
         }
     }

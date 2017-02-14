@@ -50,7 +50,6 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // TODO: Wait for sender to have no messages
     }
 
     public void receiveList(Collection<String> players) {

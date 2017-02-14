@@ -8,6 +8,7 @@ import com.multipong.model.coordination.Coordination;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.net.Utils;
 import com.multipong.net.messages.game.BallInfoMessage;
+import com.multipong.net.messages.game.DeathMessage;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.DeviceIdUtility;
 
@@ -63,7 +64,7 @@ public class MultiplayerStateManager implements Actor {
                 handleBallInfo(message);
                 break;
             case Coordination.MessageType.DEATH:
-                // TODO: Implement response
+                playerIsDead(message);
                 break;
         }
     }
@@ -94,6 +95,13 @@ public class MultiplayerStateManager implements Actor {
                 game.newTurn(ballInfo);
             }
         }
+    }
+
+    private void playerIsDead(JSONObject message) {
+        DeathMessage deathMessage = DeathMessage.createFromJson(message);
+        Map<String, Object> fields = deathMessage.decode();
+        Integer deadPlayer = (Integer) fields.get(DeathMessage.DEAD_FIELD);
+        state.removePlayer(new Player(deadPlayer));
     }
 
     public Collection<Integer> getActivePlayers() {

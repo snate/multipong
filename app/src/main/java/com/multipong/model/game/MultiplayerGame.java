@@ -80,8 +80,6 @@ public class MultiplayerGame extends Game {
             waitForBallToComeBack();
         }
 
-        // TODO: Before starting the game, be careful to set newY to 0.0 in the starting node
-        //       (See #21)
         @Override
         public void initialBallPosition() {
             if(started) return;

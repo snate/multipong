@@ -141,7 +141,6 @@ public class GameActivity extends NetworkingActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO: parameterize single game or multiplayer game choice
         if(game == null) {
             if (isMultiplayer) {
                 game = new MultiplayerGame(this, hostId);

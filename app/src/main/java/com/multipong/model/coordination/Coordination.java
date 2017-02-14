@@ -118,13 +118,17 @@ public class Coordination implements Actor {
         Boolean delivered = rdac.getB();
         // if tt, do nothing
         if (delivered) return;
-        // otherwise
-        // send death to everyone
+        // otherwise, we are sending the ball to a dead player!
+        // send death information to everyone
         sendDeath(nextPlayer);
         // take next
         Player nextNextPlayer = msm.getExtractor().getNext(oldPlayers, nextPlayer);
+        Map<String, Object> fields = ballInfoMsg.decode();
+        BallInfo ballInfo = (BallInfo) fields.get(BallInfoMessage.DECODED_BALL);
         ballInfo.withNextPlayer(nextNextPlayer.getId());
-        sendToNext(ballInfo);
+        BallInfoMessage bim = new BallInfoMessage().addBallInfo(ballInfo)
+                                                   .addNextPlayerInfo(nextNextPlayer.getId());
+        sendToNext(bim, nextNextPlayer.getId());
     }
 
     private boolean sendDeath(Player deadOne) {

@@ -92,7 +92,7 @@ public class Coordination implements Actor {
         pinger.cancel();
     }
 
-    public void sendToNext(BallInfo ballInfo) {
+    private void sendToNext(BallInfo ballInfo) {
         // TODO: Add implementation
         // Try to send rdac to next one
         // Wait for rdac to be notified
@@ -103,6 +103,23 @@ public class Coordination implements Actor {
         //  take next
         // }
         // tail recursion
+    }
+
+    private boolean sendDeath(Player deadOne) {
+        MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
+        MultiplayerStateManager msm = multiplayerGame.getMSM();
+        boolean wasRemoved = msm.removePlayer(deadOne);
+        if (!wasRemoved) return false;
+        Collection<Integer> players = msm.getActivePlayers();
+        for (Integer player : players) {
+            // Notify other players of player's death
+            DeathMessage deathMessage = new DeathMessage().withDead(deadOne.getId());
+            InetAddress address = NameResolutor.INSTANCE.getNodeByHash(player);
+            // TODO: Set forCoordination
+            AddressedContent content = new AddressedContent(deathMessage, address);
+            activity.addMessageToQueue(content);
+        }
+        return true;
     }
 
     private class NGOPinger extends Pinger {
@@ -126,38 +143,26 @@ public class Coordination implements Actor {
 
         @Override
         protected void pingedIsNotAlive() {
-            boolean wasRemoved = msm.removePlayer(currentPlayer);
-            if (wasRemoved) {
-                Collection<Integer> players = msm.getActivePlayers();
-                for (Integer player : players) {
-                    // Notify other players of player's death
-                    DeathMessage deathMessage = new DeathMessage().withDead(currentPlayer.getId());
-                    InetAddress address = NameResolutor.INSTANCE.getNodeByHash(player);
-                    // TODO: Set forCoordination
-                    AddressedContent content = new AddressedContent(deathMessage, address);
-                    activity.addMessageToQueue(content);
-                }
-                // Do not send ball if the player who died is not the currently (actual) active one
-                if (lastInfo != null && lastInfo.getNextPlayer() != currentPlayer.getId()) return;
-                // TODO: Send ball to next
-                // Send ball to next player after `currentPlayer died by using last BallInfo msg
-                Player nextPlayer = msm.getExtractor().getNext(oldPlayers, currentPlayer);
-                if (lastInfo == null) {
-                    // What if current coordinator has just been elected? (lastBallInfo == null)
-                    //      => compute ballInfo randomly
-                    // (first player died)
-                    lastInfo = MultiplayerStateManager.createBallInfo(Math.random(), Math.random(), Math.random())
-                            .tellIfStillInGame(true).withNextPlayer(oldPlayers.get(1).getId());
-                } else
-                    lastInfo = lastInfo.withNextPlayer(nextPlayer.getId());
-                BallInfoMessage message = new BallInfoMessage();
-                message.addBallInfo(lastInfo);
-                message.forCoordination(false);
-                // TODO: Send to everyone
-                InetAddress address = NameResolutor.INSTANCE.getNodeByHash(nextPlayer.getId());
-                AddressedContent content = new AddressedContent(message, address);
-                activity.addMessageToQueue(content);
-            }
+            boolean wasRemoved = sendDeath(currentPlayer);
+            if (!wasRemoved) return;
+            // TODO: Send ball to next
+            // Send ball to next player after `currentPlayer died by using last BallInfo msg
+            Player nextPlayer = msm.getExtractor().getNext(oldPlayers, currentPlayer);
+            if (lastInfo == null) {
+                // What if current coordinator has just been elected? (lastBallInfo == null)
+                //      => compute ballInfo randomly
+                // (first player died)
+                lastInfo = MultiplayerStateManager.createBallInfo(Math.random(), Math.random(), Math.random())
+                        .tellIfStillInGame(true).withNextPlayer(oldPlayers.get(1).getId());
+            } else
+                lastInfo = lastInfo.withNextPlayer(nextPlayer.getId());
+            BallInfoMessage message = new BallInfoMessage();
+            message.addBallInfo(lastInfo);
+            message.forCoordination(false);
+            // TODO: Send to everyone
+            InetAddress address = NameResolutor.INSTANCE.getNodeByHash(nextPlayer.getId());
+            AddressedContent content = new AddressedContent(message, address);
+            activity.addMessageToQueue(content);
         }
     }
 

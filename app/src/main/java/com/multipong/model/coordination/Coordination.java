@@ -14,6 +14,7 @@ import com.multipong.net.messages.game.BallInfoMessage;
 import com.multipong.net.messages.game.DeathMessage;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.DeviceIdUtility;
+import com.multipong.utility.GOUtility;
 
 import org.json.JSONObject;
 
@@ -36,7 +37,7 @@ public class Coordination implements Actor {
             cancelDiscovery();
         }
         pinger = new Timer();
-        if (Math.random() > 0.5) // TODO: if(imTheGO) { ... }
+        if (GOUtility.imTheGo())
             pinger.scheduleAtFixedRate(new NGOPinger(activity), 10000, 2500);
         else
             pinger.scheduleAtFixedRate(new GOPinger(activity), 10000 + (long) (Math.random()*8500), 8500);

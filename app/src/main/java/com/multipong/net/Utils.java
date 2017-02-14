@@ -13,6 +13,7 @@ import com.multipong.net.messages.gameformation.AvailableMessage;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.net.messages.gameformation.AreYouTheHostMessage;
 import com.multipong.net.messages.gameformation.TellIPMessage;
+import com.multipong.utility.GOUtility;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,8 +68,10 @@ public class Utils {
             // GO does not know other IP: do nothing
             if (info.isGroupOwner) {
                 Log.d("Hello", " world");
+                GOUtility.setId(true);
                 return;
             }
+            GOUtility.setId(false);
             // Participant sends discovery message to host because knows its IP
             if (!mActivity.isHost()) {
                 AreYouTheHostMessage message = new AreYouTheHostMessage();

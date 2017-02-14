@@ -1,7 +1,9 @@
 package com.multipong.net.send;
 
-import com.multipong.net.Utils;
+import android.util.Log;
+
 import com.multipong.net.messages.Message;
+import com.multipong.net.messages.PoisonPillMessage;
 
 import java.net.InetAddress;
 import java.util.concurrent.BlockingQueue;
@@ -27,6 +29,13 @@ public abstract class Sender implements Runnable {
             AddressedContent content = null;
             try {
                 content = messages.take();
+                if (content.getMessage() instanceof PoisonPillMessage) {
+                    stop = true;
+                    Message msg = content.getMessage();
+                    synchronized (msg) {
+                        msg.notifyAll();
+                    }
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -36,7 +45,7 @@ public abstract class Sender implements Runnable {
     }
 
     public void stop() {
-        stop = true;
+        //stop = true;
     }
 
     public abstract void send(AddressedContent content);

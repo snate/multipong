@@ -8,6 +8,7 @@ import com.multipong.model.multiplayer.MultiplayerStateManager.BallInfo;
 import com.multipong.persistence.MultipongDatabase;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Marco Zanella
@@ -21,9 +22,9 @@ public class MultiplayerGame extends Game {
     private MultiplayerStateManager msm;
     private volatile Boolean started;
 
-    public MultiplayerGame(GameActivity activity) {
+    public MultiplayerGame(GameActivity activity, Integer hostId) {
         this.activity = activity;
-        msm = new MultiplayerStateManager(this, activity);
+        msm = new MultiplayerStateManager(this, hostId, activity);
     }
 
     public MultiplayerStateManager getMSM() {
@@ -42,6 +43,8 @@ public class MultiplayerGame extends Game {
         currentGame.decrementDelay();
     }
 
+    public int getScore() {return currentGame.getScore();}
+
     @Override
     public void start(String playerName) {
         this.playerName = playerName;
@@ -57,11 +60,15 @@ public class MultiplayerGame extends Game {
         ((MultiplayerGameThread)currentGame).newPlayerTurn(info);
     }
 
+    public void setHost(Integer hostId) {
+        msm.setInitialPlayer(hostId);
+    }
+
     private class MultiplayerGameThread extends AbsGameThread {
         private double newX;
         private double newY = -100; // big enough to make it wait
 
-        private final Object forBallToComeBack = new Object();
+        private final AtomicInteger forBallToComeBack = new AtomicInteger(1);
 
         public MultiplayerGameThread(String playerName, GameActivity activity) {
             super(playerName, activity);
@@ -73,8 +80,6 @@ public class MultiplayerGame extends Game {
             waitForBallToComeBack();
         }
 
-        // TODO: Before starting the game, be careful to set newY to 0.0 in the starting node
-        //       (See #21)
         @Override
         public void initialBallPosition() {
             if(started) return;
@@ -90,6 +95,7 @@ public class MultiplayerGame extends Game {
             setXFactor(info.getBallSpeedX());
             setYFactor(info.getBallSpeedY());
             synchronized (forBallToComeBack) {
+                forBallToComeBack.set(1);
                 forBallToComeBack.notifyAll();
             }
         }
@@ -129,9 +135,11 @@ public class MultiplayerGame extends Game {
 
         private void waitForBallToComeBack() {
             Log.d("MULTI", "Waiting...");
+            forBallToComeBack.decrementAndGet();
             synchronized(forBallToComeBack) {
                 try {
-                    forBallToComeBack.wait();
+                    while (forBallToComeBack.get() == 0)
+                        forBallToComeBack.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

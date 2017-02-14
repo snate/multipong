@@ -31,7 +31,7 @@ public class TCPReceiver extends Receiver {
                     InputStream input = client.getInputStream();
                     Scanner scanner = new Scanner(input).useDelimiter("\\A");
                     String json = scanner.hasNext() ? scanner.next() : "";
-                    Log.d("TCP rec", "Message received");
+                    Log.d("TCP rec", "Message received: " + json);
                     process(json, client.getInetAddress());
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -16,16 +16,16 @@ import com.multipong.net.messages.gameformation.DiscoverMessage;
 import com.multipong.net.messages.gameformation.JoinMessage;
 import com.multipong.net.messages.gameformation.KnownHostsMessage;
 import com.multipong.net.messages.gameformation.StartingMessage;
+import com.multipong.net.messages.gameformation.StartingMessage.StartingGameInfo;
 import com.multipong.net.send.Sender;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.PlayerNameUtility;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,12 +83,6 @@ public class Participant implements Actor {
                 Log.d("startingmsg", "received");
                 onStartingMessageReceived(message, sender);
                 break;
-            case MessageType.DISCOVER:
-                forwardDiscover(sender);
-                break;
-            case MessageType.JOIN:
-                forwardJoin(message, sender);
-                break;
         }
     }
 
@@ -135,10 +129,19 @@ public class Participant implements Actor {
     private void onStartingMessageReceived(JSONObject message, InetAddress sender) {
         StartingMessage msg = StartingMessage.createMessageFromJSON(message);
         Map<String, Object> msgInfo = msg.decode();
+        ArrayList<StartingGameInfo> gameInfos =
+                (ArrayList<StartingGameInfo>) msgInfo.get(StartingMessage.PARTICIPANTS_FIELD);
+        Integer host = (Integer) msgInfo.get(Message.ID_FIELD);
+        participants = new HashMap<>();
+        for (StartingGameInfo sgi : gameInfos) {
+            NameResolutor.INSTANCE.addNode(sgi.getId(), sgi.getAddress());
+            participants.put(sgi.getId(), sgi.getName());
+        }
         Log.d("Participant", "Starting...");
         Intent intent = new Intent(activity.getApplicationContext(), GameActivity.class)
                 .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName())
                 .putExtra(MainActivity.IS_MULTI, true)
+                .putExtra(GameActivity.HOST, host)
                 .putIntegerArrayListExtra(PLAYERS, getPlayerIDs());
         activity.startActivity(intent);
     }
@@ -166,10 +169,13 @@ public class Participant implements Actor {
         response.addParticipants(participants);
         AddressedContent content = new Sender.AddressedContent(response, sender);
         activity.addMessageToQueue(content);
+        Log.d("ASIHAISFOAGD","SDFSDFDSBFUS");
+        Log.d("IP address", sender.getHostAddress().toString());
     }
 
     public ArrayList<Integer> getPlayerIDs() {
         ArrayList<Integer> ids = new ArrayList<>(participants.keySet());
+        Collections.sort(ids);
         return ids;
     }
 

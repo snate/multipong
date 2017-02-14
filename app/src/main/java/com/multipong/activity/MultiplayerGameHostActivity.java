@@ -1,8 +1,10 @@
 package com.multipong.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.multipong.R;
 import com.multipong.model.formation.Host;
+import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.PlayerNameUtility;
 
 import java.util.ArrayList;
@@ -42,6 +45,11 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
 
         setActor(new Host(this));
         mButton.setOnClickListener(new HostGameStarter(playerList));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     public void receiveList(Collection<String> players) {
@@ -125,12 +133,35 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
             Host host = (Host) getActor();
             host.startGame();
 
-            Intent intent = new Intent(getApplicationContext(), GameActivity.class)
-                    .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName())
-                    .putExtra(MainActivity.IS_MULTI, true)
-                    .putExtra(IS_HOST, true)
-                    .putIntegerArrayListExtra(PLAYERS, ((Host)getActor()).getPlayerIDs());
-            startActivity(intent);
+            final AlertDialog dialog = new AlertDialog.Builder(MultiplayerGameHostActivity.this)
+                    .setTitle("Creazione della partita")
+                    .setCancelable(false)
+                    .create();
+            new AsyncTask<Void, Void, Void>() {
+
+                @Override
+                protected void onPreExecute() {
+                    dialog.show();
+                }
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    waitForEmptyMessageQueue();
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void result) {
+                    dialog.dismiss();
+                    Intent intent = new Intent(getApplicationContext(), GameActivity.class)
+                            .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName())
+                            .putExtra(MainActivity.IS_MULTI, true)
+                            .putExtra(IS_HOST, true)
+                            .putIntegerArrayListExtra(PLAYERS, ((Host)getActor()).getPlayerIDs());
+                    startActivity(intent);
+                }
+
+            }.execute(null, null, null);
         }
     }
 }

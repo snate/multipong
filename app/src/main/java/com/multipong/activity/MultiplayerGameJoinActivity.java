@@ -77,20 +77,6 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
         public MatchAdapter(Activity activity){
             this.activity = activity;
             matches = new LinkedHashMap<>();
-
-            //TODO remove -> only debug purpose------------//
-            //**/ArrayList<String> names = new ArrayList<>(); //
-            //**/names.add("Minnie");
-            //**/names.add("Pippo");
-            //**/names.add("Pluto");
-            //**/names.add("Topolino");
-            //**/for (int i = 0; i < 10; i++) {
-            //**/    Match m = new Match();
-            //**/    m.host = "host" + i;
-            //**/    m.participants = names;
-            //**/    matches.put(i, m);
-            //**/}
-            //-----------------------------------------------//
         }
 
         public void addMatch(int hostID, String hostName, List<String> participants) {

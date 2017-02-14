@@ -26,6 +26,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,6 +67,8 @@ public class Host implements Actor {
                 Log.d("Device List", group.toString());
             }
         });
+        //block to start game
+        activity.waitForEmptyMessageQueue();
     }
 
     @Override
@@ -141,6 +144,7 @@ public class Host implements Actor {
     public ArrayList<Integer> getPlayerIDs() {
         ArrayList<Integer> ids = new ArrayList<>();
         ids.addAll(participants.keySet());
+        Collections.sort(ids);
         return ids;
     }
 

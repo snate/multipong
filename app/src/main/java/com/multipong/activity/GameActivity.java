@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.multipong.R;
+import com.multipong.model.Actor;
 import com.multipong.model.formation.Participant;
 import com.multipong.model.game.Game;
 import com.multipong.model.game.MultiplayerGame;
@@ -34,6 +36,8 @@ import java.util.List;
 
 public class GameActivity extends NetworkingActivity {
 
+    public static final String HOST = "com.multipong.game.host";
+
     private PongView mSurfaceView;
     private SeekBar mBar;
     private TextView mScore;
@@ -45,6 +49,7 @@ public class GameActivity extends NetworkingActivity {
     private Boolean isMultiplayer;
     private List<Integer> playerIDs = null;
     private Boolean isHost;
+    private Integer hostId;
     private volatile Game game;
     private StatsSaver saver;
     private volatile boolean gameEnded = false;
@@ -60,20 +65,21 @@ public class GameActivity extends NetworkingActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
 
-        Intent intent = getIntent();
-        isMultiplayer = intent.getBooleanExtra(MainActivity.IS_MULTI, false);
-        isHost = intent.getBooleanExtra(MultiplayerGameHostActivity.IS_HOST, false);
-        if (isMultiplayer) {
-            playerIDs = intent.getIntegerArrayListExtra(Participant.PLAYERS);
-        }
-        playerName = PlayerNameUtility.getPlayerName();
-
         mSurfaceView = (PongView) findViewById(R.id.game_surface);
         mLayout = (RelativeLayout) findViewById(R.id.activity_game);
         //mBar = (SeekBar) findViewById(R.id.paletteScroll);
         mScore = (TextView) findViewById(R.id.score_tv);
         mEndTextView = (TextView) findViewById(R.id.end_tv);
         mEndButton = (Button) findViewById(R.id.end_bt);
+
+        Intent intent = getIntent();
+        isMultiplayer = intent.getBooleanExtra(MainActivity.IS_MULTI, false);
+        isHost = intent.getBooleanExtra(MultiplayerGameHostActivity.IS_HOST, false);
+        if (isMultiplayer) {
+            playerIDs = intent.getIntegerArrayListExtra(Participant.PLAYERS);
+            hostId = intent.getIntExtra(GameActivity.HOST, 0);
+        }
+        playerName = PlayerNameUtility.getPlayerName();
 
         mLayout.setOnTouchListener(new View.OnTouchListener() {
             int max, touchLimLeft,touchLimRight;
@@ -94,9 +100,7 @@ public class GameActivity extends NetworkingActivity {
                 return true;
             }
         });
-
         mSurfaceView.setPaletteWidth(PALETTE_WIDTH);
-        mScore.setText("0");
         MultipongDatabase database = new MultipongDatabase(this);
         if (!isMultiplayer) {
             saver = new StatsSaver(database);
@@ -109,11 +113,16 @@ public class GameActivity extends NetworkingActivity {
         mEndButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
+    }
 
-        setActor(new GameRouter(this));
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getActor().receive(Actor.MessageType.POISON_PILL, null, null);
     }
 
     public Game getGame() {
@@ -133,12 +142,13 @@ public class GameActivity extends NetworkingActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO: parameterize single game or multiplayer game choice
         if(game == null) {
             if (isMultiplayer) {
-                game = new MultiplayerGame(this);
+                game = new MultiplayerGame(this, hostId);
                 ((MultiplayerGame)game).setStartingPlayer(isHost);
                 ((MultiplayerGame)game).setAllPlayers(playerIDs);
+                setActor(new GameRouter(this));
+                mSurfaceView.setMultiplayer(isMultiplayer);
             }
             else
                 game = new SingleGame(this);
@@ -177,26 +187,59 @@ public class GameActivity extends NetworkingActivity {
         mSurfaceView.removeBall();
     }
 
-    public void endGame(final int score) {
+    public void endGame(final int score, final boolean win) {
         makeBallDisappear();
-        if (!isMultiplayer) {
-            Stats stats = new Stats().withModality(Stats.Modality.SINGLE_PLAYER)
-                    .withName(playerName)
-                    .withScore(score);
-            saver.save(stats);
-        }
         gameEnded = true;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showShortToast("DONE");
-                mEndTextView.setVisibility(View.VISIBLE);
-                mEndTextView.setText(playerName + ", your score is " + score);
-                mEndButton.setVisibility(View.VISIBLE);
-                mEndButton.setClickable(true);
+        if (!win) {
+            if (!isMultiplayer) {
+                Stats stats = new Stats().withModality(Stats.Modality.SINGLE_PLAYER)
+                        .withName(playerName)
+                        .withScore(score);
+                saver.save(stats);
             }
-        });
-        // TODO: Add code to end game
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showShortToast("DONE");
+                    if (isMultiplayer) {
+                        ImageView image = (ImageView) findViewById(R.id.image_end_game);
+                        image.setBackgroundResource(R.drawable.lose_game);
+                        image.setVisibility(View.VISIBLE);
+                    }
+                    mEndTextView.setVisibility(View.VISIBLE);
+                    mEndTextView.setText(new StringBuffer()
+                            .append(playerName)
+                            .append(", ")
+                            .append(getString(R.string.your_score_is))
+                            .append(" ")
+                            .append(score).toString());
+                    mEndButton.setVisibility(View.VISIBLE);
+                    mEndButton.setClickable(true);
+                }
+            });
+        } else {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ImageView image = (ImageView) findViewById(R.id.image_end_game);
+                    image.setBackgroundResource(R.drawable.win_image);
+                    image.setVisibility(View.VISIBLE);
+                    showShortToast("DONE");
+                    mEndTextView.setVisibility(View.VISIBLE);
+                    mEndTextView.setText(new StringBuffer()
+                            .append(playerName)
+                            .append(", ")
+                            .append(getString(R.string.you_win))
+                            .append("\n")
+                            .append(getString(R.string.your_score_is))
+                            .append(" ")
+                            .append(score).toString());
+                    mEndButton.setVisibility(View.VISIBLE);
+                    mEndButton.setClickable(true);
+                }
+            });
+        }
     }
 
     private void showShortToast(String toastText) {

@@ -11,14 +11,17 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AckUDPSender extends Sender {
 
-    private static final int UDP_TIMEOUT = 400;
+    private static final int UDP_TIMEOUT = 500;
 
     @Override
     public void send(AddressedContent content) {
         int attempts = 0;
+        if (content instanceof ReliablyDeliverableAddressedContent)
+            ((ReliablyDeliverableAddressedContent) content).setB(false);
         while (attempts < 4) {
             try {
                 DatagramSocket clientSocket = new DatagramSocket();
@@ -37,27 +40,35 @@ public class AckUDPSender extends Sender {
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 clientSocket.receive(receivePacket);
                 attempts = 4;
+                if (content instanceof ReliablyDeliverableAddressedContent)
+                    ((ReliablyDeliverableAddressedContent) content).setB(true);
                 String ack = new String(receivePacket.getData());
                 Log.d("AckUDPSender", "Received " + ack + " as a response");
                 clientSocket.close();
-            } catch (SocketTimeoutException exc) {
+            } catch (SocketTimeoutException exc) { } catch (IOException e) { } finally {
                 attempts++;
-            } catch (IOException e) {
             }
         }
+        if (content instanceof ReliablyDeliverableAddressedContent)
+            synchronized (content) {
+                content.notifyAll();
+            }
     }
 
-    public class ReliablyDeliverableAddressedContent extends AddressedContent {
+    public static class ReliablyDeliverableAddressedContent extends AddressedContent {
 
-        private Boolean b;
+        private volatile Boolean b = true;
 
         public ReliablyDeliverableAddressedContent(Message message, InetAddress address) {
             super(message, address);
         }
 
-        public ReliablyDeliverableAddressedContent withRendezvous(Boolean b) {
-            this.b = b;
-            return this;
+        public Boolean getB() {
+            return b;
+        }
+
+        public void setB(boolean newB) {
+            b = newB;
         }
     }
 }

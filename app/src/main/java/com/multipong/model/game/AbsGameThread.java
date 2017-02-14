@@ -3,6 +3,7 @@ package com.multipong.model.game;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.multipong.R;
 import com.multipong.activity.GameActivity;
 
 /**
@@ -50,6 +51,7 @@ public abstract class AbsGameThread implements Runnable {
     public synchronized int getNumberOfLives(){ return lives; }
     public synchronized void incrementNumberOfLives() { lives = lives + 1; }
     public synchronized void decrementNumberOfLives() { lives = lives - 1; }
+    public synchronized int getScore() {return score;}
 
     @Override
     public void run() {
@@ -88,8 +90,7 @@ public abstract class AbsGameThread implements Runnable {
                             }
                         });
                         try {
-                            //TODO use a parametrized number
-                            Thread.sleep(1500);
+                            Thread.sleep(R.integer.time_new_ball_after_death);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -103,7 +104,7 @@ public abstract class AbsGameThread implements Runnable {
                 e.printStackTrace();
             }
         }
-        activity.endGame(score);
+        activity.endGame(score, false);
     }
 
     protected void decrementDelay() {

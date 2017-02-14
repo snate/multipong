@@ -4,9 +4,11 @@ import android.util.Log;
 
 import com.multipong.activity.GameActivity;
 import com.multipong.model.Actor;
+import com.multipong.model.coordination.Coordination;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.net.Utils;
 import com.multipong.net.messages.game.BallInfoMessage;
+import com.multipong.net.messages.game.DeathMessage;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.DeviceIdUtility;
 
@@ -24,23 +26,28 @@ public class MultiplayerStateManager implements Actor {
     private GameActivity activity;
     private MultiplayerGame game;
     private State state;
+    private PlayerExtractor extractor;
 
-    public MultiplayerStateManager(MultiplayerGame multiplayerGameThread, GameActivity activity) {
+    public MultiplayerStateManager(MultiplayerGame multiplayerGameThread, Integer hostId, GameActivity activity) {
         this.activity = activity;
         game = multiplayerGameThread;
         state = new State();
-        state.setMe(new Player(DeviceIdUtility.getId()
-        ));
+        state.setCurrentActivePlayer(new Player(hostId));
+        state.setMe(new Player(DeviceIdUtility.getId()));
+        extractor = new ConsecutivePlayerExtractor();
+    }
+
+    public PlayerExtractor getExtractor() {
+        return extractor;
     }
 
     public void sendBallToNext(BallInfo ballInfo){
-        PlayerExtractor extractor = new ConsecutivePlayerExtractor();
         Player next = extractor.getNext(state.activePlayers, state.me);
         // Send ball info to coordinator via net
         BallInfoMessage ballInfoMessage = new BallInfoMessage()
                                              .addBallInfo(ballInfo)
                                              .addNextPlayerInfo(next.id);
-        ballInfoMessage.forCoordinator(true);
+        ballInfoMessage.forCoordination(true);
         try {
             InetAddress address = InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
             AddressedContent content = new AddressedContent(ballInfoMessage, address);
@@ -56,31 +63,45 @@ public class MultiplayerStateManager implements Actor {
             case MessageType.BALL_INFO:
                 handleBallInfo(message);
                 break;
+            case Coordination.MessageType.DEATH:
+                playerIsDead(message);
+                break;
         }
     }
 
     private void handleBallInfo(JSONObject json) {
         BallInfoMessage message = BallInfoMessage.createFromJson(json);
         Map<String, Object> fields = message.decode();
-        Player nextPlayer = new Player((Integer) fields.get(BallInfoMessage.NEXT_FIELD));
+        BallInfo ballInfo = (BallInfo) fields.get(BallInfoMessage.DECODED_BALL);
+        Player nextPlayer = new Player(ballInfo.getNextPlayer());
         Log.d("Next", nextPlayer.toString());
         Log.d("Me", state.me.toString());
-        // If next player is me, invoke receiveData method
-        if (nextPlayer.equals(state.me)) {
-            Log.d("Ball", "Incoming");
-            double speedX = (double) fields.get(BallInfoMessage.SPEED_X_FIELD);
-            double speedY = (double) fields.get(BallInfoMessage.SPEED_Y_FIELD);
-            double startingPosition = (double) fields.get(BallInfoMessage.POSITION_FIELD);
-            BallInfo ballInfo = createBallInfo(speedX, speedY, startingPosition);
-            game.newTurn(ballInfo);
-        }
+
         // Update state
-        // TODO: Needs review for robustness
-        boolean previousIsStillInGame = (boolean) fields.get(BallInfoMessage.STILL_IN_GAME_FIELD);
+        boolean previousIsStillInGame = ballInfo.getStillInGame();
         if (!previousIsStillInGame)
-            state.removePlayer((Player) fields.get(BallInfoMessage.ID_FIELD));
-        state.currentActivePlayer = new Player((Integer) fields.get(BallInfoMessage.NEXT_FIELD));
-        game.increaseSpeed();
+            state.removePlayer(new Player((Integer) fields.get(BallInfoMessage.ID_FIELD)));
+        state.currentActivePlayer = new Player(ballInfo.getNextPlayer());
+
+        //If I'm the last player in the game
+        if (state.activePlayers.size() == 1) {
+            activity.endGame(game.getScore(), true);
+        } else { //If there is (at least) one another player
+
+            // If next player is me, invoke receiveData method
+            if (nextPlayer.equals(state.me)) {
+                Log.d("Ball", "Incoming");
+                game.increaseSpeed();
+                game.newTurn(ballInfo);
+            }
+        }
+    }
+
+    private void playerIsDead(JSONObject message) {
+        DeathMessage deathMessage = DeathMessage.createFromJson(message);
+        Map<String, Object> fields = deathMessage.decode();
+        Integer deadPlayer = (Integer) fields.get(DeathMessage.DEAD_FIELD);
+        state.removePlayer(new Player(deadPlayer));
     }
 
     public Collection<Integer> getActivePlayers() {
@@ -93,6 +114,22 @@ public class MultiplayerStateManager implements Actor {
     public void addPlayers(List<Integer> ids) {
         for (int i : ids)
             state.addPlayer(new Player(i));
+    }
+
+    public synchronized Player getCurrentPlayer() {
+        return state.currentActivePlayer;
+    }
+
+    public synchronized boolean removePlayer(Player player) {
+        if (!player.equals(state.currentActivePlayer))
+            return false;
+        state.removePlayer(player);
+        return true;
+    }
+
+    public synchronized void setInitialPlayer(Integer initialPlayer) {
+        if (state.currentActivePlayer == null)
+            state.setCurrentActivePlayer(new Player(initialPlayer));
     }
 
     private class State {
@@ -121,7 +158,7 @@ public class MultiplayerStateManager implements Actor {
     public static class Player {
         Integer id;
 
-        Player(Integer id) {
+        public Player(Integer id) {
             this.id = id;
         }
 
@@ -135,6 +172,10 @@ public class MultiplayerStateManager implements Actor {
         @Override
         public String toString() {
             return String.valueOf(id.intValue());
+        }
+
+        public Integer getId() {
+            return id;
         }
     }
 

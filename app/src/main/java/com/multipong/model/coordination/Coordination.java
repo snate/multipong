@@ -94,15 +94,19 @@ public class Coordination implements Actor {
 
     private void sendToNext(BallInfo ballInfo) {
         // TODO: Add implementation
-        // Try to send rdac to next one
-        // Wait for rdac to be notified
-        // Read value of rdac
-        // if tt, do nothing
-        // if ff {
-        //  send death to everyone
-        //  take next
-        // }
-        // tail recursion
+        BallInfoMessage message = new BallInfoMessage();
+        message.addBallInfo(ballInfo);
+        message.forCoordination(false);
+        // TODO: Send to everyone
+        // TODO: Try to send rdac to next one
+        // TODO: Wait for rdac to be notified
+        // TODO: Read value of rdac
+        // TODO: if tt, do nothing
+        // TODO: if ff {
+        // TODO:  send death to everyone
+        // TODO:  take next
+        // TODO: }
+        // TODO: tail recursion
     }
 
     private boolean sendDeath(Player deadOne) {
@@ -156,13 +160,7 @@ public class Coordination implements Actor {
                         .tellIfStillInGame(true).withNextPlayer(oldPlayers.get(1).getId());
             } else
                 lastInfo = lastInfo.withNextPlayer(nextPlayer.getId());
-            BallInfoMessage message = new BallInfoMessage();
-            message.addBallInfo(lastInfo);
-            message.forCoordination(false);
-            // TODO: Send to everyone
-            InetAddress address = NameResolutor.INSTANCE.getNodeByHash(nextPlayer.getId());
-            AddressedContent content = new AddressedContent(message, address);
-            activity.addMessageToQueue(content);
+            sendToNext(lastInfo);
         }
     }
 

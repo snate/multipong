@@ -141,7 +141,7 @@ public class Coordination implements Actor {
             // Notify other players of player's death
             DeathMessage deathMessage = new DeathMessage().withDead(deadOne.getId());
             InetAddress address = NameResolutor.INSTANCE.getNodeByHash(player);
-            // TODO: Set forCoordination
+            deathMessage.forCoordination(false);
             AddressedContent content = new AddressedContent(deathMessage, address);
             activity.addMessageToQueue(content);
         }

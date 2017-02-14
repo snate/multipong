@@ -67,15 +67,16 @@ public class MultiplayerStateManager implements Actor {
     private synchronized void handleBallInfo(JSONObject json) {
         BallInfoMessage message = BallInfoMessage.createFromJson(json);
         Map<String, Object> fields = message.decode();
-        Player nextPlayer = new Player((Integer) fields.get(BallInfoMessage.NEXT_FIELD));
+        BallInfo ballInfo = (BallInfo) fields.get(BallInfoMessage.DECODED_BALL);
+        Player nextPlayer = new Player(ballInfo.getNextPlayer());
         Log.d("Next", nextPlayer.toString());
         Log.d("Me", state.me.toString());
 
         // Update state
-        boolean previousIsStillInGame = (boolean) fields.get(BallInfoMessage.STILL_IN_GAME_FIELD);
+        boolean previousIsStillInGame = ballInfo.getStillInGame();
         if (!previousIsStillInGame)
             state.removePlayer(new Player((Integer) fields.get(BallInfoMessage.ID_FIELD)));
-        state.currentActivePlayer = new Player((Integer) fields.get(BallInfoMessage.NEXT_FIELD));
+        state.currentActivePlayer = new Player(ballInfo.getNextPlayer());
 
         //If I'm the last player in the game
         if (state.activePlayers.size() == 1) {
@@ -85,10 +86,6 @@ public class MultiplayerStateManager implements Actor {
             // If next player is me, invoke receiveData method
             if (nextPlayer.equals(state.me)) {
                 Log.d("Ball", "Incoming");
-                double speedX = (double) fields.get(BallInfoMessage.SPEED_X_FIELD);
-                double speedY = (double) fields.get(BallInfoMessage.SPEED_Y_FIELD);
-                double startingPosition = (double) fields.get(BallInfoMessage.POSITION_FIELD);
-                BallInfo ballInfo = createBallInfo(speedX, speedY, startingPosition);
                 game.increaseSpeed();
                 game.newTurn(ballInfo);
             }

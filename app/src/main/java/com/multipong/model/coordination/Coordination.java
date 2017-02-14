@@ -60,9 +60,9 @@ public class Coordination implements Actor {
         message.forCoordination(false);
         MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
         MultiplayerStateManager msm = multiplayerGame.getMSM();
-        // TODO: SendToNext
         // Forward message to local MSM
         msm.receive(MultiplayerStateManager.MessageType.BALL_INFO, json, sender);
+        // TODO: SendToNext
         // Send message to participants
         Collection<Integer> ids = msm.getActivePlayers();
         Log.d("a", ids.toString());
@@ -79,28 +79,17 @@ public class Coordination implements Actor {
 
     private void saveLastBallInfo(BallInfoMessage message) {
         Map<String, Object> fields = message.decode();
-        double speedX = (double) fields.get(BallInfoMessage.SPEED_X_FIELD);
-        double speedY = (double) fields.get(BallInfoMessage.SPEED_Y_FIELD);
-        double position = (double) fields.get(BallInfoMessage.POSITION_FIELD);
-        int nextPlayer = (Integer) fields.get(BallInfoMessage.NEXT_FIELD);
-        boolean stillInGame = (boolean) fields.get(BallInfoMessage.STILL_IN_GAME_FIELD);
-        lastInfo = MultiplayerStateManager.createBallInfo(speedX, speedY, position)
-                                          .withNextPlayer(nextPlayer)
-                                          .tellIfStillInGame(stillInGame);
+        lastInfo = (BallInfo) fields.get(BallInfoMessage.DECODED_BALL);
     }
 
     public void cancelDiscovery() {
         pinger.cancel();
     }
 
-    private void sendToNext(BallInfo ballInfo) {
-        // TODO: Add implementation
+    private void sendToNext(BallInfoMessage ballInfoMsg, Integer nextPlayerId) {
         MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
         MultiplayerStateManager msm = multiplayerGame.getMSM();
-        BallInfoMessage message = new BallInfoMessage();
-        message.addBallInfo(ballInfo);
-        message.forCoordination(false);
-        Player nextPlayer = new Player(ballInfo.getNextPlayer());
+        Player nextPlayer = new Player(nextPlayerId);
         // save current list of players
         ArrayList<Player> oldPlayers = new ArrayList<>();
         for (Integer id : msm.getActivePlayers())
@@ -109,10 +98,10 @@ public class Coordination implements Actor {
         ReliablyDeliverableAddressedContent rdac = null;
         for (Integer playerId : msm.getActivePlayers()) {
             InetAddress address = NameResolutor.INSTANCE.getNodeByHash(playerId);
-            AddressedContent addressedContent = new AddressedContent(message, address);
+            AddressedContent addressedContent = new AddressedContent(ballInfoMsg, address);
             // Try to send rdac to next one
             if (playerId == nextPlayer.getId()) {
-                rdac = new ReliablyDeliverableAddressedContent(message, address);
+                rdac = new ReliablyDeliverableAddressedContent(ballInfoMsg, address);
                 addressedContent = rdac;
             }
             activity.addMessageToQueue(addressedContent);
@@ -185,10 +174,14 @@ public class Coordination implements Actor {
                 //      => compute ballInfo randomly
                 // (first player died)
                 lastInfo = MultiplayerStateManager.createBallInfo(Math.random(), Math.random(), Math.random())
-                        .tellIfStillInGame(true).withNextPlayer(oldPlayers.get(1).getId());
-            } else
-                lastInfo = lastInfo.withNextPlayer(nextPlayer.getId());
-            sendToNext(lastInfo);
+                        .tellIfStillInGame(true);
+                nextPlayer = new Player(oldPlayers.get(1).getId());
+            }
+            lastInfo = lastInfo.withNextPlayer(nextPlayer.getId());
+            BallInfoMessage message = new BallInfoMessage();
+            message.addBallInfo(lastInfo);
+            message.forCoordination(false);
+            sendToNext(message, nextPlayer.getId());
         }
     }
 

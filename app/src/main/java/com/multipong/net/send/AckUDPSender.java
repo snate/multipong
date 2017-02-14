@@ -56,7 +56,7 @@ public class AckUDPSender extends Sender {
 
     public static class ReliablyDeliverableAddressedContent extends AddressedContent {
 
-        private volatile Boolean b;
+        private volatile Boolean b = true;
 
         public ReliablyDeliverableAddressedContent(Message message, InetAddress address) {
             super(message, address);

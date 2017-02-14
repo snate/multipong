@@ -128,11 +128,11 @@ public class Coordination implements Actor {
                     // What if current coordinator has just been elected? (lastBallInfo == null)
                     //      => compute ballInfo randomly
                     // (first player died)
-                    BallInfo info = MultiplayerStateManager.createBallInfo(Math.random(), Math.random(), Math.random())
+                    lastInfo = MultiplayerStateManager.createBallInfo(Math.random(), Math.random(), Math.random())
                             .tellIfStillInGame(true).withNextPlayer(oldPlayers.get(0).getId());
                 }
                 message.addBallInfo(lastInfo);
-                ArrayList<Integer> ids = new ArrayList<>(msm.getActivePlayers());
+                message.forCoordination(false);
                 Player nextPlayer = msm.getExtractor().getNext(oldPlayers, currentPlayer);
                 InetAddress address = NameResolutor.INSTANCE.getNodeByHash(nextPlayer.getId());
                 AddressedContent content = new AddressedContent(message, address);

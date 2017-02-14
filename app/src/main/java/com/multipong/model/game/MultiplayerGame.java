@@ -64,11 +64,6 @@ public class MultiplayerGame extends Game {
         msm.setInitialPlayer(hostId);
     }
 
-    @Override
-    public boolean isMultiplayer(){
-        return true;
-    }
-
     private class MultiplayerGameThread extends AbsGameThread {
         private double newX;
         private double newY = -100; // big enough to make it wait

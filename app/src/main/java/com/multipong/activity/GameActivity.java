@@ -78,8 +78,6 @@ public class GameActivity extends NetworkingActivity {
         if (isMultiplayer) {
             playerIDs = intent.getIntegerArrayListExtra(Participant.PLAYERS);
             hostId = intent.getIntExtra(GameActivity.HOST, 0);
-            // TODO: Notify PongView that this game is a multiplayer game
-            mSurfaceView.setMultiplayer(game.isMultiplayer());
         }
         playerName = PlayerNameUtility.getPlayerName();
 
@@ -150,6 +148,7 @@ public class GameActivity extends NetworkingActivity {
                 ((MultiplayerGame)game).setStartingPlayer(isHost);
                 ((MultiplayerGame)game).setAllPlayers(playerIDs);
                 setActor(new GameRouter(this));
+                mSurfaceView.setMultiplayer(isMultiplayer);
             }
             else
                 game = new SingleGame(this);

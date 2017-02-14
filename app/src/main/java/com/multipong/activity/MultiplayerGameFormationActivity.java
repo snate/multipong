@@ -3,6 +3,7 @@ package com.multipong.activity;
 import android.content.Context;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.multipong.net.Utils;
 import com.multipong.net.WifiP2pListener;
@@ -12,6 +13,8 @@ import com.multipong.net.receive.TCPReceiver;
 import com.multipong.net.send.Sender;
 import com.multipong.net.send.TCPSender;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * @author Marco Zanella
  * @version 0.01
@@ -20,6 +23,7 @@ import com.multipong.net.send.TCPSender;
 public abstract class MultiplayerGameFormationActivity extends NetworkingActivity {
 
     private WifiP2pListener listener;
+    private AtomicBoolean semafor = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,7 @@ public abstract class MultiplayerGameFormationActivity extends NetworkingActivit
     }
 
     public void waitForEmptyMessageQueue() {
+        if (semafor.getAndSet(true)) return;
         try {
             PoisonPillMessage die = new PoisonPillMessage();
             Sender.AddressedContent content = new Sender.AddressedContent(die, null);

@@ -68,7 +68,7 @@ public class MultiplayerStateManager implements Actor {
         }
     }
 
-    private synchronized void handleBallInfo(JSONObject json) {
+    private void handleBallInfo(JSONObject json) {
         BallInfoMessage message = BallInfoMessage.createFromJson(json);
         Map<String, Object> fields = message.decode();
         BallInfo ballInfo = (BallInfo) fields.get(BallInfoMessage.DECODED_BALL);

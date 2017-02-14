@@ -147,10 +147,9 @@ public class GameActivity extends NetworkingActivity {
         // TODO: parameterize single game or multiplayer game choice
         if(game == null) {
             if (isMultiplayer) {
-                game = new MultiplayerGame(this);
+                game = new MultiplayerGame(this, hostId);
                 ((MultiplayerGame)game).setStartingPlayer(isHost);
                 ((MultiplayerGame)game).setAllPlayers(playerIDs);
-                ((MultiplayerGame)game).setHost(hostId);
                 setActor(new GameRouter(this));
             }
             else

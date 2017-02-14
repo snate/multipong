@@ -23,7 +23,7 @@ public abstract class Pinger extends TimerTask {
 
     private GameActivity networkingActivity;
     protected MultiplayerStateManager msm;
-    protected ArrayList<Player> oldPlayers;
+    protected ArrayList<Player> oldPlayers = new ArrayList<>();
 
     Pinger(GameActivity activity) {
         networkingActivity = activity;
@@ -41,7 +41,7 @@ public abstract class Pinger extends TimerTask {
             @Override
             protected void onPreExecute() {
                 pong = false;
-                attempts = getAttempts();
+                attempts = 0;
             }
 
             @Override
@@ -61,6 +61,7 @@ public abstract class Pinger extends TimerTask {
                         }
                     }
                     pong = rdac.getB();
+                    attempts++;
                 }
                 return null;
             }

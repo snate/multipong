@@ -51,7 +51,7 @@ public class AckUDPSender extends Sender {
             }
         }
         if (content instanceof ReliablyDeliverableAddressedContent)
-            ((ReliablyDeliverableAddressedContent) content).b.notifyAll();
+            content.notifyAll();
     }
 
     public static class ReliablyDeliverableAddressedContent extends AddressedContent {

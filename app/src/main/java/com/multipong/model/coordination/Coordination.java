@@ -119,9 +119,11 @@ public class Coordination implements Actor {
                     // Notify other players of player's death
                     DeathMessage deathMessage = new DeathMessage().withDead(currentPlayer.getId());
                     InetAddress address = NameResolutor.INSTANCE.getNodeByHash(player);
+                    // TODO: Set forCoordination
                     AddressedContent content = new AddressedContent(deathMessage, address);
                     activity.addMessageToQueue(content);
                 }
+                if (lastInfo != null && lastInfo.getNextPlayer() != currentPlayer.getId()) return;
                 // Send ball to next player after `currentPlayer died by using last BallInfo msg
                 BallInfoMessage message = new BallInfoMessage();
                 if (lastInfo == null) {

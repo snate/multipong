@@ -34,16 +34,15 @@ public abstract class Pinger extends TimerTask {
             InetAddress address = getPinged();
             AckUDPSender.ReliablyDeliverableAddressedContent rdac =
                     new AckUDPSender.ReliablyDeliverableAddressedContent(ayaMessage, address);
-            Boolean messagehasBeenSent = rdac.getB();
             networkingActivity.addMessageToQueue(rdac);
-            synchronized (messagehasBeenSent) {
+            synchronized (rdac) {
                 try {
-                    messagehasBeenSent.wait();
+                    rdac.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            pong = messagehasBeenSent;
+            pong = rdac.getB();
         }
         if (!pong)
             pingedIsNotAlive();

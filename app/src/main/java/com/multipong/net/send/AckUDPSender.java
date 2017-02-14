@@ -45,13 +45,14 @@ public class AckUDPSender extends Sender {
                 String ack = new String(receivePacket.getData());
                 Log.d("AckUDPSender", "Received " + ack + " as a response");
                 clientSocket.close();
-            } catch (SocketTimeoutException exc) {
+            } catch (SocketTimeoutException exc) { } catch (IOException e) { } finally {
                 attempts++;
-            } catch (IOException e) {
             }
         }
         if (content instanceof ReliablyDeliverableAddressedContent)
-            content.notifyAll();
+            synchronized (content) {
+                content.notifyAll();
+            }
     }
 
     public static class ReliablyDeliverableAddressedContent extends AddressedContent {

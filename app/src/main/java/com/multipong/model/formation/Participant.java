@@ -131,6 +131,7 @@ public class Participant implements Actor {
         Map<String, Object> msgInfo = msg.decode();
         ArrayList<StartingGameInfo> gameInfos =
                 (ArrayList<StartingGameInfo>) msgInfo.get(StartingMessage.PARTICIPANTS_FIELD);
+        Integer host = (Integer) msgInfo.get(Message.ID_FIELD);
         participants = new HashMap<>();
         for (StartingGameInfo sgi : gameInfos) {
             NameResolutor.INSTANCE.addNode(sgi.getId(), sgi.getAddress());
@@ -140,6 +141,7 @@ public class Participant implements Actor {
         Intent intent = new Intent(activity.getApplicationContext(), GameActivity.class)
                 .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName())
                 .putExtra(MainActivity.IS_MULTI, true)
+                .putExtra(GameActivity.HOST, host)
                 .putIntegerArrayListExtra(PLAYERS, getPlayerIDs());
         activity.startActivity(intent);
     }

@@ -132,7 +132,7 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
             }
             Host host = (Host) getActor();
             host.startGame();
-
+g
             final AlertDialog dialog = new AlertDialog.Builder(MultiplayerGameHostActivity.this)
                     .setTitle("Creazione della partita")
                     .setCancelable(false)
@@ -162,9 +162,6 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
                 }
 
             }.execute(null, null, null);
-
-
-
         }
     }
 }

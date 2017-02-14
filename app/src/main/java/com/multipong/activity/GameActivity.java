@@ -36,6 +36,8 @@ import java.util.List;
 
 public class GameActivity extends NetworkingActivity {
 
+    public static final String HOST = "com.multipong.game.host";
+
     private PongView mSurfaceView;
     private SeekBar mBar;
     private TextView mScore;

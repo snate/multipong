@@ -60,6 +60,10 @@ public class MultiplayerGame extends Game {
         ((MultiplayerGameThread)currentGame).newPlayerTurn(info);
     }
 
+    public void setHost(Integer hostId) {
+        msm.setInitialPlayer(hostId);
+    }
+
     private class MultiplayerGameThread extends AbsGameThread {
         private double newX;
         private double newY = -100; // big enough to make it wait

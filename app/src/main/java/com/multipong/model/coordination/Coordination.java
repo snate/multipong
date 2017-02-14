@@ -11,6 +11,7 @@ import com.multipong.model.multiplayer.MultiplayerStateManager.Player;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.Utils;
 import com.multipong.net.messages.game.BallInfoMessage;
+import com.multipong.net.messages.game.DeathMessage;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.DeviceIdUtility;
 
@@ -36,9 +37,9 @@ public class Coordination implements Actor {
         }
         pinger = new Timer();
         if (Math.random() > 0.5) // TODO: if(imTheGO) { ... }
-            pinger.scheduleAtFixedRate(new NGOPinger(activity), 0, 2500);
+            pinger.scheduleAtFixedRate(new NGOPinger(activity), 10000, 2500);
         else
-            pinger.scheduleAtFixedRate(new GOPinger(activity), (long) (Math.random()*8500), 8500);
+            pinger.scheduleAtFixedRate(new GOPinger(activity), 10000 + (long) (Math.random()*8500), 8500);
     }
 
     @Override
@@ -114,7 +115,11 @@ public class Coordination implements Actor {
             if (wasRemoved) {
                 Collection<Integer> players = msm.getActivePlayers();
                 for (Integer player : players) {
-                    // TODO: Notify other players of player's death
+                    // Notify other players of player's death
+                    DeathMessage deathMessage = new DeathMessage().withDead(currentPlayer.getId());
+                    InetAddress address = NameResolutor.INSTANCE.getNodeByHash(player);
+                    AddressedContent content = new AddressedContent(deathMessage, address);
+                    activity.addMessageToQueue(content);
                 }
                 // Send ball to next player after `currentPlayer died by using last BallInfo msg
                 BallInfoMessage message = new BallInfoMessage();
@@ -164,5 +169,6 @@ public class Coordination implements Actor {
 
     public class MessageType {
         public static final String AYA = "AYA";
+        public static final String DEATH = "DEA";
     }
 }

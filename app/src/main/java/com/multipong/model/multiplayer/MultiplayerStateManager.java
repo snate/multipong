@@ -26,10 +26,11 @@ public class MultiplayerStateManager implements Actor {
     private State state;
     private PlayerExtractor extractor;
 
-    public MultiplayerStateManager(MultiplayerGame multiplayerGameThread, GameActivity activity) {
+    public MultiplayerStateManager(MultiplayerGame multiplayerGameThread, Integer hostId, GameActivity activity) {
         this.activity = activity;
         game = multiplayerGameThread;
         state = new State();
+        state.setCurrentActivePlayer(new Player(hostId));
         state.setMe(new Player(DeviceIdUtility.getId()));
         extractor = new ConsecutivePlayerExtractor();
     }
@@ -49,6 +50,7 @@ public class MultiplayerStateManager implements Actor {
             InetAddress address = InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
             AddressedContent content = new AddressedContent(ballInfoMessage, address);
             activity.addMessageToQueue(content);
+            // TODO: check if next player received the ball
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -106,7 +108,7 @@ public class MultiplayerStateManager implements Actor {
             state.addPlayer(new Player(i));
     }
 
-    public Player getCurrentPlayer() {
+    public synchronized Player getCurrentPlayer() {
         return state.currentActivePlayer;
     }
 
@@ -115,6 +117,11 @@ public class MultiplayerStateManager implements Actor {
             return false;
         state.removePlayer(player);
         return true;
+    }
+
+    public synchronized void setInitialPlayer(Integer initialPlayer) {
+        if (state.currentActivePlayer == null)
+            state.setCurrentActivePlayer(new Player(initialPlayer));
     }
 
     private class State {

@@ -36,6 +36,8 @@ import java.util.List;
 
 public class GameActivity extends NetworkingActivity {
 
+    public static final String HOST = "com.multipong.game.host";
+
     private PongView mSurfaceView;
     private SeekBar mBar;
     private TextView mScore;
@@ -47,6 +49,7 @@ public class GameActivity extends NetworkingActivity {
     private Boolean isMultiplayer;
     private List<Integer> playerIDs = null;
     private Boolean isHost;
+    private Integer hostId;
     private volatile Game game;
     private StatsSaver saver;
     private volatile boolean gameEnded = false;
@@ -74,6 +77,7 @@ public class GameActivity extends NetworkingActivity {
         isHost = intent.getBooleanExtra(MultiplayerGameHostActivity.IS_HOST, false);
         if (isMultiplayer) {
             playerIDs = intent.getIntegerArrayListExtra(Participant.PLAYERS);
+            hostId = intent.getIntExtra(GameActivity.HOST, 0);
             // TODO: Notify PongView that this game is a multiplayer game
         }
         playerName = PlayerNameUtility.getPlayerName();
@@ -143,7 +147,7 @@ public class GameActivity extends NetworkingActivity {
         // TODO: parameterize single game or multiplayer game choice
         if(game == null) {
             if (isMultiplayer) {
-                game = new MultiplayerGame(this);
+                game = new MultiplayerGame(this, hostId);
                 ((MultiplayerGame)game).setStartingPlayer(isHost);
                 ((MultiplayerGame)game).setAllPlayers(playerIDs);
                 setActor(new GameRouter(this));

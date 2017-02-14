@@ -22,9 +22,9 @@ public class MultiplayerGame extends Game {
     private MultiplayerStateManager msm;
     private volatile Boolean started;
 
-    public MultiplayerGame(GameActivity activity) {
+    public MultiplayerGame(GameActivity activity, Integer hostId) {
         this.activity = activity;
-        msm = new MultiplayerStateManager(this, activity);
+        msm = new MultiplayerStateManager(this, hostId, activity);
     }
 
     public MultiplayerStateManager getMSM() {
@@ -58,6 +58,10 @@ public class MultiplayerGame extends Game {
 
     public void newTurn(BallInfo info){
         ((MultiplayerGameThread)currentGame).newPlayerTurn(info);
+    }
+
+    public void setHost(Integer hostId) {
+        msm.setInitialPlayer(hostId);
     }
 
     private class MultiplayerGameThread extends AbsGameThread {

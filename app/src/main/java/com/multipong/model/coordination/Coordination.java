@@ -12,6 +12,7 @@ import com.multipong.net.NameResolutor;
 import com.multipong.net.Utils;
 import com.multipong.net.messages.game.BallInfoMessage;
 import com.multipong.net.messages.game.DeathMessage;
+import com.multipong.net.send.AckUDPSender.ReliablyDeliverableAddressedContent;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.GOUtility;
@@ -20,7 +21,6 @@ import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Timer;
@@ -94,12 +94,31 @@ public class Coordination implements Actor {
 
     private void sendToNext(BallInfo ballInfo) {
         // TODO: Add implementation
+        MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
+        MultiplayerStateManager msm = multiplayerGame.getMSM();
         BallInfoMessage message = new BallInfoMessage();
         message.addBallInfo(ballInfo);
         message.forCoordination(false);
-        // TODO: Send to everyone
-        // TODO: Try to send rdac to next one
-        // TODO: Wait for rdac to be notified
+        // Send to everyone
+        ReliablyDeliverableAddressedContent rdac = null;
+        for (Integer playerId : msm.getActivePlayers()) {
+            InetAddress address = NameResolutor.INSTANCE.getNodeByHash(playerId);
+            AddressedContent addressedContent = new AddressedContent(message, address);
+            // Try to send rdac to next one
+            if (playerId == ballInfo.getNextPlayer()) {
+                rdac = new ReliablyDeliverableAddressedContent(message, address);
+                addressedContent = rdac;
+            }
+            activity.addMessageToQueue(addressedContent);
+        }
+        // Wait for rdac to be notified
+        synchronized (rdac) {
+            try {
+                rdac.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         // TODO: Read value of rdac
         // TODO: if tt, do nothing
         // TODO: if ff {

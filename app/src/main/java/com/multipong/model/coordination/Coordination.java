@@ -100,7 +100,7 @@ public class Coordination implements Actor {
             InetAddress address = NameResolutor.INSTANCE.getNodeByHash(playerId);
             AddressedContent addressedContent = new AddressedContent(ballInfoMsg, address);
             // Try to send rdac to next one
-            if (playerId == nextPlayer.getId()) {
+            if (playerId.equals(nextPlayer.getId())) {
                 rdac = new ReliablyDeliverableAddressedContent(ballInfoMsg, address);
                 addressedContent = rdac;
             }

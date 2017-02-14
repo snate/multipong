@@ -59,6 +59,7 @@ public class Coordination implements Actor {
         message.forCoordination(false);
         MultiplayerGame multiplayerGame = (MultiplayerGame) activity.getGame();
         MultiplayerStateManager msm = multiplayerGame.getMSM();
+        // TODO: SendToNext
         // Forward message to local MSM
         msm.receive(MultiplayerStateManager.MessageType.BALL_INFO, json, sender);
         // Send message to participants
@@ -123,24 +124,32 @@ public class Coordination implements Actor {
                     AddressedContent content = new AddressedContent(deathMessage, address);
                     activity.addMessageToQueue(content);
                 }
+                // Do not send ball if the player who died is not the currently (actual) active one
                 if (lastInfo != null && lastInfo.getNextPlayer() != currentPlayer.getId()) return;
+                // TODO: Send ball to next
                 // Send ball to next player after `currentPlayer died by using last BallInfo msg
-                BallInfoMessage message = new BallInfoMessage();
+                Player nextPlayer = msm.getExtractor().getNext(oldPlayers, currentPlayer);
                 if (lastInfo == null) {
                     // What if current coordinator has just been elected? (lastBallInfo == null)
                     //      => compute ballInfo randomly
                     // (first player died)
                     lastInfo = MultiplayerStateManager.createBallInfo(Math.random(), Math.random(), Math.random())
-                            .tellIfStillInGame(true).withNextPlayer(oldPlayers.get(0).getId());
-                }
+                            .tellIfStillInGame(true).withNextPlayer(oldPlayers.get(1).getId());
+                } else
+                    lastInfo = lastInfo.withNextPlayer(nextPlayer.getId());
+                BallInfoMessage message = new BallInfoMessage();
                 message.addBallInfo(lastInfo);
                 message.forCoordination(false);
-                Player nextPlayer = msm.getExtractor().getNext(oldPlayers, currentPlayer);
+                // TODO: Send to everyone
                 InetAddress address = NameResolutor.INSTANCE.getNodeByHash(nextPlayer.getId());
                 AddressedContent content = new AddressedContent(message, address);
                 activity.addMessageToQueue(content);
             }
         }
+    }
+
+    public void sendToNext(BallInfo ballInfo) {
+        // TODO: Add implementation
     }
 
     private class GOPinger extends Pinger {

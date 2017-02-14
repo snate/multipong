@@ -92,6 +92,19 @@ public class Coordination implements Actor {
         pinger.cancel();
     }
 
+    public void sendToNext(BallInfo ballInfo) {
+        // TODO: Add implementation
+        // Try to send rdac to next one
+        // Wait for rdac to be notified
+        // Read value of rdac
+        // if tt, do nothing
+        // if ff {
+        //  send death to everyone
+        //  take next
+        // }
+        // tail recursion
+    }
+
     private class NGOPinger extends Pinger {
 
         Player currentPlayer;
@@ -146,19 +159,6 @@ public class Coordination implements Actor {
                 activity.addMessageToQueue(content);
             }
         }
-    }
-
-    public void sendToNext(BallInfo ballInfo) {
-        // TODO: Add implementation
-        // Try to send rdac to next one
-        // Wait for rdac to be notified
-        // Read value of rdac
-        // if tt, do nothing
-        // if ff {
-        //  send death to everyone
-        //  take next
-        // }
-        // tail recursion
     }
 
     private class GOPinger extends Pinger {

@@ -26,10 +26,11 @@ public class MultiplayerStateManager implements Actor {
     private State state;
     private PlayerExtractor extractor;
 
-    public MultiplayerStateManager(MultiplayerGame multiplayerGameThread, GameActivity activity) {
+    public MultiplayerStateManager(MultiplayerGame multiplayerGameThread, Integer hostId, GameActivity activity) {
         this.activity = activity;
         game = multiplayerGameThread;
         state = new State();
+        state.setCurrentActivePlayer(new Player(hostId));
         state.setMe(new Player(DeviceIdUtility.getId()));
         extractor = new ConsecutivePlayerExtractor();
     }
@@ -107,7 +108,7 @@ public class MultiplayerStateManager implements Actor {
             state.addPlayer(new Player(i));
     }
 
-    public Player getCurrentPlayer() {
+    public synchronized Player getCurrentPlayer() {
         return state.currentActivePlayer;
     }
 
@@ -118,7 +119,7 @@ public class MultiplayerStateManager implements Actor {
         return true;
     }
 
-    public void setInitialPlayer(Integer initialPlayer) {
+    public synchronized void setInitialPlayer(Integer initialPlayer) {
         if (state.currentActivePlayer == null)
             state.setCurrentActivePlayer(new Player(initialPlayer));
     }

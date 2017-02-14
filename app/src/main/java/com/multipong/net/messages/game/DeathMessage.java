@@ -16,7 +16,7 @@ public class DeathMessage extends GameMessage {
     public Map<String, Object> decode() {
         Map<String, Object> result = super.decode();
         try {
-            result.put(DEAD_FIELD, object.getString(DEAD_FIELD));
+            result.put(DEAD_FIELD, object.getInt(DEAD_FIELD));
         } catch (JSONException e) {
             e.printStackTrace();
         }

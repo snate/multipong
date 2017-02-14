@@ -51,8 +51,8 @@ public class BallInfoMessage extends GameMessage {
         String speedX   = (""+ballInfo.getBallSpeedX()).substring(0,2+DECIMALS);
         String speedY   = (""+ballInfo.getBallSpeedY()).substring(0,2+DECIMALS);
         String position = (""+ballInfo.getPosition()).substring(0,2+DECIMALS);
-        String stillInGame = (""+ballInfo.getStillInGame()).substring(0,1);
-        //boolean stillInGame = ballInfo.getStillInGame();
+        String stillInGame = "f";
+        if (ballInfo.getStillInGame()) stillInGame = "t";
         int nextPlayer = ballInfo.getNextPlayer();
         try {
             object.put(SPEED_X_FIELD, speedX);

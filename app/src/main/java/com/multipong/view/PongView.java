@@ -39,7 +39,7 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Object canvasLock = new Object();
     private Object ball = new Object();
-    private boolean isMultiplayer = true;
+    private boolean isMultiplayer = false;
 
     public PongView(Context context) {
         super(context);
@@ -165,7 +165,7 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawCircle(ballX.get()+ballSize/2, ballY.get()+ballSize/2, ballSize/2, paint);
         if (isMultiplayer) { //If game is multiplayer drow the cover for top of the screen
             paint.setColor(backgroundColor);
-            canvas.drawRect(getLeft(), getTop(), getRight(), getTop()+borderSize+ballSize, paint);
+            canvas.drawRect(getLeft(), getTop(), getRight(), getTop()+borderSize+2*ballSize, paint);
         }
     }
 

@@ -10,8 +10,6 @@ public abstract class Game {
 
     public abstract void start(String playerName);
 
-    public abstract boolean isMultiplayer();
-
     public void setPaletteWidth(double width) {
         currentGame.setPaletteWidth(width);
     }

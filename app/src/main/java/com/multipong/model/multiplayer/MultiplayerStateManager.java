@@ -118,6 +118,11 @@ public class MultiplayerStateManager implements Actor {
         return true;
     }
 
+    public void setInitialPlayer(Integer initialPlayer) {
+        if (state.currentActivePlayer == null)
+            state.setCurrentActivePlayer(new Player(initialPlayer));
+    }
+
     private class State {
         public Player me;
         public Player currentActivePlayer;

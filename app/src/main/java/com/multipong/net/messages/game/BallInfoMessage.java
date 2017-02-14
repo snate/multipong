@@ -20,6 +20,8 @@ public class BallInfoMessage extends GameMessage {
     public static final String NEXT_FIELD = "nP";
     public static final int DECIMALS = 4;
 
+    public static final String DECODED_BALL = "BALL_OBJ";
+
     @Override
     protected String getMessageType() {
         return MultiplayerStateManager.MessageType.BALL_INFO;
@@ -29,13 +31,15 @@ public class BallInfoMessage extends GameMessage {
     public Map<String, Object> decode() {
         Map<String, Object> result = super.decode();
         try {
-            result.put(SPEED_X_FIELD, Double.parseDouble(object.getString(SPEED_X_FIELD)));
-            result.put(SPEED_Y_FIELD, Double.parseDouble(object.getString(SPEED_Y_FIELD)));
-            result.put(POSITION_FIELD, Double.parseDouble(object.getString(POSITION_FIELD)));
+            double speedX = Double.parseDouble(object.getString(SPEED_X_FIELD));
+            double speedY = Double.parseDouble(object.getString(SPEED_Y_FIELD));
+            double position = Double.parseDouble(object.getString(POSITION_FIELD));
             boolean still_in_game = object.getString(STILL_IN_GAME_FIELD).equals("t");
-            result.put(STILL_IN_GAME_FIELD, still_in_game);
-            //result.put(STILL_IN_GAME_FIELD, object.getBoolean(STILL_IN_GAME_FIELD));
-            result.put(NEXT_FIELD, object.getInt(NEXT_FIELD));
+            int nextPlayer = object.getInt(NEXT_FIELD);
+            BallInfo ballInfo = MultiplayerStateManager.createBallInfo(speedX, speedY, position)
+                                                       .tellIfStillInGame(still_in_game)
+                                                       .withNextPlayer(nextPlayer);
+            result.put(DECODED_BALL, ballInfo);
             Log.d("DECODING______","_______");
             Log.d("speedX________",object.getString(SPEED_X_FIELD));
             Log.d("speedY________",object.getString(SPEED_Y_FIELD));

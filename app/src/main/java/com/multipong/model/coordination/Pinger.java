@@ -24,7 +24,7 @@ public abstract class Pinger extends TimerTask {
 
     @Override
     public void run() {
-        MultiplayerGame multiplayerGame = (MultiplayerGame) networkingActivity.getGame();
+        /*MultiplayerGame multiplayerGame = (MultiplayerGame) networkingActivity.getGame();
         msm = multiplayerGame.getMSM();
         int attempts = getAttempts();
         boolean pong = false;
@@ -46,7 +46,7 @@ public abstract class Pinger extends TimerTask {
             pong = messagehasBeenSent;
         }
         if (!pong)
-            pingedIsNotAlive();
+            pingedIsNotAlive();*/
     }
 
     private void savePlayers(Collection<Integer> activePlayers) {

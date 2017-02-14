@@ -52,9 +52,12 @@ public class BallInfoMessage extends GameMessage {
     }
 
     public BallInfoMessage addBallInfo(BallInfo ballInfo) {
-        String speedX   = (""+ballInfo.getBallSpeedX()).substring(0,2+DECIMALS);
-        String speedY   = (""+ballInfo.getBallSpeedY()).substring(0,2+DECIMALS);
-        String position = (""+ballInfo.getPosition()).substring(0,2+DECIMALS);
+        String strSpeedX = String.valueOf(ballInfo.getBallSpeedX());
+        String speedX    = (strSpeedX.substring(0, Math.min(2 + DECIMALS, strSpeedX.length())));
+        String strSpeedY = String.valueOf(ballInfo.getBallSpeedY());
+        String speedY    = (strSpeedY.substring(0, Math.min(2 + DECIMALS, strSpeedY.length())));
+        String strPos    = String.valueOf(ballInfo.getPosition());
+        String position  = (strPos.substring(0, Math.min(2 + DECIMALS, strPos.length())));
         String stillInGame = "f";
         if (ballInfo.getStillInGame()) stillInGame = "t";
         int nextPlayer = ballInfo.getNextPlayer();

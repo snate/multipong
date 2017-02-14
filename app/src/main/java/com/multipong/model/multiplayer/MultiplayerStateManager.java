@@ -50,7 +50,6 @@ public class MultiplayerStateManager implements Actor {
             InetAddress address = InetAddress.getByName(Utils.WIFI_P2P_GROUP_OWNER_ADDRESS);
             AddressedContent content = new AddressedContent(ballInfoMessage, address);
             activity.addMessageToQueue(content);
-            // TODO: check if next player received the ball
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

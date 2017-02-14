@@ -23,6 +23,11 @@ public class SingleGame extends Game {
 
     }
 
+    @Override
+    public boolean isMultiplayer(){
+        return false;
+    }
+
     private class SingleGameThread extends AbsGameThread {
         private volatile boolean notStartedYet = true;
 

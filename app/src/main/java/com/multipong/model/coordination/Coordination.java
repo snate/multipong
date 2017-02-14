@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Timer;
@@ -99,13 +100,18 @@ public class Coordination implements Actor {
         BallInfoMessage message = new BallInfoMessage();
         message.addBallInfo(ballInfo);
         message.forCoordination(false);
+        Player nextPlayer = new Player(ballInfo.getNextPlayer());
+        // save current list of players
+        ArrayList<Player> oldPlayers = new ArrayList<>();
+        for (Integer id : msm.getActivePlayers())
+            oldPlayers.add(new Player(id));
         // Send to everyone
         ReliablyDeliverableAddressedContent rdac = null;
         for (Integer playerId : msm.getActivePlayers()) {
             InetAddress address = NameResolutor.INSTANCE.getNodeByHash(playerId);
             AddressedContent addressedContent = new AddressedContent(message, address);
             // Try to send rdac to next one
-            if (playerId == ballInfo.getNextPlayer()) {
+            if (playerId == nextPlayer.getId()) {
                 rdac = new ReliablyDeliverableAddressedContent(message, address);
                 addressedContent = rdac;
             }
@@ -119,13 +125,17 @@ public class Coordination implements Actor {
                 e.printStackTrace();
             }
         }
-        // TODO: Read value of rdac
-        // TODO: if tt, do nothing
-        // TODO: if ff {
-        // TODO:  send death to everyone
-        // TODO:  take next
-        // TODO: }
-        // TODO: tail recursion
+        // Find out if rdac was delivered
+        Boolean delivered = rdac.getB();
+        // if tt, do nothing
+        if (delivered) return;
+        // otherwise
+        // send death to everyone
+        sendDeath(nextPlayer);
+        // take next
+        Player nextNextPlayer = msm.getExtractor().getNext(oldPlayers, nextPlayer);
+        ballInfo.withNextPlayer(nextNextPlayer.getId());
+        sendToNext(ballInfo);
     }
 
     private boolean sendDeath(Player deadOne) {
@@ -168,7 +178,6 @@ public class Coordination implements Actor {
         protected void pingedIsNotAlive() {
             boolean wasRemoved = sendDeath(currentPlayer);
             if (!wasRemoved) return;
-            // TODO: Send ball to next
             // Send ball to next player after `currentPlayer died by using last BallInfo msg
             Player nextPlayer = msm.getExtractor().getNext(oldPlayers, currentPlayer);
             if (lastInfo == null) {

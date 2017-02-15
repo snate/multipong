@@ -62,7 +62,6 @@ public class Coordination implements Actor {
         MultiplayerStateManager msm = multiplayerGame.getMSM();
         // Forward message to local MSM
         msm.receive(MultiplayerStateManager.MessageType.BALL_INFO, json, sender);
-        // TODO: SendToNext
         sendToNext(message, lastInfo.getNextPlayer());
     }
 

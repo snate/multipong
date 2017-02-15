@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PlayerNameUtility.setContext(this);
     }
 
     @Override
@@ -90,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            PlayerNameUtility.setPlayerName(playerName.toString());
+            if (!PlayerNameUtility.getPlayerName().equals(playerName.toString()))
+                PlayerNameUtility.setPlayerName(playerName.toString());
             Intent intent = new Intent(getApplicationContext(), GameActivity.class)
                     .putExtra(PLAYER_NAME, playerName)
                     .putExtra(IS_MULTI, false);

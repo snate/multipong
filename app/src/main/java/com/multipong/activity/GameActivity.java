@@ -187,6 +187,26 @@ public class GameActivity extends NetworkingActivity {
         mSurfaceView.removeBall();
     }
 
+    private void setEndGameView(final String toDisplay, final int imageResourceID) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (isMultiplayer) {
+                    ImageView image = (ImageView) findViewById(R.id.image_end_game);
+                    image.setBackgroundResource(imageResourceID);
+                    image.setVisibility(View.VISIBLE);
+                    image.requestLayout();
+                    image.getLayoutParams().height=600;
+                    image.getLayoutParams().width=600;
+                }
+                mEndTextView.setVisibility(View.VISIBLE);
+                mEndTextView.setText(toDisplay);
+                mEndButton.setVisibility(View.VISIBLE);
+                mEndButton.setClickable(true);
+            }
+        });
+    }
+
     public void endGame(final int score, final boolean win) {
         makeBallDisappear();
         gameEnded = true;
@@ -198,47 +218,21 @@ public class GameActivity extends NetworkingActivity {
                 saver.save(stats);
             }
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showShortToast("DONE");
-                    if (isMultiplayer) {
-                        ImageView image = (ImageView) findViewById(R.id.image_end_game);
-                        image.setBackgroundResource(R.drawable.lose_game);
-                        image.setVisibility(View.VISIBLE);
-                    }
-                    mEndTextView.setVisibility(View.VISIBLE);
-                    mEndTextView.setText(new StringBuffer()
-                            .append(playerName)
-                            .append(", ")
-                            .append(getString(R.string.your_score_is))
-                            .append(" ")
-                            .append(score).toString());
-                    mEndButton.setVisibility(View.VISIBLE);
-                    mEndButton.setClickable(true);
-                }
-            });
+            setEndGameView(new StringBuffer()
+                    .append(playerName)
+                    .append(", ")
+                    .append(getString(R.string.your_score_is))
+                    .append(" ")
+                    .append(score).toString(), R.drawable.lose_game);
         } else {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ImageView image = (ImageView) findViewById(R.id.image_end_game);
-                    image.setBackgroundResource(R.drawable.win_image);
-                    image.setVisibility(View.VISIBLE);
-                    showShortToast("DONE");
-                    mEndTextView.setVisibility(View.VISIBLE);
-                    mEndTextView.setText(new StringBuffer()
-                            .append(playerName)
-                            .append(", ")
-                            .append(getString(R.string.you_win))
-                            .append("\n")
-                            .append(getString(R.string.your_score_is))
-                            .append(" ")
-                            .append(score).toString());
-                    mEndButton.setVisibility(View.VISIBLE);
-                    mEndButton.setClickable(true);
-                }
-            });
+            setEndGameView(new StringBuffer()
+                    .append(playerName)
+                    .append(", ")
+                    .append(getString(R.string.you_win))
+                    .append("\n")
+                    .append(getString(R.string.your_score_is))
+                    .append(" ")
+                    .append(score).toString(), R.drawable.win_image);
         }
     }
 

@@ -17,7 +17,7 @@ public class AvailableMessage extends Message {
 
     public static String PARTICIPANTS_FIELD = "participants";
     public static String P_NAME_FIELD = "n";
-    public static String P_ID_FIELD = "n";
+    public static String P_ID_FIELD = "i";
 
     @Override
     protected String getMessageType() {

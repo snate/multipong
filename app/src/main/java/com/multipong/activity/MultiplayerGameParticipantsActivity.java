@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.multipong.R;
+import com.multipong.model.formation.Participant;
 
 import java.util.List;
 
@@ -20,7 +23,7 @@ import java.util.List;
  * @version 0.01
  * @since 0.01
  */
-public class MultiplayerGameParticipantsActivity extends AppCompatActivity {
+public class MultiplayerGameParticipantsActivity extends MultiplayerGameFormationActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,11 @@ public class MultiplayerGameParticipantsActivity extends AppCompatActivity {
 
         ListView list = (ListView)findViewById(R.id.participants_list);
         list.setAdapter(new ParticipantsAdapter(this, participants));
+
+        int hostID = intent.getIntExtra("hostID", -1);
+        Participant actor = new Participant(this);
+        actor.setCurrentHost(hostID);
+        setActor(actor);
     }
 
     private class ParticipantsAdapter extends BaseAdapter {
@@ -76,5 +84,18 @@ public class MultiplayerGameParticipantsActivity extends AppCompatActivity {
             participantNameTextView.setText(participantName);
             return convertView;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Participant actor = (Participant) getActor();
+        if(actor == null) return;
+        actor.cancelGame();
+        super.onDestroy();
+    }
+
+    @Override
+    public boolean isHost() {
+        return false;
     }
 }

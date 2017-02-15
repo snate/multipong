@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class Participant implements Actor {
 
-    private MultiplayerGameFormationActivity activity;
+    private transient MultiplayerGameFormationActivity activity;
     private Map<Integer, String> participants = new HashMap<>();
     private Map<Integer, String> hosts = new HashMap<>();
     private InetAddress known_host;
@@ -57,10 +57,12 @@ public class Participant implements Actor {
     }
 
     public void cancelGame() {
+        Log.e("CANCELMESSAGE", "cancel method");
         if (currentHost == null) return;
         InetAddress oldHost = NameResolutor.INSTANCE.getNodeByHash(currentHost);
         CancelMessage cancelMessage = new CancelMessage();
         AddressedContent cancellation = new AddressedContent(cancelMessage, oldHost);
+        Log.e("CANCELMESSAGE", cancellation.toString());
         activity.addMessageToQueue(cancellation);
     }
 
@@ -177,6 +179,14 @@ public class Participant implements Actor {
         ArrayList<Integer> ids = new ArrayList<>(participants.keySet());
         Collections.sort(ids);
         return ids;
+    }
+
+    public void setCurrentHost(Integer id) {
+        currentHost = id;
+    }
+
+    public int getCurrentHost() {
+        return currentHost;
     }
 
     public static final String PLAYER_NAME = "com.multipong.PLAYER_NAME";

@@ -1,12 +1,8 @@
 package com.multipong.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.p2p.WifiP2pManager;
-import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +12,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.multipong.R;
-import com.multipong.model.Actor;
 import com.multipong.model.formation.Participant;
-import com.multipong.net.WifiP2pListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -135,6 +128,7 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
                     extra.addAll(participants);
                     intent.putStringArrayListExtra("participants", extra);
                     intent.putExtra("hostName", matchName);
+                    intent.putExtra("hostID", ((Participant)getActor()).getCurrentHost());
                     startActivity(intent);
                 }
             });

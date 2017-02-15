@@ -1,12 +1,33 @@
 \section{Background and related work} % TODO: Only background?
 % TODO: Check from now on: not sure that we don't use the same acronym in intro
-Since its 4.0 version was released, Android has been supporting peer-to-peer
-(\textit{P2P} from now on) Wi-Fi communication that is compliant with the
-Wi-Fi Direct standard\cite{bib:wifiP2pspec}.
+\subsection{Wi-Fi Direct: Background}
+Wi-Fi Direct standard enables devices to connect with each other, creating 
+networks called groups, without requiring a wireless access point. It could be 
+used for several purposes because devices communicate at typical Wi-Fi speed 
+\cite{bib:wifiP2pspec}, it on whether the devices are 802.11a, g, or n, as well
+as the particular characteristics of the devices and the physical environment.
+Moreover, Wi-Fi Direct enables devices from different manufactors to communicate.
+
+Usually, a device that supports Wi-Fi Direct, in order to create or join a group,
+start a discovery session in which it may find other unconnected Wi-Fi Direct 
+devices or Group Owners. In the second case the device ask to join a group, in the 
+first one it can start the formation of a group. During the creation of a group 
+devices negotiate their roles, in order to find a devices that assumes the role of 
+access point called Group Owner (hereafter \textit{GO}) and other devices, even 
+ones that doesn't support Wi-Fi Direct, could connect to the GO. 
+
+\subsection{Wi-Fi Direct in Android: Background}
+Since its 4.0 version was released, Android has been supporting peer-to-peer 
+(\textit{P2P} from now on) P2P Wi-Fi communication that is compliant with the 
+Wi-Fi Direct standard\cite{bib:wifiP2pspec}. 
 Hence, recent Android devices can form an ad-hoc network with a $1:n$ topology,
-in which a Group Owner (hereafter \textit{GO}) is connected to multiple P2P
-clients (hereafter \textit{NGO}s).
+in which a Group Owner is connected to multiple P2P clients (hereafter \textit{NGO}s).
 
 As stated in standard, the GO is decided after a negotiation phase between the
 devices; thus, the same hosts may create a P2P network with different GOs from
 time to time, after re-establishing the network.
+
+Thanks to the possibility of using Wi-Fi Direct in Android enviroment, it is 
+possible to create Android applications that execute on different devices and 
+communicate using this standard. 
+

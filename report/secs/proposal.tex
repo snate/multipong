@@ -33,3 +33,21 @@ more battery power by optimizing the ui rendering (e.g. we could have improved
 the ui rendering performance by using OpenGL), here below we will focus on
 discussing the two phases of the multiplayer mode, namely the game formation
 and the gameplay.
+
+\subsection{Game formation}
+
+Hereafter we will assume that the players configured correctly a Wi-Fi Direct
+ad hoc network with their Android devices, i.e. that they can communicate with
+each other within this network.
+
+Since in this phase there are not strong requirements to meet in terms of
+real-time information delivering, we decided to use TCP connections until the
+game starts. Also, this choice will provide us an element of comparison to the
+solution we adopted for gameplay.
+
+% TODO: cope with special p2p topology
+% TODO: talk about data sent among peers
+% TODO: talk about the asynchronous model employed for communication among peers
+% TODO: describe the protocol of game formation
+% TODO: describe the start of a game
+

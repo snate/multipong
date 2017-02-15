@@ -3,7 +3,6 @@ package com.multipong.activity;
 import android.content.Context;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.multipong.net.Utils;
 import com.multipong.net.WifiP2pListener;

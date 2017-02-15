@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.multipong.R;
 import com.multipong.model.formation.Host;
-import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.PlayerNameUtility;
 
 import java.util.ArrayList;

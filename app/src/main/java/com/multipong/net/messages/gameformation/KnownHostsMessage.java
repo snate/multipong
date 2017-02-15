@@ -1,19 +1,13 @@
 package com.multipong.net.messages.gameformation;
 
-import android.util.Log;
-
 import com.multipong.model.formation.Participant;
 import com.multipong.net.messages.Message;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Map;
 
 public class KnownHostsMessage extends Message {

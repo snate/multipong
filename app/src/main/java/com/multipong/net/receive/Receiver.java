@@ -18,7 +18,7 @@ public abstract class Receiver implements Runnable {
     private NetworkingActivity activity;
     private ExecutorService executor;
 
-    public Receiver(NetworkingActivity activity) {
+    Receiver(NetworkingActivity activity) {
         this.activity = activity;
     }
 
@@ -31,14 +31,14 @@ public abstract class Receiver implements Runnable {
 
     void process(String json, final InetAddress address) {
         try {
-            Log.d("JSON", json);
             if (!Utils.isJsonObject(json)) return;
             final JSONObject jsonObject = new JSONObject(json);
             if(!jsonObject.has(Message.APP_FIELD)) return;
             String app = jsonObject.getString(Message.APP_FIELD);
             if(!app.equals(Message.APP_VALUE)) return;
-            String name = jsonObject.getString(Message.NAME_FIELD);
             final String type = jsonObject.getString(Message.MESSAGE_TYPE_FIELD);
+            Log.d("Rec_JSON", json);
+            Log.d("Rec_INFO", type + ": " + String.valueOf(json.getBytes().length));
             executor.submit(new Runnable() {
                 @Override
                 public void run() {

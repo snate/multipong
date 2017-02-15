@@ -21,7 +21,8 @@ import java.net.InetAddress;
 
 public class Utils {
 
-    public static final int PORT = 8888;
+    public static final int TCP_PORT = 9125;
+    public static final int TCP_ACK_PORT = 9126;
     public static final int UDP_PORT = 9054;
     public static final String UDP_ACK = "ACK";
     public static final int MTU = 350;
@@ -63,7 +64,7 @@ public class Utils {
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
             InetAddress address = info.groupOwnerAddress;
-            Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.PORT);
+            Log.d("MyConnectionLister", "Address: " + address + ":" + Utils.TCP_PORT);
             // GO does not know other IP: do nothing
             if (info.isGroupOwner) {
                 Log.d("Hello", " world");

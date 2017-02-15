@@ -63,18 +63,7 @@ public class Coordination implements Actor {
         // Forward message to local MSM
         msm.receive(MultiplayerStateManager.MessageType.BALL_INFO, json, sender);
         // TODO: SendToNext
-        // Send message to participants
-        Collection<Integer> ids = msm.getActivePlayers();
-        Log.d("a", ids.toString());
-        for (Integer id : ids) {
-            InetAddress address = NameResolutor.INSTANCE.getNodeByHash(id);
-            Log.d("a", address.getHostAddress());
-            AddressedContent content = new AddressedContent(message, address);
-            // Avoid sending ball info to local MSM
-            // && Avoid sending ball info to sender too (not necessary)
-            if (!id.equals(DeviceIdUtility.getId()) && !(address.equals(sender)))
-                activity.addMessageToQueue(content);
-        }
+        sendToNext(message, lastInfo.getNextPlayer());
     }
 
     private void saveLastBallInfo(BallInfoMessage message) {

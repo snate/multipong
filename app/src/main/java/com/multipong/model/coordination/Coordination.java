@@ -14,7 +14,6 @@ import com.multipong.net.messages.game.BallInfoMessage;
 import com.multipong.net.messages.game.DeathMessage;
 import com.multipong.net.send.AckUDPSender.ReliablyDeliverableAddressedContent;
 import com.multipong.net.send.Sender.AddressedContent;
-import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.GOUtility;
 
 import org.json.JSONObject;

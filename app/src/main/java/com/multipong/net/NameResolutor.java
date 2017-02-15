@@ -3,8 +3,6 @@ package com.multipong.net;
 import android.net.wifi.p2p.WifiP2pDevice;
 
 import java.net.InetAddress;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

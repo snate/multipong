@@ -1,7 +1,5 @@
 package com.multipong.net.send;
 
-import android.util.Log;
-
 import com.multipong.net.messages.Message;
 import com.multipong.net.messages.PoisonPillMessage;
 

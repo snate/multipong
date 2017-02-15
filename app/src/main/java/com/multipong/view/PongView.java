@@ -1,21 +1,15 @@
 package com.multipong.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.multipong.R;
-import com.multipong.activity.GameActivity;
-import com.multipong.activity.MainActivity;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

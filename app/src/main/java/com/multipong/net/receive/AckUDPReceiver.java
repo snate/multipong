@@ -2,7 +2,6 @@ package com.multipong.net.receive;
 
 import android.util.Log;
 
-import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.activity.NetworkingActivity;
 import com.multipong.net.Utils;
 

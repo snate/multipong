@@ -19,17 +19,20 @@ public class TCPSender extends Sender {
         Message message = content.getMessage();
         Log.d("Sender", "Sending new message with TCP");
         String host = address.getHostAddress();
-        String jsonObjectString = message.getMsg().toString();
         Socket socket = new Socket();
         try {
             socket.bind(null);
             socket.connect(new InetSocketAddress(host, Utils.PORT), SOCKET_TIMEOUT);
-            Log.d("TCP Sender", "Sending " + jsonObjectString);
             Log.d("TCP Sender", "To " + host);
             OutputStream stream = socket.getOutputStream();
+            String jsonObjectString = message.getMsg().toString();
+            Log.d("TCP Sender", "Sending " + jsonObjectString);
+            Long startTime = System.currentTimeMillis();
             stream.write(jsonObjectString.getBytes(), 0, jsonObjectString.length());
             stream.close();
+            Long endTime = System.currentTimeMillis();
             Log.d("Sender", "Data has been sent: " + jsonObjectString);
+            Log.d("TCP_TIME", "It took " + (endTime - startTime) + "ms");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

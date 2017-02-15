@@ -1,0 +1,50 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{vds}
+  [2011/01/11 v0.01 LaTeX package for vds]
+
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[cm]{fullpage}
+\RequirePackage[english]{babel}
+\RequirePackage{amsthm}
+\RequirePackage{stmaryrd}
+\RequirePackage{amsfonts}
+\RequirePackage{amssymb}
+\RequirePackage{amsmath}
+\RequirePackage{mathtools}
+\RequirePackage{enumitem}
+\RequirePackage{wasysym}
+\RequirePackage{centernot}
+\RequirePackage{multirow}
+\RequirePackage{tikz}
+\RequirePackage{syntax}
+\RequirePackage{hyperref}
+\RequirePackage[inference]{semantic}
+\RequirePackage{framed}
+\RequirePackage{pifont}% http://ctan.org/pkg/pifont
+\RequirePackage{listings}
+\definecolor{background}{HTML}{EEEEEE}
+\lstset{ 
+	basicstyle=\small\ttfamily\small,
+	keywordstyle=\color{Plum},
+	keywordstyle=[2]\color{ForestGreen},
+	showstringspaces=false,
+	frameround=ftff,
+	frame=lines,
+	morekeywords={if, while, else, do, then, until},
+	keywords=[2]{skip},
+	commentstyle=\color{yellow},
+	backgroundcolor=\color{background}
+}
+\RequirePackage{bussproofs}
+\RequirePackage{enumitem}
+\RequirePackage{xparse}
+\RequirePackage{float}
+\RequirePackage{subfig}
+
+\lstset{emph={%  
+		true, false%
+	},emphstyle={\color{Magenta}\bfseries}%
+}%
+
+\newcommand{\univ}{Universit\`a}

@@ -1,5 +1,24 @@
 \section{Multipong} % TODO: Better title?
 
 In this section we will describe how we developed the Multipong application,
-zooming in on some architectural and implementation choices we made to improve
+focusing on some architectural and implementation choices we made to improve
 the game quality.
+
+\subsection{Game description} % TODO: Better title?
+
+Multipong is a tribute to the Pong game, one of the first arcade videogames.
+Instead of playing against an AI, there are a single-player mode and a
+multiplayer mode.
+
+In the single-player mode the player scores a point each time the paddle hits
+the ball, making it bounce upwards until it reaches the top edge and then the
+ball falls down again. Clearly, the player loses the game when the paddle misses
+the ball.
+
+In the multiplayer mode, several human players connect their devices in order
+to form an ad hoc network and then when one of the players hits the ball, it is
+transferred to the next player's screen as if their gameboards were joint.
+When a player misses the ball, he loses a life and the ball is thrown out
+randomly to the next player's screen.
+If a player runs out of lives, she will not be able to play for the rest of the
+game.

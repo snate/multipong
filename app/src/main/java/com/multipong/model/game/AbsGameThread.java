@@ -1,7 +1,9 @@
-package com.multipong.model;
+package com.multipong.model.game;
 
+import android.util.Log;
 import android.widget.Toast;
 
+import com.multipong.R;
 import com.multipong.activity.GameActivity;
 
 /**
@@ -12,7 +14,7 @@ import com.multipong.activity.GameActivity;
  * this class uses Template method pattern for manage singleplayer and multiplayer game
  */
 public abstract class AbsGameThread implements Runnable {
-    private double x = 0;         // ball x position
+    private double x = Math.random();         // ball x position
     private double y = 0;         // ball y position
     private double range = 25;    // see the game frame as a square of range x range
     private double xFactor = 1.0; // ball horizontal multiplier
@@ -49,6 +51,7 @@ public abstract class AbsGameThread implements Runnable {
     public synchronized int getNumberOfLives(){ return lives; }
     public synchronized void incrementNumberOfLives() { lives = lives + 1; }
     public synchronized void decrementNumberOfLives() { lives = lives - 1; }
+    public synchronized int getScore() {return score;}
 
     @Override
     public void run() {
@@ -57,20 +60,25 @@ public abstract class AbsGameThread implements Runnable {
             initialBallPosition();
             x += xFactor / range;
             y += yFactor / range;
-            if (x <= 0.0 || x >= 1.0) xFactor *= -1;
+            if (x <= 0.0) { x = 0.0; xFactor *= -1; }
+            if (x >= 1.0) { x = 1.0; xFactor *= -1; }
             if (y <= 0.0)             ballOnTopOfTheField();
+            activity.moveBall(x, y);
             if (!lose && y >= 1.0) {
                 double ricochetAngle = computeCollision();
                 if (ricochetAngle >= - 1 && ricochetAngle <= 1) {
-                    if (delay > 11) delay -= 10;
+                    Log.d("GameThread", "Bounce");
+                    decrementDelay();
                     // trust me, I've done the math
                     xFactor = ricochetAngle;
                     yFactor = -(1 - (1 - paletteWidth) * ricochetAngle);
                     activity.updateScore(++score);
                     y = 1.0;
-                    ballBounced();
+                    ballBounced(true);
                 } else {
+                    Log.d("GameThread", "Miss");
                     decrementNumberOfLives();
+                    ballBounced(false);
                     lose = (getNumberOfLives() == 0);
                     if (!lose) {
                         activity.runOnUiThread(new Runnable() {
@@ -82,8 +90,7 @@ public abstract class AbsGameThread implements Runnable {
                             }
                         });
                         try {
-                            //TODO use a parametrized number
-                            Thread.sleep(1500);
+                            Thread.sleep(R.integer.time_new_ball_after_death);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -91,14 +98,18 @@ public abstract class AbsGameThread implements Runnable {
                     }
                 }
             }
-            activity.moveBall(x, y);
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        activity.endGame(score);
+        activity.endGame(score, false);
+    }
+
+    protected void decrementDelay() {
+        if (delay > 11)
+            delay -= 10;
     }
 
     public void setPalettePosition(double palettePosition) {
@@ -124,6 +135,6 @@ public abstract class AbsGameThread implements Runnable {
 
     public void resetGame(){}
 
-    public abstract void ballBounced();
+    public abstract void ballBounced(boolean b);
 }
 

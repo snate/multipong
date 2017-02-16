@@ -3,7 +3,9 @@
     <integer name="border_size">40</integer><!-- border size in px -->
     <integer name="palette_height">40</integer><!-- in px -->
     <integer name="palette_width">200</integer>
-    <integer name="ball_size">100</integer>
+    <integer name="ball_size">50</integer>
     <!-- touchscreen offset, is the percentage from the border to be insensible to the touch event-->
     <integer name="touch_offset">15</integer>
+
+    <integer name="time_new_ball_after_death">1500</integer>
 </resources>

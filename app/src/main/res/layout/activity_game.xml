@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#FFFFFF"
+    android:background="@color/background_color"
     tools:context="com.multipong.activity.GameActivity">
 
 
@@ -25,6 +25,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true" />
+        <RelativeLayout
+            android:id="@+id/multiplayer_cover_top"
+            android:visibility="invisible"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_color">
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -61,14 +70,28 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
+
+        <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/image_end_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:maxWidth="120dp"
+                android:maxHeight="120dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:layout_centerHorizontal="true"/>
+
         <TextView
-            android:id="@+id/end_tv"
-            android:text=""
-            android:visibility="invisible"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
+                android:id="@+id/end_tv"
+                android:text=""
+                android:visibility="invisible"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/image_end_game"/>
+
         <Button
             android:id="@+id/end_bt"
             android:text="Go back"

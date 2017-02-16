@@ -1,7 +1,4 @@
-package com.multipong.model;
-
-import android.widget.Toast;
-import android.util.Log;
+package com.multipong.model.game;
 
 import com.multipong.activity.GameActivity;
 import com.multipong.persistence.MultipongDatabase;
@@ -16,7 +13,6 @@ public class SingleGame extends Game {
         this.activity = activity;
     }
 
-    //TODO invoke setNumberOfLives before start  on SingleGame to have a game with more than one live
     @Override
     public void start(String playerName) {
         this.playerName = playerName;
@@ -28,7 +24,7 @@ public class SingleGame extends Game {
     }
 
     private class SingleGameThread extends AbsGameThread {
-        private volatile boolean started = true;
+        private volatile boolean notStartedYet = true;
 
         public SingleGameThread(String playerName, GameActivity activity) {
             super(playerName, activity);
@@ -41,18 +37,16 @@ public class SingleGame extends Game {
 
         @Override
         public void initialBallPosition() {
-            if (started) {
-                setX(Math.random());
-                started = false;
-            }
+            if (notStartedYet)
+                notStartedYet = false;
         }
 
         @Override
         public void resetGame() {
-            started = true;
+            notStartedYet = true;
             setY(0.0);
         }
 
-        public void ballBounced() { }
+        public void ballBounced(boolean bounced) { }
     }
 }

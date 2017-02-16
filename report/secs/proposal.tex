@@ -45,9 +45,18 @@ real-time information delivering, we decided to use TCP connections until the
 game starts. Also, this choice will provide us an element of comparison to the
 solution we adopted for gameplay.
 
-% TODO: cope with special p2p topology
-% TODO: talk about data sent among peers
+All the design was built having in mind that the topology underneath our system
+is an $1:n$ P2P network, so even if the game formation carries out having one
+host and several participants, we can not enforce the fact that the host will
+also be the GO. Besides this, during the discovery phase only the NGOs will
+obtain an address to the GO (and it will be equal to \texttt{192.168.49.1}),
+whereas the GO will be notified only of the \textit{presence} of peers, without
+obtaining any concrete reference to communicate to them. This means that the
+networking logic present in our application have to take into account the fact
+that the GO needs to retrieve somehow the IPs of the NGOs.
+
 % TODO: talk about the asynchronous model employed for communication among peers
+% TODO: talk about data sent among peers
 % TODO: describe the protocol of game formation
 % TODO: describe the start of a game
 

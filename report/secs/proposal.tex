@@ -93,7 +93,15 @@ the following subsection.
 
 \subsection{Gameplay}
 
-% TODO: application level acked UDP
+As anticipated, during the gameplay phase we changed direction regarding the
+way we exchange data among peers. In fact, game information messagges have to
+be delivered very quickly and therefore TCP could not be the best choice for
+fast delivery of data. We decided to make peers communicate to each other by
+means of an application-level acked UDP transmission: after sending an UDP
+packet, a peer waits for a short ACK packet to come back within a short time
+frame; if it does not, the peer retries the transmission up to four times in
+total.
+
 % TODO: two layers of abstraction 
 % TODO: describe the protocol of gameplay
 % TODO: fault tolerance

@@ -117,4 +117,20 @@ send the ball exit position in advance in order to reduce the network latency
 perceived by the player.
 
 % TODO: fault tolerance
-% TODO: describe the difference between GO and NGO failures
+Just here above we said that a player sends the game information to the GO:
+in fact, this entity serves as a global coordinator of the game. We made this
+decision so that a reduced amount of traffic has to flow through the network
+if only the GO has to care about whether the currently active player is still
+live and reachable. Also, the GO is the main entity in the P2P group and this
+makes it the most suitable choice for such a role like coordinator.
+
+Clearly, the GO represents a single point of failure during the game phase, but
+we want to point out that a network failure such a crash of the coordinator
+would make all the ad hoc network collapse. Moreover, recreating a P2P network
+is an operation that, at the moment, is quite difficult to carry out in a
+short amount of time (and unfortunately things go even worse when done
+programmatically). Therefore, we thought that the game of an NGO should end if
+it is unable to reach the GO, because restoring the game with the other active
+players would be way worse than starting a new one from scratch.
+
+% TODO: tell when blocking is necessary for gameplay

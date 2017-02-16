@@ -44,6 +44,8 @@ Since in this phase there are not strong requirements to meet in terms of
 real-time information delivering, we decided to use TCP connections until the
 game starts. Also, this choice will provide us an element of comparison to the
 solution we adopted for gameplay.
+Raw data sent over sockets is formatted as JSON objects, so that we are able to
+distinguish more easily the requests from one peer to another.
 
 All the design was built having in mind that the topology underneath our system
 is an $1:n$ P2P network, so even if the game formation carries out having one
@@ -63,7 +65,6 @@ messages can be exchanged without blocking on response. However, we implemented
 also the semantics for synchronizing on certain operations and we guarantee FIFO
 ordering for the data sent out of a device.
 
-% TODO: talk about data sent among peers
 % TODO: describe the protocol of game formation
 % TODO: describe the start of a game
 

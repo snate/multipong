@@ -1,5 +1,7 @@
 package com.multipong.model.multiplayer;
 
+import android.util.Log;
+
 import com.multipong.activity.GameActivity;
 import com.multipong.model.Actor;
 import com.multipong.model.coordination.Coordination;
@@ -28,6 +30,7 @@ public class GameRouter implements Actor {
             coordinationRef.cancelDiscovery();
             AddressedContent content = new AddressedContent(new PoisonPillMessage(), null);
             activity.addMessageToQueue(content);
+            Log.d("POISON", "PILLED");
             return;
         }
         if (GameMessage.isForCoordination(message))

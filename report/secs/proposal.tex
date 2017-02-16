@@ -65,7 +65,23 @@ messages can be exchanged without blocking on response. However, we implemented
 also the semantics for synchronizing on certain operations and we guarantee FIFO
 ordering for the data sent out of a device.
 
-% TODO: describe the protocol of game formation
+In order to create a match among several players, applications on different
+devices have to follow a protocol. Firstly, at Wi-Fi P2P discovery time, new
+NGOs have to ask to the GO if the application which is running on it is hosting
+a game or not by means of a \texttt{ARE\_YOU\_THE\_HOST} message. If so, the
+host replies with a \texttt{TELL\_IP} message, otherwise this peer (which is
+therefore a participant) replies with a \texttt{KNOWN\_HOSTS} message, in which
+the GO lists the hosts it knows.
+
+Then the participant surely knows the IP of a host (if any) and it is able to
+send a \texttt{DISCOVERY} message to the host. This message causes the host to
+reply with an \texttt{AVAILABLE} message in which currently joined players are
+listed. After this step, the participant can join the message by sending a
+\texttt{JOIN} message to the host, receiving back an \texttt{AVAILABLE} message
+in which she will be present as a confirmation. Finally, a player can cancel
+her subscription by sending a \texttt{CANCEL} message and receiving back an
+\texttt{AVAILABLE} message in which she will not be present anymore.
+
 % TODO: describe the start of a game
 
 \subsection{Gameplay}

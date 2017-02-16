@@ -144,6 +144,7 @@ public class Participant implements Actor {
                 .putExtra(GameActivity.HOST, host)
                 .putIntegerArrayListExtra(PLAYERS, getPlayerIDs());
         activity.startActivity(intent);
+        activity.finish();
     }
 
     private void forwardDiscover(InetAddress sender) {

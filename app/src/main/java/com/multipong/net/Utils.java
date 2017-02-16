@@ -70,6 +70,7 @@ public class Utils {
                 GOUtility.setId(true);
                 return;
             }
+            info.toString();
             GOUtility.setId(false);
             // Participant sends discovery message to host because knows its IP
             if (!mActivity.isHost()) {

@@ -38,6 +38,7 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
+        Log.d("CREATED", "PARTICIPANT ACTIVITY");
 
         adapter = new MatchAdapter(this);
         matchesList = (ListView)findViewById(R.id.matches_list);

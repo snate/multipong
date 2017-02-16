@@ -1,5 +1,7 @@
 package com.multipong.net.send;
 
+import android.util.Log;
+
 import com.multipong.net.messages.Message;
 import com.multipong.net.messages.PoisonPillMessage;
 
@@ -23,10 +25,12 @@ public abstract class Sender implements Runnable {
 
     @Override
     public void run() {
+        Log.d("SENDER","STARTING");
         while (!stop) {
             AddressedContent content = null;
             try {
                 content = messages.take();
+                Log.d("Messssssssage","Fetched");
                 if (content.getMessage() instanceof PoisonPillMessage) {
                     stop = true;
                     Message msg = content.getMessage();
@@ -40,6 +44,7 @@ public abstract class Sender implements Runnable {
             if (content.address == null || content.message == null) continue;
             send(content);
         }
+        Log.d("SENDER","FINISHED");
     }
 
     public void stop() {

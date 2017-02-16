@@ -63,6 +63,7 @@ public abstract class MultiplayerGameFormationActivity extends NetworkingActivit
     }
 
     public void waitForEmptyMessageQueue() {
+        getReceiver().stop();
         if (semafor.getAndSet(true)) return;
         try {
             PoisonPillMessage die = new PoisonPillMessage();

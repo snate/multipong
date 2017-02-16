@@ -82,7 +82,14 @@ in which she will be present as a confirmation. Finally, a player can cancel
 her subscription by sending a \texttt{CANCEL} message and receiving back an
 \texttt{AVAILABLE} message in which she will not be present anymore.
 
-% TODO: describe the start of a game
+When a host player sees more than one participant in its match list, she can
+decide to start a game, making her Multipong app send a \texttt{STARTING}
+message to all of the game participants. Since this is a blocking operation
+because it is better not to start the game until all the other players' games
+started, the host has to wait for all the messages in its sending queue to be
+sent before starting. If some player is unreachable for some reason
+during the game starting, she will be excluded by the match as described in
+the following subsection.
 
 \subsection{Gameplay}
 

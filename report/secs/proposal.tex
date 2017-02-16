@@ -108,6 +108,13 @@ architecture, with one layer that is concerned with coordinating the peers and
 the other one that deals with the multiplayer game logic on top of the
 coordination layer.
 
-% TODO: describe the protocol of gameplay
+The multiplayer game logic layer has to manage the local state of the game and
+part of the global state. Also, when the player hits the ball with the paddle,
+it also have to compute the ball exit point from the screen as send this
+information to the GO as soon as it is available, so that it can spread this
+message to all the active participants of the game. We chose to compute and
+send the ball exit position in advance in order to reduce the network latency
+perceived by the player.
+
 % TODO: fault tolerance
 % TODO: describe the difference between GO and NGO failures

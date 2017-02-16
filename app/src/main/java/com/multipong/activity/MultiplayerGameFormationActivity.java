@@ -3,7 +3,6 @@ package com.multipong.activity;
 import android.content.Context;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.multipong.net.Utils;
 import com.multipong.net.WifiP2pListener;
@@ -64,6 +63,7 @@ public abstract class MultiplayerGameFormationActivity extends NetworkingActivit
     }
 
     public void waitForEmptyMessageQueue() {
+        getReceiver().stop();
         if (semafor.getAndSet(true)) return;
         try {
             PoisonPillMessage die = new PoisonPillMessage();

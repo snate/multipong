@@ -9,7 +9,6 @@ import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 
 import com.multipong.activity.MultiplayerGameFormationActivity;
-import com.multipong.net.messages.gameformation.AvailableMessage;
 import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.net.messages.gameformation.AreYouTheHostMessage;
 import com.multipong.net.messages.gameformation.TellIPMessage;
@@ -25,7 +24,7 @@ public class Utils {
     public static final int PORT = 8888;
     public static final int UDP_PORT = 9054;
     public static final String UDP_ACK = "ACK";
-    public static final int MTU = 1500;
+    public static final int MTU = 160;
 
     public static final String WIFI_P2P_GROUP_OWNER_ADDRESS = "192.168.49.1";
     public static final String WIFI_P2P_BROADCAST = "192.168.49.255";
@@ -71,6 +70,7 @@ public class Utils {
                 GOUtility.setId(true);
                 return;
             }
+            info.toString();
             GOUtility.setId(false);
             // Participant sends discovery message to host because knows its IP
             if (!mActivity.isHost()) {

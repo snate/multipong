@@ -84,7 +84,7 @@ public class MultiplayerStateManager implements Actor {
         state.currentActivePlayer = new Player(ballInfo.getNextPlayer());
 
         //If I'm the last player in the game
-        if (state.activePlayers.size() == 1) {
+        if (state.activePlayers.size() == 1 && state.activePlayers.contains(state.me)) {
             activity.endGame(game.getScore(), true);
         } else { //If there is (at least) one another player
 

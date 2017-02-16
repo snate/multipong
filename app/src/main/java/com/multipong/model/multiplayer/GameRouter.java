@@ -1,10 +1,14 @@
 package com.multipong.model.multiplayer;
 
+import android.util.Log;
+
 import com.multipong.activity.GameActivity;
 import com.multipong.model.Actor;
 import com.multipong.model.coordination.Coordination;
 import com.multipong.model.game.MultiplayerGame;
+import com.multipong.net.messages.PoisonPillMessage;
 import com.multipong.net.messages.game.GameMessage;
+import com.multipong.net.send.Sender.AddressedContent;
 
 import org.json.JSONObject;
 
@@ -24,6 +28,9 @@ public class GameRouter implements Actor {
     public void receive(String type, JSONObject message, InetAddress sender) {
         if (type.equals(MessageType.POISON_PILL)) {
             coordinationRef.cancelDiscovery();
+            AddressedContent content = new AddressedContent(new PoisonPillMessage(), null);
+            activity.addMessageToQueue(content);
+            Log.d("POISON", "PILLED");
             return;
         }
         if (GameMessage.isForCoordination(message))

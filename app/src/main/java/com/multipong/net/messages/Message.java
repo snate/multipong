@@ -11,11 +11,11 @@ import java.util.Map;
 
 public abstract class Message {
 
-    public static final String APP_FIELD = "application";
+    public static final String APP_FIELD = "app";
     public static final String APP_VALUE = "multipong";
-    public static final String NAME_FIELD = "playerName";
-    public static final String MESSAGE_TYPE_FIELD = "type";
-    public static final String ID_FIELD = "newId";
+    public static final String NAME_FIELD = "pl";
+    public static final String MESSAGE_TYPE_FIELD = "t";
+    public static final String ID_FIELD = "id";
 
     protected JSONObject object;
 

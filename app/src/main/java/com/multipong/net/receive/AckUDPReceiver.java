@@ -2,7 +2,6 @@ package com.multipong.net.receive;
 
 import android.util.Log;
 
-import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.activity.NetworkingActivity;
 import com.multipong.net.Utils;
 
@@ -14,6 +13,7 @@ import java.net.InetAddress;
 public class AckUDPReceiver extends Receiver {
 
     private DatagramSocket serverSocket;
+    private volatile boolean stop = false;
 
     public AckUDPReceiver(NetworkingActivity activity) {
         super(activity);
@@ -27,7 +27,7 @@ public class AckUDPReceiver extends Receiver {
             byte[] receiveData = new byte[Utils.MTU];
             byte[] ack = new byte[Utils.MTU];
             Log.d("AckUDPReceiver", "Waiting for data...");
-            while (true) {
+            while (!stop) {
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 serverSocket.receive(receivePacket);
                 String incomingData = new String(receivePacket.getData());
@@ -48,5 +48,6 @@ public class AckUDPReceiver extends Receiver {
     public void stop() {
         if (serverSocket != null)
             serverSocket.close();
+        stop = true;
     }
 }

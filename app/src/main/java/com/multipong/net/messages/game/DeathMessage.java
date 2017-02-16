@@ -1,7 +1,6 @@
 package com.multipong.net.messages.game;
 
 import com.multipong.model.coordination.Coordination;
-import com.multipong.net.messages.gameformation.DiscoverMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;

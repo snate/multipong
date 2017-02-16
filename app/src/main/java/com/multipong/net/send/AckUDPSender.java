@@ -10,8 +10,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AckUDPSender extends Sender {
 
@@ -33,13 +31,16 @@ public class AckUDPSender extends Sender {
                 Log.d("AckUDPSender", "To " + addr.getHostAddress());
                 data = message.getBytes();
                 DatagramPacket sendPacket = new DatagramPacket(data, data.length, addr, Utils.UDP_PORT);
+                Long startTime = System.currentTimeMillis();
                 clientSocket.send(sendPacket);
 
                 clientSocket.setSoTimeout(UDP_TIMEOUT);
 
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 clientSocket.receive(receivePacket);
+                Long endTime = System.currentTimeMillis();
                 attempts = 4;
+                Log.d("UDP_TIME", "It took " + (endTime - startTime) + "ms");
                 if (content instanceof ReliablyDeliverableAddressedContent)
                     ((ReliablyDeliverableAddressedContent) content).setB(true);
                 String ack = new String(receivePacket.getData());

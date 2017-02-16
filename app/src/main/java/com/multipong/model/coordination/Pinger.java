@@ -1,18 +1,13 @@
 package com.multipong.model.coordination;
 
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.multipong.activity.GameActivity;
-import com.multipong.activity.MainActivity;
-import com.multipong.model.formation.Host;
 import com.multipong.model.game.MultiplayerGame;
 import com.multipong.model.multiplayer.MultiplayerStateManager;
 import com.multipong.model.multiplayer.MultiplayerStateManager.Player;
 import com.multipong.net.messages.game.AreYouAliveMessage;
 import com.multipong.net.send.AckUDPSender;
-import com.multipong.utility.PlayerNameUtility;
 
 import java.net.InetAddress;
 import java.util.ArrayList;

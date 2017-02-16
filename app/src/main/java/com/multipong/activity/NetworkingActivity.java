@@ -2,6 +2,7 @@ package com.multipong.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;

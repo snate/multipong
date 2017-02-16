@@ -113,6 +113,7 @@ public class GameActivity extends NetworkingActivity {
         mEndButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onBackPressed();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
@@ -122,7 +123,6 @@ public class GameActivity extends NetworkingActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        getActor().receive(Actor.MessageType.POISON_PILL, null, null);
     }
 
     public Game getGame() {
@@ -162,6 +162,9 @@ public class GameActivity extends NetworkingActivity {
         if(gameEnded){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
+            getActor().receive(Actor.MessageType.POISON_PILL, null, null);
+            Receiver receiver = getReceiver();
+            if(receiver != null) receiver.stop();
         }
     }
 

@@ -14,6 +14,7 @@ import java.util.Scanner;
 public class TCPReceiver extends Receiver {
 
     private ServerSocket serverSocket;
+    private volatile boolean stop = false;
 
     public TCPReceiver(NetworkingActivity activity) {
         super(activity);
@@ -24,7 +25,7 @@ public class TCPReceiver extends Receiver {
         super.run();
         try {
             serverSocket = new ServerSocket(Utils.PORT);
-            while(true) {
+            while(!stop) {
                 final Socket client = serverSocket.accept();
                 try {
                     InputStream input = client.getInputStream();
@@ -39,14 +40,20 @@ public class TCPReceiver extends Receiver {
         } catch (IOException e) {
             Log.d("TCPReceiver", "Socket closed");
         }
+        Log.d("TCP_RECEIVER", "STOPPED");
     }
 
     public void stop() {
+        if (stop) return;
+        Log.d("STOPPING", "1");
+        stop = true;
+        Log.d("STOPPING", "2");
         try {
             if (serverSocket != null)
                 serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d("STOPPING", "3");
     }
 }

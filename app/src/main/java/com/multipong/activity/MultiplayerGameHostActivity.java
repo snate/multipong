@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.multipong.R;
+import com.multipong.model.Actor;
 import com.multipong.model.formation.Host;
 import com.multipong.utility.PlayerNameUtility;
 
@@ -34,6 +36,7 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
+        Log.d("CREATED", "HOST ACTIVITY");
 
         ArrayList<String> listWithOnlyme = new ArrayList<>();
         listWithOnlyme.add(PlayerNameUtility.getPlayerName());
@@ -42,7 +45,11 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
         playerList.setAdapter(mAdapter);
         mButton = (Button) findViewById(R.id.host_start_btn);
 
-        setActor(new Host(this));
+        Log.d("CREATING HOST", "ciao");
+        Actor host = new Host(this);
+        Log.d("CREATING HOST", String.valueOf(host));
+        setActor(host);
+        Log.d("CREATING HOST", "PIPPO");
         mButton.setOnClickListener(new HostGameStarter(playerList));
     }
 

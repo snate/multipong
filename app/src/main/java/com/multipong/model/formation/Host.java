@@ -32,12 +32,14 @@ import java.util.Map;
 
 public class Host implements Actor {
 
-    private MultiplayerGameHostActivity activity;
+    private volatile MultiplayerGameHostActivity activity;
 
     private Map<Integer, String> participants;
 
     public Host(MultiplayerGameHostActivity activity) {
         this.activity = activity;
+        Log.d("HOST PAR", String.valueOf(activity));
+        Log.d("HOST THIS", String.valueOf(this.activity));
         participants = new HashMap<>();
         Integer myID = DeviceIdUtility.getId();
         participants.put(myID, PlayerNameUtility.getPlayerName());
@@ -69,6 +71,7 @@ public class Host implements Actor {
         });
         //block to start game
         activity.waitForEmptyMessageQueue();
+        activity = null;
     }
 
     @Override
@@ -138,7 +141,9 @@ public class Host implements Actor {
         Log.d("Telling","IP");
         TellIPMessage message = new TellIPMessage();
         AddressedContent content = new AddressedContent(message, sender);
+        Log.d("ACTIVITY", String.valueOf(activity));
         activity.addMessageToQueue(content);
+        Log.d("HOST", "TOLD IP");
     }
 
     public ArrayList<Integer> getPlayerIDs() {

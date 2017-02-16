@@ -102,7 +102,12 @@ packet, a peer waits for a short ACK packet to come back within a short time
 frame; if it does not, the peer retries the transmission up to four times in
 total.
 
-% TODO: two layers of abstraction 
+In this phase of the game we want to have both consistency and low latency, so
+that the game can be enjoyable. In order to do so, we designed a two layered
+architecture, with one layer that is concerned with coordinating the peers and
+the other one that deals with the multiplayer game logic on top of the
+coordination layer.
+
 % TODO: describe the protocol of gameplay
 % TODO: fault tolerance
 % TODO: describe the difference between GO and NGO failures

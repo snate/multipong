@@ -133,4 +133,8 @@ programmatically). Therefore, we thought that the game of an NGO should end if
 it is unable to reach the GO, because restoring the game with the other active
 players would be way worse than starting a new one from scratch.
 
-% TODO: tell when blocking is necessary for gameplay
+While GO failures are fatal for the game, it copes better with NGOs failures:
+in fact, if an NGO happens to look inactive for the GO it is removed from the
+game after the GO asked a few times if it is alive or not without getting any
+response. In that case, the game continues with the GO telling the other
+players that a certain peer is not active anymore.

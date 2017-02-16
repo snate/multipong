@@ -165,6 +165,7 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
                             .putExtra(IS_HOST, true)
                             .putIntegerArrayListExtra(PLAYERS, ((Host)getActor()).getPlayerIDs());
                     startActivity(intent);
+                    finish();
                 }
 
             }.execute(null, null, null);

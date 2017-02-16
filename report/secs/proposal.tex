@@ -55,7 +55,14 @@ obtaining any concrete reference to communicate to them. This means that the
 networking logic present in our application have to take into account the fact
 that the GO needs to retrieve somehow the IPs of the NGOs.
 
-% TODO: talk about the asynchronous model employed for communication among peers
+Before describing the protocols we employed for the game formation phase, we
+want to briefly describe how we have implemented data exchange between peers.
+Each peer has two threads, respectively for receiving and sending data via the
+network. The communication is performed in an asynchronous fashion, so that
+messages can be exchanged without blocking on response. However, we implemented
+also the semantics for synchronizing on certain operations and we guarantee FIFO
+ordering for the data sent out of a device.
+
 % TODO: talk about data sent among peers
 % TODO: describe the protocol of game formation
 % TODO: describe the start of a game

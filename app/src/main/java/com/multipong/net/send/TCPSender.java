@@ -6,11 +6,13 @@ import com.multipong.net.Utils;
 import com.multipong.net.messages.Message;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class TCPSender extends Sender {
 
@@ -36,6 +38,9 @@ public class TCPSender extends Sender {
             // Receive ack back
             if (ackSocket == null) ackSocket  = new ServerSocket(Utils.TCP_ACK_PORT);
             Socket ack = ackSocket.accept();
+            InputStream input = ack.getInputStream();
+            Scanner scanner = new Scanner(input).useDelimiter("\\A");
+            String json = scanner.hasNext() ? scanner.next() : "";
             ack.close();
             Long endTime = System.currentTimeMillis();
             Log.d("Sender", "Data has been sent: " + jsonObjectString);

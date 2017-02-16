@@ -7,6 +7,7 @@ import com.multipong.net.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -38,6 +39,9 @@ public class TCPReceiver extends Receiver {
                     // Send application-level ack back to sender
                     Socket ackSocket = new Socket();
                     ackSocket.connect(new InetSocketAddress(sender, Utils.TCP_ACK_PORT), 5000);
+                    OutputStream stream = ackSocket.getOutputStream();
+                    stream.write(json.getBytes(), 0, json.length());
+                    stream.close();
                     ackSocket.close();
                     process(json, client.getInetAddress());
                 } catch (IOException e) {

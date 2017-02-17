@@ -22,7 +22,7 @@ public class MultiplayerGame extends Game {
     private MultiplayerStateManager msm;
     private volatile Boolean started;
 
-    private volatile boolean myTurn = false;
+    private boolean myTurn = false;
 
     public MultiplayerGame(GameActivity activity, Integer hostId) {
         this.activity = activity;
@@ -58,8 +58,17 @@ public class MultiplayerGame extends Game {
 
     }
 
-    public void newTurn(BallInfo info){
-        ((MultiplayerGameThread)currentGame).newPlayerTurn(info);
+    public synchronized void newTurn(BallInfo info){
+        if (!myTurn) {
+            myTurn = true;
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            ((MultiplayerGameThread) currentGame).newPlayerTurn(info);
+        }
     }
 
     public void setHost(Integer hostId) {
@@ -84,12 +93,9 @@ public class MultiplayerGame extends Game {
 
         @Override
         public void initialBallPosition() {
-            if (!myTurn) {
-                if (started) return;
-                waitForBallToComeBack();
-                started = true;
-                myTurn = true;
-            }
+            if (started) return;
+            waitForBallToComeBack();
+            started = true;
         }
 
         public void newPlayerTurn(BallInfo info) {
@@ -136,6 +142,7 @@ public class MultiplayerGame extends Game {
             BallInfo info = MultiplayerStateManager.createBallInfo(newSpeedX, newSpeedY, newPos);
             info = info.tellIfStillInGame(stillAlive);
             msm.sendBallToNext(info);
+            myTurn = false;
         }
 
         private void waitForBallToComeBack() {
@@ -145,7 +152,6 @@ public class MultiplayerGame extends Game {
                 try {
                     while (forBallToComeBack.get() == 0)
                         forBallToComeBack.wait();
-                    myTurn = false;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

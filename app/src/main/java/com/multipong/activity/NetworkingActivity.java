@@ -47,7 +47,10 @@ public abstract class NetworkingActivity extends AppCompatActivity implements Ac
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(receiver != null) receiver.stop();
+        if(receiver != null) {
+            receiver.stop();
+            receiver = null;
+        }
         else Log.d("iugbuigbgil", "asafoesuuigs");
         if(sender != null) {
             sender.stop();
@@ -57,7 +60,10 @@ public abstract class NetworkingActivity extends AppCompatActivity implements Ac
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            sender = null;
         }
+        actor = null;
     }
 
     public void addMessageToQueue(Sender.AddressedContent content) {
@@ -71,7 +77,6 @@ public abstract class NetworkingActivity extends AppCompatActivity implements Ac
         Log.d("MQ cap 2", String.valueOf(messagesQueue.remainingCapacity()));
         Log.d("Added", content.getMessage().getMsg().toString());
     }
-
 
     public void setActor(Actor actor) {
         this.actor = actor;

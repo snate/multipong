@@ -33,9 +33,10 @@ public class TCPSender extends Sender {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (socket != null && socket.isConnected())
+            if (socket != null)
                 try {
                     socket.close();
+                    socket = null;
                     Log.d("Sender", "Socket closed.");
                 } catch (IOException e) {
                 }

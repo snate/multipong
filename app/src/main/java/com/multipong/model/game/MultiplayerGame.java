@@ -22,6 +22,8 @@ public class MultiplayerGame extends Game {
     private MultiplayerStateManager msm;
     private volatile Boolean started;
 
+    private volatile boolean myTurn = false;
+
     public MultiplayerGame(GameActivity activity, Integer hostId) {
         this.activity = activity;
         msm = new MultiplayerStateManager(this, hostId, activity);
@@ -82,9 +84,12 @@ public class MultiplayerGame extends Game {
 
         @Override
         public void initialBallPosition() {
-            if(started) return;
-            waitForBallToComeBack();
-            started = true;
+            if (!myTurn) {
+                if (started) return;
+                waitForBallToComeBack();
+                started = true;
+                myTurn = true;
+            }
         }
 
         public void newPlayerTurn(BallInfo info) {
@@ -140,6 +145,7 @@ public class MultiplayerGame extends Game {
                 try {
                     while (forBallToComeBack.get() == 0)
                         forBallToComeBack.wait();
+                    myTurn = false;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

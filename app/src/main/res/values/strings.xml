@@ -37,4 +37,14 @@
 
     <string name="your_score_is">your score is</string>
     <string name="you_win">YOU WIN!!!</string>
+
+    <string name="no_best_score_available">No best score available</string>
+    <string name="best">BEST</string>
+    <string name="with_score">with score</string>
+
+    <string name="two_player_at_least">There should be at least two players in the game</string>
+    <string name="match_creation">Match creation</string>
+
+    <string name="score_0">score 0</string>
+    <string name="go_back">Go back</string>
 </resources>

@@ -46,8 +46,12 @@ public class AckUDPSender extends Sender {
                 String ack = new String(receivePacket.getData());
                 Log.d("AckUDPSender", "Received " + ack + " as a response");
                 clientSocket.close();
-            } catch (SocketTimeoutException exc) { } catch (IOException e) { } finally {
+            } catch (SocketTimeoutException exc) { } catch (IOException e) {
                 attempts++;
+            } finally {
+                if (attempts == 4) {
+
+                }
             }
         }
         if (content instanceof ReliablyDeliverableAddressedContent)

@@ -114,8 +114,8 @@ public class GameActivity extends NetworkingActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);*/
             }
         });
     }
@@ -163,8 +163,9 @@ public class GameActivity extends NetworkingActivity {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             getActor().receive(Actor.MessageType.POISON_PILL, null, null);
-            Receiver receiver = getReceiver();
-            if(receiver != null) receiver.stop();
+            /*Receiver receiver = getReceiver();
+            if(receiver != null) receiver.stop();*/
+            finish();
         }
     }
 

@@ -63,20 +63,20 @@ public abstract class Pinger extends TimerTask {
                         } catch (InterruptedException e) {
                             Log.e("PONG-PINA", "cathced exception");
                             e.printStackTrace();
+                        } finally {
+                            Log.e("PONG-PINA", 8 + "");
+                            pong = rdac.getB();
+                            Log.e("PONG-PINA", 9 + "");
+                            attempts++;
+                            Log.e("PONG-PINA", "pong:" + pong + " attempts:" + attempts);
                         }
                     }
-                    Log.e("PONG-PINA", 8 + "");
-                    pong = rdac.getB();
-                    Log.e("PONG-PINA", 9 + "");
-                    attempts++;
-                    Log.e("PONG-PINA", "pong:" + pong + " attempts:" + attempts);
                 }
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void unused) {
-                Log.e("PONG-PINA", pong + "");
                 if (!pong)
                     pingedIsNotAlive();
             }

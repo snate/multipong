@@ -156,27 +156,31 @@ public class Coordination implements Actor {
 
         @Override
         protected void pingedIsNotAlive() {
+            Log.e("pingedIsNotAlive()", "pingedIsNotAlive()");
             boolean wasRemoved = sendDeath(currentPlayer);
             if (!wasRemoved) return;
             // Send ball to next player after `currentPlayer died by using last BallInfo msg
-            Player nextPlayer = msm.getExtractor().getNext(oldPlayers, currentPlayer);
-            Log.e("GOMORTO", nextPlayer.toString());
-            if (lastInfo == null) {
-                // What if current coordinator has just been elected? (lastBallInfo == null)
-                //      => compute ballInfo randomly
-                // (first player died)
-                lastInfo = MultiplayerStateManager.createBallInfo(Math.random(), Math.random(), Math.random())
-                        .tellIfStillInGame(true);
-                nextPlayer = new Player(oldPlayers.get(1).getId());
+            if (msm.getActivePlayers().size() == 1) {
+                int score = ((MultiplayerGame)activity.getGame()).getScore();
+                activity.endGame(score, true);
+            } else {
+                Player nextPlayer = msm.getExtractor().getNext(oldPlayers, currentPlayer);
+                Log.e("GOMORTO", nextPlayer.toString());
+                if (lastInfo == null) {
+                    // What if current coordinator has just been elected? (lastBallInfo == null)
+                    //      => compute ballInfo randomly
+                    // (first player died)
+                    lastInfo = MultiplayerStateManager.createBallInfo(Math.random(), Math.random(), Math.random())
+                            .tellIfStillInGame(true);
+                    nextPlayer = new Player(oldPlayers.get(1).getId());
+                }
+                lastInfo = lastInfo.withNextPlayer(nextPlayer.getId());
+                BallInfoMessage message = new BallInfoMessage();
+                message.addBallInfo(lastInfo);
+                message.forCoordination(false);
+                sendToNext(message, nextPlayer.getId());
+                Log.e("PROVAMORTOMORTO", "GO MORTO");
             }
-            lastInfo = lastInfo.withNextPlayer(nextPlayer.getId());
-            BallInfoMessage message = new BallInfoMessage();
-            message.addBallInfo(lastInfo);
-            message.forCoordination(false);
-            sendToNext(message, nextPlayer.getId());
-            Log.e("PROVAMORTOMORTO", "GO MORTO");
-            /*int score = ((MultiplayerGame)activity.getGame()).getScore();
-            activity.endGame(score, false);*/
         }
     }
 
@@ -206,7 +210,6 @@ public class Coordination implements Actor {
             Log.e("MORTOMORTO", "GO MORTO");
             int score = ((MultiplayerGame)activity.getGame()).getScore();
             activity.endGame(score,false);
-            //activity.onBackPressed();
         }
     }
 

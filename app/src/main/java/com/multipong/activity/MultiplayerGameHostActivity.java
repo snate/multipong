@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.multipong.R;
 import com.multipong.model.Actor;
 import com.multipong.model.formation.Host;
+import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.PlayerNameUtility;
 
 import java.util.ArrayList;
@@ -163,7 +164,8 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
                             .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName())
                             .putExtra(MainActivity.IS_MULTI, true)
                             .putExtra(IS_HOST, true)
-                            .putIntegerArrayListExtra(PLAYERS, ((Host)getActor()).getPlayerIDs());
+                            .putExtra(GameActivity.HOST, DeviceIdUtility.getId())
+                            .putIntegerArrayListExtra(PLAYERS, ((Host) getActor()).getPlayerIDs());
                     startActivity(intent);
                     finish();
                 }

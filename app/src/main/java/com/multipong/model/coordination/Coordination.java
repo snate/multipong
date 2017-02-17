@@ -156,23 +156,37 @@ public class Coordination implements Actor {
 
         @Override
         protected void pingedIsNotAlive() {
+            Log.e("PINGEDISNOTALIVE", "0");
             boolean wasRemoved = sendDeath(currentPlayer);
-            if (!wasRemoved) return;
+            Log.e("PINGEDISNOTALIVE", "1");
+            if (!wasRemoved) {
+                Log.e("PINGEDISNOTALIVE", "!wasREmoved");
+                return;
+            }
             // Send ball to next player after `currentPlayer died by using last BallInfo msg
             Player nextPlayer = msm.getExtractor().getNext(oldPlayers, currentPlayer);
+            Log.e("PINGEDISNOTALIVE", "2");
             if (lastInfo == null) {
                 // What if current coordinator has just been elected? (lastBallInfo == null)
                 //      => compute ballInfo randomly
                 // (first player died)
                 lastInfo = MultiplayerStateManager.createBallInfo(Math.random(), Math.random(), Math.random())
                         .tellIfStillInGame(true);
+                Log.e("PINGEDISNOTALIVE", "3.1");
                 nextPlayer = new Player(oldPlayers.get(1).getId());
+                Log.e("PINGEDISNOTALIVE", "3.2");
             }
+            Log.e("PINGEDISNOTALIVE", "4");
             lastInfo = lastInfo.withNextPlayer(nextPlayer.getId());
+            Log.e("PINGEDISNOTALIVE", "5");
             BallInfoMessage message = new BallInfoMessage();
+            Log.e("PINGEDISNOTALIVE", "6");
             message.addBallInfo(lastInfo);
+            Log.e("PINGEDISNOTALIVE", "7");
             message.forCoordination(false);
+            Log.e("PINGEDISNOTALIVE", "8");
             sendToNext(message, nextPlayer.getId());
+            Log.e("PINGEDISNOTALIVE", "9");
         }
     }
 
@@ -199,12 +213,14 @@ public class Coordination implements Actor {
 
         @Override
         protected void pingedIsNotAlive() {
-            // TODO: GO has crashed
+            Log.e("MORTOMORTO", "GO MORTO");
+            int score = ((MultiplayerGame)activity.getGame()).getScore();
+            activity.endGame(score,false);
+            //activity.onBackPressed();
         }
     }
 
     public class MessageType {
         public static final String AYA = "AYA";
         public static final String DEATH = "DEA";
-    }
-}
+    }}

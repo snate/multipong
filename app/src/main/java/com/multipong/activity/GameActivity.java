@@ -162,7 +162,8 @@ public class GameActivity extends NetworkingActivity {
         if(gameEnded){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
-            getActor().receive(Actor.MessageType.POISON_PILL, null, null);
+            if (isMultiplayer)
+                getActor().receive(Actor.MessageType.POISON_PILL, null, null);
             /*Receiver receiver = getReceiver();
             if(receiver != null) receiver.stop();*/
             finish();

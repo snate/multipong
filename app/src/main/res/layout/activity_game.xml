@@ -51,14 +51,16 @@
             android:textColor="@color/colorPrimaryDark"
             android:layout_marginTop="@dimen/text_distance_from_pongview"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/score_tv"
-            android:text="Score Text"
+            android:text="@string/score_0"
             android:textColor="@color/black_overlay"
             android:layout_marginTop="@dimen/text_distance_from_pongview"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -94,7 +96,7 @@
 
         <Button
             android:id="@+id/end_bt"
-            android:text="Go back"
+            android:text="@string/go_back"
             android:clickable="false"
             android:visibility="invisible"
             android:layout_width="wrap_content"

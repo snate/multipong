@@ -51,7 +51,7 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
         Log.d("CREATING HOST", String.valueOf(host));
         setActor(host);
         Log.d("CREATING HOST", "PIPPO");
-        mButton.setOnClickListener(new HostGameStarter(playerList));
+        mButton.setOnClickListener(new HostGameStarter(this, playerList));
     }
 
     @Override
@@ -125,8 +125,10 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
 
         private ListView mPlayerList;
         public static final String PLAYER_NAME = "com.multipong.PLAYER_NAME";
+        private Activity activity;
 
-        public HostGameStarter(ListView playerList) {
+        public HostGameStarter(Activity activity, ListView playerList) {
+            this.activity = activity;
             mPlayerList = playerList;
         }
 
@@ -134,14 +136,14 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
         public void onClick(View v) {
             ListAdapter listAdapter = mPlayerList.getAdapter();
             if (mPlayerList.getAdapter() == null || listAdapter.getCount() <= 1) {
-                showShortToast("There should be at least two players in the game");
+                showShortToast(getString(R.string.two_player_at_least));
                 return;
             }
             Host host = (Host) getActor();
             host.startGame();
 
             final AlertDialog dialog = new AlertDialog.Builder(MultiplayerGameHostActivity.this)
-                    .setTitle("Creazione della partita")
+                    .setTitle(R.string.match_creation)
                     .setCancelable(false)
                     .create();
             new AsyncTask<Void, Void, Void>() {
@@ -167,7 +169,7 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
                             .putExtra(GameActivity.HOST, DeviceIdUtility.getId())
                             .putIntegerArrayListExtra(PLAYERS, ((Host) getActor()).getPlayerIDs());
                     startActivity(intent);
-                    finish();
+                    activity.finish();
                 }
 
             }.execute(null, null, null);

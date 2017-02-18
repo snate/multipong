@@ -73,6 +73,22 @@ host replies with a \texttt{TELL\_IP} message, otherwise this peer (which is
 therefore a participant) replies with a \texttt{KNOWN\_HOSTS} message, in which
 the GO lists the hosts it knows.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.30\textwidth]{SequenceDiagram1}
+    \caption{Example of comunication between a host that is the GO and a participant
+     which is a NGO}
+    \label{fig:seqDiagram1}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.30\textwidth]{SequenceDiagram2}
+    \caption{Example of comunication between a host that is NGO and two participants,
+     one is the GO, the other one is a NGO}
+    \label{fig:seqDiagram2}
+\end{figure}
+
 Then the participant surely knows the IP of a host (if any) and it is able to
 send a \texttt{DISCOVERY} message to the host. This message causes the host to
 reply with an \texttt{AVAILABLE} message in which currently joined players are
@@ -81,6 +97,15 @@ listed. After this step, the participant can join the message by sending a
 in which she will be present as a confirmation. Finally, a player can cancel
 her subscription by sending a \texttt{CANCEL} message and receiving back an
 \texttt{AVAILABLE} message in which she will not be present anymore.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.30\textwidth]{SequenceDiagram2}
+    \caption{Example of comunication between a host and two participants,
+     in which \emph{Participant1} has just joined the match and \emph{Participant2}
+     not}
+    \label{fig:seqDiagram2}
+\end{figure}
 
 When a host player sees more than one participant in its match list, she can
 decide to start a game, making her Multipong app send a \texttt{STARTING}
@@ -91,7 +116,16 @@ sent before starting. If some player is unreachable for some reason
 during the game starting, she will be excluded by the match as described in
 the following subsection.
 
+
+
 \subsection{Gameplay}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.23\textwidth]{matchField}
+    \caption{Example of match field}
+    \label{fig:matchField}
+\end{figure}
 
 As anticipated, during the gameplay phase we changed direction regarding the
 way we exchange data among peers. In fact, game information messagges have to

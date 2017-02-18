@@ -6,17 +6,17 @@ In this section, we evaluate through different tests some interesting metrics re
 
 We use TCP for message exchange during game formation phase, thus an interesting metric lies in application packet's latency and payload.
  
-To measure the RTT we decided to send a test-packet to a host which send it back to the sender, then we obtain time delta between message start and delivery. This should be an appropriate approximation of the RTT. This method is affected by a little error due to network state variability and interferences, so we decided to take several measures and then to average them.
+To measure the RTT we decided to send a test-packet to a host which send it back to the sender, then we obtain time delta between message start and delivery. This should be an appropriate approximation of the RTT. This method is affected by a little error due to network state variability and interference, so we decided to take several measures and then to average them.
 
-For the TCP payload evaluation, we generated some logs in the application to get the exact size of each type of message [reference to messages type]. Messages carry always the same data structure and length, so in this case it is not necessary to calculate a mean value.
+For the TCP payload evaluation, we generated some logs in the application to get the exact size of each type of message [reference to messages type]. Messages always carry the same data structure and length, so in this case it is not necessary to calculate a mean value.
 
 As for the TCP packets, we are interested in UDP RTT and payload statistics, so we measured them with the same approaches.
 
 \subsection{WiFi traffic}
 
-A more interesting evaluation is about general traffic over WiFi. The application was projected to minimize message exchange among peers, so we were interested to know how much traffic our application generates trough the WiFi. To determine that, we decided to use an external monitoring application, \textit{3G Watchdog} (3GW from now on) [add reference], but there is a plenty of alternatives available over the market. This application is intended to monitor long-time traffic such as mobile connection over month/week, but it also keeps track of the time the application has run, so we were able to calculate both traffic and mean bandwidth allocation.
+A more interesting evaluation is about general traffic over WiFi. The application was designed to minimize message exchange among peers, so we were interested in knowing how much traffic our application generates. To determine that, we decided to use, among the alternatives available over the market, an external monitoring application called \textit{3G Watchdog} (3GW from now on) [add reference]. This application is intended to monitor long-time traffic such as mobile connection over month/week, but it also keeps track of the time the application has run, so we were able to calculate both traffic and mean bandwidth allocation.
 
-Multipong, anyway, generates different amounts of traffic in different phases; during the game creation phase the traffic is way more variable than in the game phase, mainly due to:
+Multipong, anyway, generates different amounts of traffic in the various phases. In fact, during the game creation phase the traffic is way more variable than in the game phase, mainly due to:
 
 \begin{itemize}
 \item number of peers
@@ -38,6 +38,6 @@ This approach made us able to minimize the variation due to interferences, but t
 
 \subsection{Battery Consumption}
 
-Usually, apps which do a massive use of WiFi are also highly energy-consuming. One of our minor purposes was to optimize the battery-life of the devices running our application, so we decided to track energy consumption over the game. We identified a nice tool for energy monitoring in \textit{PowerTutor} (PT hereafter), a free app available on Play Store widely used by the Android Development community. Clearly, this kind of applications are unable to do physical measures of the energy consumption, they just estimate it through a mathematical model created over results from old Android devices. 
+Usually, apps which do a massive use of WiFi are also highly energy-consuming. One of our minor purposes was to optimize the battery-life of the devices running our application, so we decided to track energy consumption over the game. We identified a nice tool for energy monitoring in \textit{PowerTutor} (PT hereafter), a free application available on Google Play Store widely used by the Android Development community. Clearly, this kind of applications are not able to do physical measures of the energy consumption, they just estimate it through a mathematical model created over results retrieved from some Android devices, in particular HTC G1, G2, G3 and Nexus One, even if we could not run our application over that phones. 
 
 This approach is however considered quite reliable for that cases where energy monitoring is not the key factor to consider for the experiment. Nevertheless, because of our communication minimization approach, we decided to compare energy consumption in multiplayer mode against the singleplayer mode, and because of different traffic on GOs and NGOs we also decided to consider these two scenarios.

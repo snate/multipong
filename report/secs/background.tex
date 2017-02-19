@@ -42,8 +42,8 @@ devices must ask the user for the permission to join a group, and this hinders
 automatic creation of Wi-Fi Direct networks.
 
 \subsection{Mobile multiplayer games}
-Thanks to the diffusion of smartphones, the mobile games market is becoming each 
-year more important. In 2016 the global games market reached \$99.6 billions, and 
+Thanks to the diffusion of smartphones, the mobile games market is becoming
+more and more important. In 2016 the global games market reached \$99.6 billions, and 
 for the first time mobile gaming will take a larger share than PC with \$36.9 billion, 
 up 21.3\% globally, reaching the 37\% of the game market. That means that developers 
 really need to pay attention to mobile games \cite{bib:newzoo2}.
@@ -60,24 +60,27 @@ example live synchronous games, in which players are matched together to compete
 or turn-based asynchronous games, in which data of a player are recorded and than 
 broadcasted to other player.
 
-\subsection{Network structure}
-Usually, in mobile game context, the main networking requirements are interactivy, so 
-the delay between the user interaction and a response of a game must be as short as possible, 
-consistency, that refers to the consistency of the information between players, fairness, 
-that is related to the possibility of winning matches regardless the different network conditions, 
-scalability, referring to the capacity of the system to supports a large number of players, 
-and continuity, so that must not be present game session interruptions caused by disconnections, 
-handoffs, or any other mobility-related issue \cite{bib:interactive-mobile-gaming}.
+\subsection{Mobile multiplayer games}
+Usually, in a mobile game context, the main requirements are (1)
+interactivity, i.e. the delay between the user interaction and the game
+response should be as short as possible, (2) consistency, i.e. different
+players should see coherent and admissible game states, (3) fairness, i.e.
+being able of winning matches regardless of different network conditions, (4)
+scalability, i.e. being able to support a large number of players, and (5)
+continuity, i.e. the present game session should not be interrupted because
+of disconnections, handoffs, or any other mobility-related issue
+\cite{bib:interactive-mobile-gaming}.
 
-The mobile game scenario presents its own set of problems for real time applications. 
-Usually devices in mobile multiplayer games connect to a server using 3G or 4G protocols.
+Mobile games scenarios present their own sets of problems for real-time
+applications. Also, it may be relevant to notice that devices in mobile
+multiplayer games often connect to a server using either Wi-Fi or 3G/4G.
 
-The other option is creating local subnets with WLAN or Bluetooth, but even with the 
-possibility of promote a node as local server and recreate a client-server architecture
-in the context of mobile games it creates a bottleneck and poor experience of game.
-Pure peer-to-peer or hybrid solutions offers more possibilities and often stable networks
-but usually lacks of cheating protections \cite{bib:can-mobile-gaming-be-improved} 
-\cite{bib:study-mobile-phone-sector}. 
+Another option may be to create local subnets with WLAN or Bluetooth, but
+even when promoting a node as the local server it might become a
+bottleneck and cause poor gaming experience.
+Pure peer-to-peer or hybrid solutions offers more possibilities and often
+stable networks, but usually lacks of protections from cheaters
+\cite{bib:can-mobile-gaming-be-improved}, \cite{bib:study-mobile-phone-sector}.
 
 \subsection{Casual games}
 Casual games are video games which have really simple gameplay and are

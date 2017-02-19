@@ -29,8 +29,8 @@ game starts, the host will be the initial player.
 
 Since the single-player mode does not involve any significant discussion about
 networking and that we did not put any special effort into making the game save
-more battery power by optimizing the ui rendering (e.g. we could have improved
-the ui rendering performance by using OpenGL), here below we will focus on
+more battery power by optimizing the UI rendering (e.g. we could have improved
+the UI rendering performance by using OpenGL), here below we will focus on
 discussing the two phases of the multiplayer mode, namely the game formation
 and the gameplay.
 
@@ -76,7 +76,7 @@ the GO lists the hosts it knows.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.30\textwidth]{SequenceDiagram1}
-    \caption{Example of comunication between a host that is the GO and a participant
+    \caption{Example of communication between a host that is the GO and a participant
      which is a NGO}
     \label{fig:seqDiagram1}
 \end{figure}
@@ -84,7 +84,7 @@ the GO lists the hosts it knows.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.30\textwidth]{SequenceDiagram2}
-    \caption{Example of comunication between a host that is NGO and two participants,
+    \caption{Example of communication between a host that is NGO and two participants,
      one is the GO, the other one is a NGO}
     \label{fig:seqDiagram2}
 \end{figure}
@@ -101,7 +101,7 @@ her subscription by sending a \texttt{CANCEL} message and receiving back an
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.30\textwidth]{SequenceDiagram2}
-    \caption{Example of comunication between a host and two participants,
+    \caption{Example of communication between a host and two participants,
      in which \emph{Participant1} has just joined the match and \emph{Participant2}
      not}
     \label{fig:seqDiagram2}
@@ -128,7 +128,7 @@ the following subsection.
 \end{figure}
 
 As anticipated, during the gameplay phase we changed direction regarding the
-way we exchange data among peers. In fact, game information messagges have to
+way we exchange data among peers. In fact, game information messages have to
 be delivered very quickly and therefore TCP could not be the best choice for
 fast delivery of data. We decided to make peers communicate to each other by
 means of an application-level acked UDP transmission: after sending an UDP
@@ -171,3 +171,11 @@ in fact, if an NGO happens to look inactive for the GO it is removed from the
 game after the GO asked a few times if it is alive or not without getting any
 response. In that case, the game continues with the GO telling the other
 players that a certain peer is not active anymore.
+
+Game always start from the host device and the queue of players is determined
+before the match start. Even if a NGO failure appears the queue of players does
+not change, the only difference is that the player with the device that has some
+problems is removed from the queue. This strategy is not the only one possible.
+In fact we could change the queue of turn of match each turn, but we decided
+to maintain always the same for better testability. As a matter of fact that in
+this way we could identify the device that presents some problems easily.

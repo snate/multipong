@@ -76,16 +76,15 @@ the GO lists the hosts it knows.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.30\textwidth]{SequenceDiagram1}
-    \caption{Example of communication between a host that is the GO and a participant
-     which is a NGO}
+    \caption{Example of communication between a GO-host and an NGO-participant}
     \label{fig:seqDiagram1}
 \end{figure}
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.30\textwidth]{SequenceDiagram2}
-    \caption{Example of communication between a host that is NGO and two participants,
-     one is the GO, the other one is a NGO}
+    \caption{Example of communication between an NGO-host, a GO-participant
+     and an NGO-participant}
     \label{fig:seqDiagram2}
 \end{figure}
 
@@ -100,11 +99,11 @@ her subscription by sending a \texttt{CANCEL} message and receiving back an
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.30\textwidth]{SequenceDiagram2}
+    \includegraphics[width=0.30\textwidth]{SequenceDiagram3}
     \caption{Example of communication between a host and two participants,
-     in which \emph{Participant1} has just joined the match and \emph{Participant2}
-     not}
-    \label{fig:seqDiagram2}
+     in which \emph{Participant1} has just joined the match and
+     \emph{Participant2} has not}
+    \label{fig:seqDiagram3}
 \end{figure}
 
 When a host player sees more than one participant in its match list, she can

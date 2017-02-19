@@ -21,16 +21,13 @@ phases. In fact, during the game creation the traffic is way more variable than
 in the gameplay phase, mainly due to unstable number of peers and \wifi{}
 interferences.
 
-So, we decided to take measures of several game matches and then to average them to get a minimal variation, applying the following workflow:
+So, we decided to take measures of several game matches and then average them to get a minimal variation, applying the following workflow for each new match:
 
-\begin{itemize}
-\item For each new match
-	\begin{itemize}
-	\item Start 3GW and reset its data counters
-	\item Start a new game and play, possibly trying to variate match duration
-	\item Annotate game transferred data and game duration
-	\end{itemize}
-\end{itemize}
+\begin{enumerate} % TODO: was it better an itemize?
+  \item Start 3GW and reset its data counters
+  \item Start a new game and play, possibly trying to variate match duration
+  \item Annotate game transferred data and game duration
+\end{enumerate}
 
 This approach made us able to minimize the variation due to interferences, but the number of peers still interferes with these measurements. So, we decided to group them by number of peers; more precisely we chose to make 2, 3 and 4 player matches. The comparison among these groups reveals the influence of the pairing phase to the traffic.
 

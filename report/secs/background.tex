@@ -60,8 +60,24 @@ example live synchronous games, in which players are matched together to compete
 or turn-based asynchronous games, in which data of a player are recorded and than 
 broadcasted to other player.
 
-There are also different technologies that allow users to play multiplayer mobile 
-game such as infrared, Bluetooth, 3G(or newer technologies such as 4G) or Wi-Fi direct. 
+\subsection{Network structure}
+Usially, in mobile game context, the main networking requirements are interactivy, so 
+the delay between the user interaction and a response of a game must be as shoart as possible, 
+consistency, that refers to the consistency of the infermation between players, fairness, 
+that is related to the possibility of winning matches regardless the different network conditions, 
+scalability, refferings to the capacity of the system to supports a large number of players, 
+and continuity, so that must not be present game session interructiong caused by disconnections, 
+handoffs, or any other mobility-related issue \cite{bib:interactive-mobile-gaming}.
+
+The mobile game scenario presents its own set of problems for real time applications. 
+Usually devices in mobile multiplayer games connect to a server using 3G or 4G protocols.
+
+The other option is creating local subnets with WLAN or Bluetooth, but even with the 
+possibility of promote a node as local server and recreate a client-server architecture
+in the context of mobile games it creates a bottleneck and poor experience of game.
+Pure peer-to-peer or hybrid solutions offers more possibilities and often stable networks
+but usually lacks of cheating protections \cite{bib:can-mobile-gaming-be-improved} 
+\cite{bib:study-mobile-phone-sector}. 
 
 \subsection{Casual games}
 Casual games are video games which have really simple gameplay and are

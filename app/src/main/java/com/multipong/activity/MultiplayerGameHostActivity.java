@@ -136,14 +136,14 @@ public class MultiplayerGameHostActivity extends MultiplayerGameFormationActivit
         public void onClick(View v) {
             ListAdapter listAdapter = mPlayerList.getAdapter();
             if (mPlayerList.getAdapter() == null || listAdapter.getCount() <= 1) {
-                showShortToast("There should be at least two players in the game");
+                showShortToast(getString(R.string.two_player_at_least));
                 return;
             }
             Host host = (Host) getActor();
             host.startGame();
 
             final AlertDialog dialog = new AlertDialog.Builder(MultiplayerGameHostActivity.this)
-                    .setTitle("Creazione della partita")
+                    .setTitle(R.string.match_creation)
                     .setCancelable(false)
                     .create();
             new AsyncTask<Void, Void, Void>() {

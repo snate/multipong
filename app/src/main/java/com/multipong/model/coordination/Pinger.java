@@ -58,6 +58,7 @@ public abstract class Pinger extends TimerTask {
                     synchronized (rdac) {
                         try {
                             Log.e("PONG-PINA", 6 + "");
+                            //TODO seba I've added some time to wait -> before with only wait -> starvation. Correct?
                             rdac.wait(11000);
                             Log.e("PONG-PINA", 7 + "");
                         } catch (InterruptedException e) {

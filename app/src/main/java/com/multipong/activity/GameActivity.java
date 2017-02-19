@@ -106,9 +106,10 @@ public class GameActivity extends NetworkingActivity {
             saver = new StatsSaver(database);
             Stats best = new StatsReader(database).getBestScoreFor(Stats.Modality.SINGLE_PLAYER);
             if (best == null)
-                showShortToast("No best score available");
+                showShortToast(getString(R.string.no_best_score_available));
             else
-                showShortToast("BEST: " + best.getName() + " with score " + best.getScore());
+                showShortToast(getString(R.string.best) + ": " + best.getName()
+                        + " " + getString(R.string.with_score)  + best.getScore());
         }
         mEndButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,7 +163,8 @@ public class GameActivity extends NetworkingActivity {
         if(gameEnded){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
-            getActor().receive(Actor.MessageType.POISON_PILL, null, null);
+            if (isMultiplayer)
+                getActor().receive(Actor.MessageType.POISON_PILL, null, null);
             /*Receiver receiver = getReceiver();
             if(receiver != null) receiver.stop();*/
             finish();

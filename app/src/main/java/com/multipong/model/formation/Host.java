@@ -58,7 +58,6 @@ public class Host implements Actor {
             activity.addMessageToQueue(content);
         }
 
-        //TODO remove -> only debug purpose -> print group info on match start
         WifiP2pManager wifiP2pManager = (WifiP2pManager) activity.
                 getSystemService(Context.WIFI_P2P_SERVICE);
         WifiP2pManager.Channel channel = wifiP2pManager.initialize(activity,

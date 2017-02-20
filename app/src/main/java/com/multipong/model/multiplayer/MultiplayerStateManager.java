@@ -162,7 +162,7 @@ public class MultiplayerStateManager implements Actor {
             this.id = id;
         }
 
-        // TODO: Enforce the fact that ids of different players are effectively different
+        // We rely on random UUIDs' collision resistance
         @Override
         public boolean equals(Object obj) {
             if(!(obj instanceof Player)) return false;

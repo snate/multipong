@@ -84,8 +84,7 @@ public abstract class AbsGameThread implements Runnable {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                //TODO use a string or remove the toast
-                                Toast.makeText(activity.getApplication(), "You lost a life :'(",
+                                Toast.makeText(activity.getApplication(), R.string.lose_life,
                                         Toast.LENGTH_SHORT).show();
                             }
                         });

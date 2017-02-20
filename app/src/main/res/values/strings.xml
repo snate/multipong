@@ -44,6 +44,7 @@
 
     <string name="two_player_at_least">There should be at least two players in the game</string>
     <string name="match_creation">Match creation</string>
+    <string name="lose_life">"You lost a life :'("</string>
 
     <string name="score_0">score 0</string>
     <string name="go_back">Go back</string>

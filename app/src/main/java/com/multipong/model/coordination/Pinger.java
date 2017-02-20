@@ -43,33 +43,21 @@ public abstract class Pinger extends TimerTask {
             @Override
             protected Void doInBackground(Void... params) {
                 while (!pong && attempts < getAttempts()) {
-                    Log.e("PONG-PINA", pong + " initial");
                     savePlayers(msm.getActivePlayers());
-                    Log.e("PONG-PINA", 1 + "");
                     AreYouAliveMessage ayaMessage = new AreYouAliveMessage();
-                    Log.e("PONG-PINA", 2 + "");
                     InetAddress address = getPinged();
-                    Log.e("PONG-PINA", 3 + "");
                     AckUDPSender.ReliablyDeliverableAddressedContent rdac =
                             new AckUDPSender.ReliablyDeliverableAddressedContent(ayaMessage, address);
-                    Log.e("PONG-PINA", 4 + "");
                     networkingActivity.addMessageToQueue(rdac);
-                    Log.e("PONG-PINA", 5 + "");
                     synchronized (rdac) {
                         try {
-                            Log.e("PONG-PINA", 6 + "");
-                            //TODO seba I've added some time to wait -> before with only wait -> starvation. Correct?
+                            // wait with time-out to avoid starvation
                             rdac.wait(11000);
-                            Log.e("PONG-PINA", 7 + "");
                         } catch (InterruptedException e) {
-                            Log.e("PONG-PINA", "cathced exception");
                             e.printStackTrace();
                         } finally {
-                            Log.e("PONG-PINA", 8 + "");
                             pong = rdac.getB();
-                            Log.e("PONG-PINA", 9 + "");
                             attempts++;
-                            Log.e("PONG-PINA", "pong:" + pong + " attempts:" + attempts);
                         }
                     }
                 }

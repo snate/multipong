@@ -19,8 +19,7 @@ public abstract class Message {
 
     protected JSONObject object;
 
-    // TODO: Precondition - here I assume that DeviceUtility.id has been set
-    //       when creating a participant-side JOIN message
+    // Precondition - DeviceUtility.id is set when creating participant-side JOIN messages
     public Message() {
         try {
             object = new JSONObject();

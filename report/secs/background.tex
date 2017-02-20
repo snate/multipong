@@ -1,1 +1,90 @@
-\section{Background and Related Work} % TODO: Only background?
+\section{Background and related work} % TODO: Only background?
+% TODO: Check from now on: not sure that we don't use the same acronym in intro
+\subsection{The Wi-Fi Direct standard}
+Wi-Fi Direct standard enables devices to connect with each other, creating 
+networks called \textit{groups}, without requiring a wireless access point. It
+could be used for several purposes since devices communicate at typical Wi-Fi
+speed \cite{bib:wifiP2pspec}, which varies on the 802.11 standard implemented,
+as well as the particular features of the devices and the surroundings.
+Moreover, Wi-Fi Direct enables devices from different manufacturers to
+communicate seamlessly among themselves.
+
+Usually, a device that supports Wi-Fi Direct, in order to create or join a
+group, starts a discovery session in which it may find other unconnected Wi-Fi
+Direct devices or Group Owners.
+In the former case the device can start the formation of a group, whereas in
+the latter it asks to join a group.
+During the creation of a group,
+devices negotiate their roles in order to find a peer that assumes the role of 
+access point called Group Owner (hereafter \textit{GO}). The other devices,
+even the ones that do not support Wi-Fi Direct, may decide to connect to the
+GO.
+
+\subsection{Wi-Fi Direct in Android}
+Since its 4.0 version was released, Android has been supporting peer-to-peer 
+(\textit{P2P} from now on) Wi-Fi communication that is compliant with the 
+Wi-Fi Direct standard\cite{bib:wifiP2pspec}. 
+Hence, recent Android devices can form an ad-hoc network with a $1:n$ topology,
+in which a Group Owner is connected to multiple P2P clients (hereafter \textit{NGO}s).
+
+As stated in the standard, the GO is decided after a negotiation phase between
+the devices; thus, the same hosts may create a P2P network with different GOs
+from time to time.
+
+Thanks to the possibility of using Wi-Fi Direct in Android environments, it is
+possible to create Android applications that run on different devices and
+communicate using this standard, for example game or chat applications.
+
+The implementation of Wi-Fi Direct in Android presents some issues: first of all
+Android does not allow a device to join multiple Wi-Fi Direct groups,
+but the standard does \cite{bib:android-wifidirect-limits}. Moreover, Android 
+devices must ask the user for the permission to join a group, and this hinders 
+automatic creation of Wi-Fi Direct networks.
+
+\subsection{Mobile multiplayer games}
+Usually, in a mobile game context, the main requirements are (1)
+interactivity, i.e. the delay between the user interaction and the game
+response should be as short as possible, (2) consistency, i.e. different
+players should see coherent and admissible game states, (3) fairness, i.e.
+being able of winning matches regardless of different network conditions, (4)
+scalability, i.e. being able to support a large number of players, and (5)
+continuity, i.e. the present game session should not be interrupted because
+of disconnections, handoffs, or any other mobility-related issue
+\cite{bib:interactive-mobile-gaming}.
+
+Despite this field offers hard and challenging issues to researchers, there is
+still quite a little academic related work: some researchers studied how
+the delay affects the gaming experience \cite{bib:impact-delay-multi},
+\cite{bib:factors-multi}, whereas others studied online games in different
+types of networks \cite{bib:interactive-mobile-gaming},
+\cite{bib:survey-mobile-games}.
+
+Mobile games scenarios present their own sets of problems for real-time
+applications. Also, it may be relevant to notice that devices in mobile
+multiplayer games often connect to a remote server using either Wi-Fi or 3G/4G.
+
+Another option may be to create local subnets with WLAN or Bluetooth, but
+even when promoting a node as the local server it might become a
+bottleneck and cause poor gaming experience.
+Pure P2P or hybrid solutions offer more possibilities andstable networks, 
+but usually lacks of protection from cheaters
+\cite{bib:can-mobile-gaming-be-improved}, \cite{bib:study-mobile-phone-sector}.
+
+\subsection{Casual games}
+Casual games are video games which have really simple gameplay and are
+targeted to mass audience. In fact, casual games are designed to be played
+by users with no special skills and without requiring too much time for both
+understanding and playing it \cite{bib:mob-health-casual}.
+
+Originally, casual games were played by users through a web browser, but are
+now popular on game consoles and smartphones too. A large number of users still
+play in a web browser, but through social networks: the idea of casual gaming
+has been indeed mashed up with this recent phenomenon, allowing casual gamers to
+play with their friends in these platforms.
+
+Casual games experiments were also made in \cite{bib:ppav-casual},
+\cite{bib:li-k-social-casual} and \cite{bib:mob-health-casual}\footnote{though
+these works were most about the usefulness (if any) and the approval rating of
+this type of games rather than technical reports} but, as these studies
+reported, this type of games have not break through either the academic or the
+commercial world yet.

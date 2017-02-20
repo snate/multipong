@@ -1,9 +1,28 @@
 \section{Introduction}
-According to Newzoo, mobile games market is expanding so much that in 2019
-it will reach almost the half of all the global games
-market\cite{bib:newzoo}. This fact leads us to think that it is worth studying
+Thanks to the diffusion of smartphones, the mobile games market is becoming
+more and more important. In 2016 the global games market reached \$99.6
+billion and, for the first time, mobile gaming took a larger share than PC
+with \$36.9 billion (up to 21.3\% globally), reaching the 37\% of the game
+market \cite{bib:newzoo2}. Also, mobile games market is expanding so much that
+in 2019 it is predicted to reach even half of all the global games market
+\cite{bib:newzoo}. This fact leads us to think that it is worth studying
 this emergent field, also because smartphones and tablets are nowadays
 pervasive in everyday's life of people.
+
+Mobile games are more challenging than console or PC games because of the
+limited resources available on the devices. In fact, battery energy and
+mobile data transfer savings are critical. Another issue a developer may
+encounter when dealing with mobile devices could be the input mechanism:
+PCs and consoles allow users to play using mouses, keyboards and joysticks,
+whereas with smartphones or tablets games can be played (mostly) using the
+touch sensor (soft keypad) \cite{bib:mobile-input-devices}. Moreover, mobile
+games are usually played within screens that are smaller than a PC monitor or a
+TV.
+
+Some mobile games support multiplayer features. There are indeed several
+options, for instance live synchronous games, in which players are matched
+together to compete, or turn-based asynchronous games, in which local actions
+of a player are recorded and than broadcasted to the other participants.
 
 If you visit Google's Play Store, you might notice that most of the top
 grossing games are online multiplayer games, with many of them requiring
@@ -11,6 +30,20 @@ real-time users interaction. Clearly, since pleasant online real-time gaming
 was already hard to achieve within the context of \textit{wired} networks, now
 it is even more difficult with \textit{wireless} networks and devices with
 power saving issues.
+
+Moreover, things get even tougher when it comes to ad-hoc networks and mobile
+devices: most of the games you can find on Google's Play Store are indeed
+multiplayer games that work with a remote server. Furthermore, the few mobile
+games we were able to find for local networking are limited to two-players
+matches. Hence, we are interested in finding out how a simple Android
+application would perform in an ad-hoc network with matches composed of
+possibly more than two players.
+
+Even if the quality of experience (\textit{QoE}) is a broad term that is
+comprehensive of many factors\cite{bib:moeller-qoe}, our aim is to focus on
+some technical aspects that affects the interaction quality: in particular, we
+want to measure the generated network traffic and the battery consumption for
+a Wi-Fi direct based game.
 
 The remainder of the paper is organized as follows: in section II we talk about
 other work in this context and talks about ad-hoc networking support in Android;

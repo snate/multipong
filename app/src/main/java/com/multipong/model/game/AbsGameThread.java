@@ -120,7 +120,7 @@ public abstract class AbsGameThread implements Runnable {
      * @return the percentage of mid-palette that the ball is distant from the center of the palette
      */
     private double computeCollision() {
-        // TODO: Fix bug when ball is near to the right edge: collision not detected
+        // Looks working properly
         return 2 * (x - palettePosition) / paletteWidth;
     }
 

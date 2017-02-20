@@ -138,7 +138,6 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
             participantsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO change -> only debug purpose
                     Intent intent = new Intent(getApplicationContext(),
                             MultiplayerGameParticipantsActivity.class);
                     ArrayList<String> extra = new ArrayList<>(participants.size());

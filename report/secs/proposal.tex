@@ -142,7 +142,7 @@ the other one that deals with the multiplayer game logic on top of the
 coordination layer.
 
 The multiplayer game logic layer has to manage the local state of the game and
-part of the global state. Also, when the player hits the ball with the paddle,
+part of the global state and, when the player hits the ball with the paddle,
 it also have to compute the ball exit point from the screen as send this
 information to the GO as soon as it is available, so that it can spread this
 message to all the active participants of the game. We chose to compute and

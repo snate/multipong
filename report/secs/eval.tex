@@ -4,9 +4,15 @@ In this section, we evaluate through different tests some interesting metrics re
 
 \subsection{TCP and UDP packet RTT and payload}
 
-We use TCP for message exchange during game formation phase, thus an interesting metric lies in application packet's latency and payload.
+We use TCP for message exchange during game formation phase, thus an interesting metric lies in application packet's RTT and payload.
  
-To measure the RTT we decided to send a test-packet to a host which send it back to the sender, then we obtain time delta between message start and delivery. This should be an appropriate approximation of the RTT. This method is affected by a little error due to network state variability and interference, so we decided to take several measures and then average them.
+To measure the RTT we decided to send a test-packet to a host which send it
+back to the sender, then we obtain time delta between message start and
+delivery. This should be an appropriate approximation of the RTT. This method
+is affected by a little error due to network state variability and
+interference, so we decided to take several measures and then average them.
+Also, there is an overhead due to the time spent by the operating system to
+manage the communication among devices.
 
 For the TCP payload evaluation, we generated some logs in the application to get the exact size of each type of message [reference to messages type]. Messages always carry the same data structure and length, so in this case it is not necessary to calculate a mean value.
 

@@ -7,7 +7,7 @@ S, 1 Honor 6, 1 Motorola Moto G 2013, 1 Motorola Moto X+1 2014, 1 Huawei P8
 Lite.
 
 \subsection{TCP and UDP packet RTT and payload}
-We use TCP for message exchange during game formation phase, thus an interesting metric lies in application packet's RTT and payload.
+We use TCP for message exchange during game formation phase, thus an interesting metric lies in application packet's RTT\footnote{for RTT we consider the time, measured at application layer, to deliver a packet and receive the correspondent ack} and payload.
  
 To measure the RTT we decided to send a test-packet to a host which send it
 back to the sender, then we obtain time delta between message start and

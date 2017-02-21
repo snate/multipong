@@ -61,3 +61,18 @@ employed in the gameplay phase, since the GO has to spread information to all
 the participants, which are diligently waiting for it.
 
 \subsection{TCP and UDP comparison}
+
+In Figure \ref{fig:TCP-UDP}, we can see the difference between the mean RTTs of
+TCP and acked UDP transmissions.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.8\columnwidth]{img/UDPvsTCP-RTT.eps}
+  \caption{TCP vs. UDP}
+  \label{fig:TCP-UDP}
+\end{figure}
+
+As it can be easily seen, acked UDP is very efficient compared to TCP and
+therefore we can acknowledge that acked UDP is the most suitable choice (between
+these two) in the gameplay phase, whilst TCP is fit for the game formation
+phase, when we do not need low latency but more reliable packet delivery.

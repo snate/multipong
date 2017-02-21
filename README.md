@@ -1,5 +1,9 @@
 # multipong
-Multipong is an Android multiplayer mobile game ispired by original Pong game. 
-This application use Wi-Fi direct technology in orderd to enable users to play with other people.
+Multipong is a multiplayer game for smartphones ispired by original 
+Pong game, that works over Wi-Fi Direct ad-hoc networks.
 
-This application was developed by @snate, @mbegolo, @mzanella
+Even if other Pong revisitations for Android devices already existed at the
+start of our project, no one of the games we found was able to manage
+multiplayer matches with more than two players.
+
+This application was developed by [Sebastiano Valle](https://github.com/snate), [Marco Begolo](https://github.com/mbegolo), [Marco Zanella](https://github.com/mzanella)

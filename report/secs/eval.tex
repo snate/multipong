@@ -1,0 +1,47 @@
+\section{Experimental evaluation}
+
+In this section, we evaluate through different tests some interesting metrics
+related to network activity. We used the following smartphones: 3 Samsung S5,
+1 Samsung S3, 1 LG Nexus 5, 1 LG Nexus 5X, 1 LG Leon, 1 LG Spirit, 1 HTC Desire
+S, 1 Honor 6, 1 Motorola Moto G 2013, 1 Motorola Moto X+1 2014, 1 Huawei P8
+Lite.
+
+\subsection{TCP and UDP packet RTT and payload}
+We use TCP for message exchange during the game formation phase, thus an interesting metric lies in application packet's RTT\footnote{for RTT we mean the time, measured at application layer, to deliver a packet and receive the correspondent ack} and payload.
+ 
+To measure the RTT we decided to send a test-packet to a host which send it
+back to the sender, then we obtain time delta between message start and
+delivery. This should be an appropriate approximation of the RTT. This method
+is affected by a little error due to network state variability and
+interference, so we decided to take several measures and then average them.
+Also, there is an overhead due to the time spent by the operating system to
+manage the communication among devices.
+
+For the TCP payload evaluation, we generated some logs in the application to get the exact size of each type of message. Messages always carry the same data structure and length, so in this case it is not necessary to calculate a mean value.
+
+As for the TCP packets, we are interested in UDP RTT and payload statistics, so we measured them with the same approaches.
+
+\subsection{\wifi{} traffic}
+
+A more interesting evaluation is about general traffic over \wifi. The application was designed to minimize message exchange among peers, so we were interested in knowing how much traffic our application generates. To determine that, we decided to use, among the alternatives available on the market, an external monitoring application called \textit{3G Watchdog} (3GW from now on). This application is intended to monitor long-time traffic such as mobile connection over month/week, but it also keeps track of the time the application has run, so we were able to calculate both traffic and mean bandwidth allocation.
+
+Multipong, anyway, generates different amounts of traffic in the various
+phases. In fact, during the game creation the traffic is way more variable than
+in the gameplay phase, mainly due to unstable number of peers and \wifi{}
+interferences.
+
+So, we decided to take measures of several game matches and then average them to get a minimal variation, applying the following workflow for each new match:
+
+\begin{enumerate} % TODO: was it better an itemize?
+  \item Start 3GW and reset its data counters
+  \item Start a new game and play, possibly trying to variate match duration
+  \item Annotate game transferred data and game duration
+\end{enumerate}
+
+This approach made us able to minimize the variability due to interferences, but the number of peers was still affecting considerably these measurements. So, we decided to group them by number of peers; more precisely, we chose to make 2-, 3- and 4-player matches. The comparison among these groups reveals the influence of the pairing phase to the traffic.
+
+\subsection{Battery Consumption}
+
+Usually, apps which do a massive use of \wifi{} are also highly energy-consuming. One of our minor purposes was to optimize the battery-life of the devices running our application, so we decided to track power consumption over the game. We identified a nice tool for energy monitoring in \textit{PowerTutor} (PT hereafter), a free application available on Google Play Store, widely used by the Android Development community. Clearly, this kind of applications are not able to do physical measures of the energy consumption, they just estimate it through a mathematical model created over results retrieved from some Android devices\footnote{in this case HTC G1, G2, G3 and Nexus One, though we were not able to run our application over these phones}.
+
+This approach is however considered quite reliable in those cases where energy monitoring is not the core of the observation. Nevertheless, because of our communication minimization approach, we decided to compare energy consumption in multiplayer mode against the single-player mode, and because of different traffic on GOs and NGOs we also decided to consider separately these two scenarios.

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background_color">
+    <RelativeLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true">
+        <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/single_player"
+                android:id="@+id/single_player_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerHorizontal="true"/>
+        <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/multi_player"
+                android:id="@+id/multi_player_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_below="@+id/single_player_button"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"/>
+        <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/credits"
+                android:id="@+id/credits_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_below="@+id/multi_player_button"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"/>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,7 +1,9 @@
-package com.multipong;
+package com.multipong.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.multipong.R;
 
 public class CreditsActivity extends AppCompatActivity {
 

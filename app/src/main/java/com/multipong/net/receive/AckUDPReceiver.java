@@ -24,10 +24,10 @@ public class AckUDPReceiver extends Receiver {
         super.run();
         try {
             serverSocket = new DatagramSocket(Utils.UDP_PORT);
-            byte[] receiveData = new byte[Utils.MTU];
-            byte[] ack = new byte[Utils.MTU];
             Log.d("AckUDPReceiver", "Waiting for data...");
             while (!stop) {
+                byte[] receiveData = new byte[Utils.MTU];
+                byte[] ack = new byte[Utils.MTU];
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 serverSocket.receive(receivePacket);
                 String incomingData = new String(receivePacket.getData());

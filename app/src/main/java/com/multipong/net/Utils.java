@@ -24,7 +24,7 @@ public class Utils {
     public static final int PORT = 8888;
     public static final int UDP_PORT = 9054;
     public static final String UDP_ACK = "ACK";
-    public static final int MTU = 160;
+    public static final int MTU = 350;
 
     public static final String WIFI_P2P_GROUP_OWNER_ADDRESS = "192.168.49.1";
     public static final String WIFI_P2P_BROADCAST = "192.168.49.255";

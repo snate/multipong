@@ -1,17 +1,17 @@
 \section{Background and related work} % TODO: Only background?
 % TODO: Check from now on: not sure that we don't use the same acronym in intro
-\subsection{The Wi-Fi Direct standard}
-Wi-Fi Direct standard enables devices to connect with each other, creating 
+\subsection{The Wi-Fi direct standard}
+Wi-Fi direct standard enables devices to connect with each other, creating 
 networks called \textit{groups}, without requiring a wireless access point. It
 could be used for several purposes since devices communicate at typical Wi-Fi
 speed \cite{bib:wifiP2pspec}, which varies on the 802.11 standard implemented,
 as well as the particular features of the devices and the surroundings.
-Moreover, Wi-Fi Direct enables devices from different manufacturers to
+Moreover, Wi-Fi direct enables devices from different manufacturers to
 communicate seamlessly among themselves.
 
-Usually, a device that supports Wi-Fi Direct, in order to create or join a
+Usually, a device that supports Wi-Fi direct, in order to create or join a
 group, starts a discovery session in which it may find other unconnected Wi-Fi
-Direct devices or Group Owners.
+direct devices or Group Owners.
 In the former case the device can start the formation of a group, whereas in
 the latter it asks to join a group.
 During the creation of a group,
@@ -20,10 +20,10 @@ access point called Group Owner (hereafter \textit{GO}). The other devices,
 even the ones that do not support Wi-Fi Direct, may decide to connect to the
 GO.
 
-\subsection{Wi-Fi Direct in Android}
+\subsection{Wi-Fi direct in Android}
 Since its 4.0 version was released, Android has been supporting peer-to-peer 
 (\textit{P2P} from now on) Wi-Fi communication that is compliant with the 
-Wi-Fi Direct standard\cite{bib:wifiP2pspec}. 
+Wi-Fi direct standard\cite{bib:wifiP2pspec}. 
 Hence, recent Android devices can form an ad-hoc network with a $1:n$ topology,
 in which a Group Owner is connected to multiple P2P clients (hereafter \textit{NGO}s).
 
@@ -31,15 +31,15 @@ As stated in the standard, the GO is decided after a negotiation phase between
 the devices; thus, the same hosts may create a P2P network with different GOs
 from time to time.
 
-Thanks to the possibility of using Wi-Fi Direct in Android environments, it is
+Thanks to the possibility of using Wi-Fi direct in Android environments, it is
 possible to create Android applications that run on different devices and
 communicate using this standard, for example game or chat applications.
 
-The implementation of Wi-Fi Direct in Android presents some issues: first of all
+The implementation of Wi-Fi direct in Android presents some issues: first of all
 Android does not allow a device to join multiple Wi-Fi Direct groups,
 but the standard does \cite{bib:android-wifidirect-limits}. Moreover, Android 
 devices must ask the user for the permission to join a group, and this hinders 
-automatic creation of Wi-Fi Direct networks.
+automatic creation of Wi-Fi direct networks.
 
 \subsection{Mobile multiplayer games}
 Usually, in a mobile game context, the main requirements are (1)

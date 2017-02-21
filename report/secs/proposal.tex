@@ -16,15 +16,15 @@ ball falls down again. Clearly, the player loses the game when the paddle misses
 the ball.
 
 In the multiplayer mode, several human players connect their devices in order
-to form an ad hoc network and then when one of the players hits the ball, it is
+to form an ad-hoc network and then when one of the players hits the ball, it is
 transferred to the next player's screen as if their gameboards were joint.
-When a player misses the ball, he loses a life and the ball is thrown out
+When a player misses the ball, she loses a life and the ball is thrown out
 randomly to the next player's screen.
 If a player runs out of lives, she will not be able to play for the rest of the
 game.
 
 Before starting a multiplayer game a player (called the \textit{host}) creates
-a match, allowing other players in his same network to join. Then, when the
+a match, allowing other players in her same network to join. Then, when the
 game starts, the host will be the initial player.
 
 Since the single-player mode does not involve any significant discussion about
@@ -36,11 +36,11 @@ and the gameplay.
 
 \subsection{Game formation}
 
-Hereafter we will assume that the players configured correctly a Wi-Fi direct
-ad hoc network with their Android devices, i.e. that they can communicate with
+Hereafter we will assume that the players configured correctly a Wi-Fi Direct
+ad-hoc network with their Android devices, i.e. that they can communicate with
 each other within this network.
 
-Since in this phase there are not strong requirements to meet in terms of
+Since in this phase there are no strict requirements to meet in terms of
 real-time information delivering, we decided to use TCP connections until the
 game starts. Also, this choice will provide us an element of comparison to the
 solution we adopted for gameplay.
@@ -106,7 +106,7 @@ her subscription by sending a \texttt{CANCEL} message and receiving back an
     \label{fig:seqDiagram3}
 \end{figure}
 
-When a host player sees more than one participant in its match list, she can
+When a host player sees more than one participant in her match list, she can
 decide to start a game, making her Multipong app send a \texttt{STARTING}
 message to all of the game participants. Since this is a blocking operation
 because it is better not to start the game until all the other players' games
@@ -153,14 +153,14 @@ Just here above we said that a player sends the game information to the GO:
 in fact, this entity serves as a global coordinator of the game. We made this
 decision so that a reduced amount of traffic has to flow through the network
 if only the GO has to care about whether the currently active player is still
-live and reachable. Also, the GO is the main entity in the P2P group and this
-makes it the most suitable choice for such a role like coordinator.
+alive and reachable. Also, the GO is the main entity in the P2P group and this
+makes it a natural choice for such a role like the coordinator.
 
 Clearly, the GO represents a single point of failure during the game phase, but
 we want to point out that a network failure such a crash of the coordinator
-would make all the ad hoc network collapse. Moreover, recreating a P2P network
-is an operation that, at the moment, is quite difficult to carry out in a
-short amount of time (and unfortunately things go even worse when done
+would make the whole ad-hoc network collapse. Moreover, recreating a P2P
+network is an operation that, at the moment, is quite difficult to carry out
+in a short amount of time (and unfortunately things go even worse when done
 programmatically). Therefore, we thought that the game of an NGO should end if
 it is unable to reach the GO, because restoring the game with the other active
 players would be way worse than starting a new one from scratch.

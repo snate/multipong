@@ -1,4 +1,8 @@
 # multipong
+
+![Multipong logo](https://github.com/snate/multipong/raw/dev/app/src/main/res/drawable/multipong1.png)
+
+
 Multipong is a multiplayer game for smartphones ispired by original 
 Pong game, that works over Wi-Fi Direct ad-hoc networks.
 

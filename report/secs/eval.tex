@@ -39,9 +39,9 @@ So, we decided to take measures of several game matches and then average them to
 \end{enumerate}
 
 This approach made us able to minimize the variability due to interferences, but the number of peers was still affecting considerably these measurements. So, we decided to group them by number of peers; more precisely, we chose to make 2-, 3- and 4-player matches. The comparison among these groups reveals the influence of the pairing phase to the traffic.
+Also, we decided to analyze traffic on devices, depending on whether they were
+a GO or not.
 
 \subsection{Battery Consumption}
 
 Usually, apps which do a massive use of \wifi{} are also highly energy-consuming. One of our minor purposes was to optimize the battery-life of the devices running our application, so we decided to track power consumption over the game. We identified a nice tool for energy monitoring in \textit{PowerTutor} (PT hereafter), a free application available on Google Play Store, widely used by the Android Development community. Clearly, this kind of applications are not able to do physical measures of the energy consumption, they just estimate it through a mathematical model created over results retrieved from some Android devices\footnote{in this case HTC G1, G2, G3 and Nexus One, though we were not able to run our application over these phones}.
-
-This approach is however considered quite reliable in those cases where energy monitoring is not the core of the observation. Nevertheless, because of our communication minimization approach, we decided to compare energy consumption in multiplayer mode against the single-player mode, and because of different traffic on GOs and NGOs we also decided to consider separately these two scenarios.

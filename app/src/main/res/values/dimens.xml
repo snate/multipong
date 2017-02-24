@@ -2,4 +2,10 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- set game sizes -->
+    <dimen name="pongview_height">440dp</dimen><!-- max 560 -->
+    <dimen name="pongview_space_at_bottom">120dp</dimen><!-- set space between bottomPongView and bottom of the screen-->
+    <dimen name="text_distance_from_pongview">32dp</dimen><!-- set text distance from PongView -->
+
 </resources>

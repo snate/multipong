@@ -23,4 +23,29 @@
     <string name="username">username</string>
 
     <string name="insert_your_name">Please insert your name</string>
+
+    <string name="start">Start</string>
+
+    <string name="list_of_players">List of players</string>
+    <string name="list_of_players_of">List of players that joined the match created by </string>
+    <string name="list_of_matches">List of matches</string>
+
+    <string name="join_match">Join match</string>
+    <string name="create_new_match">Create new match</string>
+    <string name="join">join</string>
+    <string name="participants">participants</string>
+
+    <string name="your_score_is">your score is</string>
+    <string name="you_win">YOU WIN!!!</string>
+
+    <string name="no_best_score_available">No best score available</string>
+    <string name="best">BEST</string>
+    <string name="with_score">with score</string>
+
+    <string name="two_player_at_least">There should be at least two players in the game</string>
+    <string name="match_creation">Match creation</string>
+    <string name="lose_life">"You lost a life :'("</string>
+
+    <string name="score_0">score 0</string>
+    <string name="go_back">Go back</string>
 </resources>

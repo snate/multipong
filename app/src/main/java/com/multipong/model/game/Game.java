@@ -1,4 +1,4 @@
-package com.multipong.model;
+package com.multipong.model.game;
 
 /**
  * @author Marco Zanella
@@ -16,5 +16,9 @@ public abstract class Game {
 
     public void providePalettePosition(double position) {
         currentGame.setPalettePosition(position);
+    }
+
+    public void addLife() {
+        currentGame.incrementNumberOfLives();
     }
 }

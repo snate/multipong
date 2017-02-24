@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimary">#446688</color>
     <color name="colorPrimaryDark">#111111</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#FF009688</color>
+
+    <color name="player_color">#446688</color>
+    <color name="background_color">#FFFFFF</color>
+    <color name="ball_color">#222222</color>
+
+    <color name="mode_button_color">#222222</color>
+
+    <color name="game_over_color">#D02020</color>
 
     <color name="black_overlay">#66000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
+    <color name="teal">#FF009688</color>
 </resources>

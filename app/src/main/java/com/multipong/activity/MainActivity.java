@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -18,6 +19,7 @@ import com.multipong.utility.PlayerNameUtility;
 public class MainActivity extends AppCompatActivity {
 
     public static final String PLAYER_NAME = "com.multipong.PLAYER_NAME";
+    public static final String IS_MULTI = "is_multiplayer_match";
 
     private TextView mCredits;
     private TextView mNameTextView;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PlayerNameUtility.setContext(this);
     }
 
     @Override
@@ -88,9 +91,11 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            PlayerNameUtility.setPlayerName(playerName.toString());
+            if (!PlayerNameUtility.getPlayerName().equals(playerName.toString()))
+                PlayerNameUtility.setPlayerName(playerName.toString());
             Intent intent = new Intent(getApplicationContext(), GameActivity.class)
-                    .putExtra(PLAYER_NAME, playerName);
+                    .putExtra(PLAYER_NAME, playerName)
+                    .putExtra(IS_MULTI, false);
             startActivity(intent);
         }
     }
@@ -105,7 +110,22 @@ public class MainActivity extends AppCompatActivity {
             }
 
             PlayerNameUtility.setPlayerName(playerName.toString());
-            //TODO start right activity for multiplayer
+            Intent intent = new Intent(getApplicationContext(), MultiplayerGameJoinOrHostActivity.class);
+            startActivity(intent);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        switch(keyCode)
+        {
+            case KeyEvent.KEYCODE_BACK:
+
+                moveTaskToBack(true);
+
+                return true;
+        }
+        return false;
     }
 }

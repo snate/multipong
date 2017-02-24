@@ -1,4 +1,4 @@
-package com.multipong.model;
+package com.multipong.model.game;
 
 import com.multipong.activity.GameActivity;
 import com.multipong.persistence.MultipongDatabase;
@@ -24,7 +24,7 @@ public class SingleGame extends Game {
     }
 
     private class SingleGameThread extends AbsGameThread {
-        private volatile boolean started = true;
+        private volatile boolean notStartedYet = true;
 
         public SingleGameThread(String playerName, GameActivity activity) {
             super(playerName, activity);
@@ -37,10 +37,16 @@ public class SingleGame extends Game {
 
         @Override
         public void initialBallPosition() {
-            if (started) {
-                setX(Math.random());
-                started = false;
-            }
+            if (notStartedYet)
+                notStartedYet = false;
         }
+
+        @Override
+        public void resetGame() {
+            notStartedYet = true;
+            setY(0.0);
+        }
+
+        public void ballBounced(boolean bounced) { }
     }
 }

@@ -43,11 +43,11 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
     }
 
     @Override
-    protected void onDestroy() {
+    public void onBackPressed() {
         Participant actor = (Participant) getActor();
         if(actor == null) return;
         actor.cancelGame();
-        super.onDestroy();
+        super.onBackPressed();
     }
 
     @Override

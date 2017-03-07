@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -14,6 +15,8 @@ import com.multipong.R;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PongView extends SurfaceView implements SurfaceHolder.Callback {
+
+    private static final boolean TELEPORTING_ENABLED = true;
 
     private int playerColor = ContextCompat.getColor(getContext(), R.color.player_color);
     private int backgroundColor = ContextCompat.getColor(getContext(), R.color.background_color);
@@ -80,7 +83,10 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
         setBallY(relY);
         doDraw();
 
-        movePalette(relX + 0.05);
+        Log.i("relY", relY + "");
+
+        if (TELEPORTING_ENABLED && relY >= 0.965)
+            movePalette(relX + 0.05);
     }
 
     private void setBallX(double relX) {

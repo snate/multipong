@@ -72,7 +72,7 @@ public abstract class AbsGameThread implements Runnable {
             if (count != NUMBER_OF_TURNS)
                 setPalettePosition(1/2*paletteWidth+x);
             else {
-                setPalettePosition(x + paletteWidth + 0.5);
+                setPalettePosition(-1);
             }
             ///////////////////
 

@@ -29,7 +29,7 @@ public abstract class AbsGameThread implements Runnable {
     private int delay = 150;
     private int score = 0;
 
-    private final int NUMBER_OF_TURNS = 10;
+    private final int NUMBER_OF_TURNS = 2;
 
     private String playerName;
     private GameActivity activity;
@@ -67,7 +67,15 @@ public abstract class AbsGameThread implements Runnable {
             if (x >= 1.0) { x = 1.0; xFactor *= -1; }
             if (y <= 0.0)             ballOnTopOfTheField();
             activity.moveBall(x, y);
-            setPalettePosition(1/2*paletteWidth+x);
+
+            ///////////////////
+            if (count != NUMBER_OF_TURNS)
+                setPalettePosition(1/2*paletteWidth+x);
+            else {
+                setPalettePosition(x + paletteWidth + 0.5);
+            }
+            ///////////////////
+
             if (!lose && y >= 1.0) {
                 double ricochetAngle = computeCollision();
                 if (ricochetAngle >= - 1 && ricochetAngle <= 1) {

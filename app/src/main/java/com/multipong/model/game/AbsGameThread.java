@@ -67,6 +67,7 @@ public abstract class AbsGameThread implements Runnable {
             if (x >= 1.0) { x = 1.0; xFactor *= -1; }
             if (y <= 0.0)             ballOnTopOfTheField();
             activity.moveBall(x, y);
+            setPalettePosition(1/2*paletteWidth+x);
             if (!lose && y >= 1.0) {
                 double ricochetAngle = computeCollision();
                 if (ricochetAngle >= - 1 && ricochetAngle <= 1) {

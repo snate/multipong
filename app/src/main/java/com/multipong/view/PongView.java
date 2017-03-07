@@ -79,6 +79,8 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
         setBallX(relX);
         setBallY(relY);
         doDraw();
+
+        movePalette(relX + 0.05);
     }
 
     private void setBallX(double relX) {

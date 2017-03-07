@@ -1,6 +1,7 @@
 package com.multipong.model.game;
 
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.multipong.R;
@@ -29,7 +30,7 @@ public abstract class AbsGameThread implements Runnable {
     private int delay = 150;
     private int score = 0;
 
-    private final int NUMBER_OF_TURNS = 2;
+    private final int NUMBER_OF_TURNS = 10;
 
     private String playerName;
     private GameActivity activity;
@@ -59,6 +60,15 @@ public abstract class AbsGameThread implements Runnable {
     public void run() {
         int count = 0;
         activity.showPlayerName(playerName);
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                WindowManager.LayoutParams params = activity.getWindow().getAttributes();
+                params.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+                params.screenBrightness = 0;
+                activity.getWindow().setAttributes(params);
+            }
+        });
         while (!lose) {
             initialBallPosition();
             x += xFactor / range;
@@ -87,10 +97,12 @@ public abstract class AbsGameThread implements Runnable {
                     activity.updateScore(++score);
                     y = 1.0;
                     // was: ballBounced(true);
-                    if(NUMBER_OF_TURNS > count++)
+                    if(NUMBER_OF_TURNS > count++) {
                         ballBounced(true); // never die before NUMBER_OF_TURNS turns
-                    else
+                    }
+                    else {
                         ballBounced(false); // die after NUMBER_OF_TURNS turns
+                    }
                 } else {
                     Log.d("GameThread", "Miss");
                     decrementNumberOfLives();

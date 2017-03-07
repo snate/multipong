@@ -29,6 +29,8 @@ public abstract class AbsGameThread implements Runnable {
     private int delay = 150;
     private int score = 0;
 
+    private final int NUMBER_OF_TURNS = 10;
+
     private String playerName;
     private GameActivity activity;
 
@@ -55,6 +57,7 @@ public abstract class AbsGameThread implements Runnable {
 
     @Override
     public void run() {
+        int count = 0;
         activity.showPlayerName(playerName);
         while (!lose) {
             initialBallPosition();
@@ -74,11 +77,19 @@ public abstract class AbsGameThread implements Runnable {
                     yFactor = -(1 - (1 - paletteWidth) * ricochetAngle);
                     activity.updateScore(++score);
                     y = 1.0;
-                    ballBounced(true);
+                    // was: ballBounced(true);
+                    if(NUMBER_OF_TURNS > count++)
+                        ballBounced(true); // never die before NUMBER_OF_TURNS turns
+                    else
+                        ballBounced(false); // die after NUMBER_OF_TURNS turns
                 } else {
                     Log.d("GameThread", "Miss");
                     decrementNumberOfLives();
-                    ballBounced(false);
+                    // was: ballBounced(false);
+                    if(NUMBER_OF_TURNS > count++)
+                        ballBounced(true); // never die before NUMBER_OF_TURNS turns
+                    else
+                        ballBounced(false); // die after NUMBER_OF_TURNS turns
                     lose = (getNumberOfLives() == 0);
                     if (!lose) {
                         activity.runOnUiThread(new Runnable() {

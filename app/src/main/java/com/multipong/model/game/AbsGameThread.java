@@ -30,7 +30,7 @@ public abstract class AbsGameThread implements Runnable {
     private int delay = 150;
     private int score = 0;
 
-    private final int NUMBER_OF_TURNS = 10;
+    private static final int NUMBER_OF_TURNS = 10;
 
     private String playerName;
     private GameActivity activity;

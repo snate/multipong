@@ -3,6 +3,7 @@ package com.multipong.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -44,6 +45,7 @@ public class GameActivity extends NetworkingActivity {
     private RelativeLayout mLayout;
     private TextView mEndTextView;
     private Button mEndButton;
+    private TextView mPlayersAlive;
 
     private String playerName;
     private Boolean isMultiplayer;
@@ -119,6 +121,7 @@ public class GameActivity extends NetworkingActivity {
                 startActivity(intent);*/
             }
         });
+        mPlayersAlive = (TextView)findViewById(R.id.alive_players);
     }
 
     @Override
@@ -202,8 +205,8 @@ public class GameActivity extends NetworkingActivity {
                     image.setBackgroundResource(imageResourceID);
                     image.setVisibility(View.VISIBLE);
                     image.requestLayout();
-                    image.getLayoutParams().height=600;
-                    image.getLayoutParams().width=600;
+                    image.getLayoutParams().height = 600;
+                    image.getLayoutParams().width = 600;
                 }
                 mEndTextView.setVisibility(View.VISIBLE);
                 mEndTextView.setText(toDisplay);
@@ -247,5 +250,23 @@ public class GameActivity extends NetworkingActivity {
         CharSequence text = toastText;
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(context, text, duration).show();
+    }
+
+    public void setNumberOfPlayersAlive(int players) {
+        Log.i("NPA", "2");
+        final int blueHeartEmojiUnicode = 0x1F499;
+        Log.i("NPA", "unicode");
+        final String blueHeartEmoji = new String(Character.toChars(blueHeartEmojiUnicode));
+        Log.i("NPA", "string" + blueHeartEmoji);
+        StringBuilder sb = new StringBuilder();
+        Log.i("NPA", "string builder");
+        sb.append(getString(R.string.num_players_alive));
+        Log.i("NPA", "appended num of play");
+        for (int i = 0; i < players; i++)
+            sb.append(blueHeartEmoji);
+        Log.i("NPA", "after cycle");
+        mPlayersAlive.setText(sb.toString());
+        Log.i("NPA", "set");
+        mPlayersAlive.setVisibility(View.VISIBLE);
     }
 }

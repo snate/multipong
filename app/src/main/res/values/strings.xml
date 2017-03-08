@@ -48,4 +48,6 @@
 
     <string name="score_0">score 0</string>
     <string name="go_back">Go back</string>
+
+    <string name="num_players_alive">Number of players alive:</string>
 </resources>

@@ -102,6 +102,7 @@ public class MultiplayerStateManager implements Actor {
         Map<String, Object> fields = deathMessage.decode();
         Integer deadPlayer = (Integer) fields.get(DeathMessage.DEAD_FIELD);
         state.removePlayer(new Player(deadPlayer));
+        activity.setNumberOfPlayersAlive(state.activePlayers.size());
     }
 
     public Collection<Integer> getActivePlayers() {

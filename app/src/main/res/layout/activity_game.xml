@@ -11,7 +11,6 @@
     android:background="@color/background_color"
     tools:context="com.multipong.activity.GameActivity">
 
-
     <RelativeLayout
         android:id="@+id/game_wrapper"
         android:layout_width="match_parent"
@@ -32,9 +31,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/background_color">
-
         </RelativeLayout>
-
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:visibility="invisible"
+                  android:textColor="@color/black"
+                  android:gravity="center"
+                  android:id="@+id/alive_players"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -63,8 +66,6 @@
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -105,6 +106,5 @@
             android:layout_below="@id/end_tv"
             android:layout_marginTop="31dp" />
     </RelativeLayout>
-
 
 </RelativeLayout>

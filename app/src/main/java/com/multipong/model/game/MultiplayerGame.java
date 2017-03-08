@@ -39,6 +39,8 @@ public class MultiplayerGame extends Game {
 
     public void setAllPlayers(List<Integer> ids) {
         msm.addPlayers(ids);
+        Log.i("NPA", "1");
+        activity.setNumberOfPlayersAlive(ids.size());
     }
 
     public void increaseSpeed() {

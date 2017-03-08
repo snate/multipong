@@ -3,9 +3,6 @@ package com.multipong.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +21,9 @@ import java.util.List;
  * @since 0.01
  */
 public class MultiplayerGameParticipantsActivity extends MultiplayerGameFormationActivity {
+
+    private ParticipantsAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,13 +38,19 @@ public class MultiplayerGameParticipantsActivity extends MultiplayerGameFormatio
                 .append(" ").append(host).toString();
         text.setText(cs);
 
+        adapter = new ParticipantsAdapter(this, participants);
+
         ListView list = (ListView)findViewById(R.id.participants_list);
-        list.setAdapter(new ParticipantsAdapter(this, participants));
+        list.setAdapter(adapter);
 
         int hostID = intent.getIntExtra("hostID", -1);
         Participant actor = new Participant(this);
         actor.setCurrentHost(hostID);
         setActor(actor);
+    }
+
+    public void receiveParticipants(List<String> participants) {
+        adapter.addParticipant(participants);
     }
 
     private class ParticipantsAdapter extends BaseAdapter {
@@ -55,6 +61,17 @@ public class MultiplayerGameParticipantsActivity extends MultiplayerGameFormatio
         public ParticipantsAdapter(Activity activity, List<String> participants) {
             this.participants = participants;
             this.activity = activity;
+        }
+
+        public void addParticipant(List<String> participants) {
+            for (String participant : participants)
+                participants.add(participant);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    notifyDataSetChanged();
+                }
+            });
         }
 
         @Override

@@ -3,6 +3,7 @@ package com.multipong.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.multipong.R;
-import com.multipong.model.formation.Participant;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
  * @version 0.01
  * @since 0.01
  */
-public class MultiplayerGameParticipantsActivity extends MultiplayerGameFormationActivity {
+public class MultiplayerGameParticipantsActivity extends AppCompatActivity {
 
     private ParticipantsAdapter adapter;
 
@@ -45,13 +45,6 @@ public class MultiplayerGameParticipantsActivity extends MultiplayerGameFormatio
         list.setAdapter(adapter);
 
         int hostID = intent.getIntExtra("hostID", -1);
-        Participant actor = new Participant(this);
-        actor.setCurrentHost(hostID);
-        setActor(actor);
-    }
-
-    public void receiveParticipants(List<String> participants) {
-        adapter.addParticipant(participants);
     }
 
     private class ParticipantsAdapter extends BaseAdapter {
@@ -101,18 +94,5 @@ public class MultiplayerGameParticipantsActivity extends MultiplayerGameFormatio
             participantNameTextView.setText(participantName);
             return convertView;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        Participant actor = (Participant) getActor();
-        if(actor == null) return;
-        actor.cancelGame();
-        super.onDestroy();
-    }
-
-    @Override
-    public boolean isHost() {
-        return false;
     }
 }

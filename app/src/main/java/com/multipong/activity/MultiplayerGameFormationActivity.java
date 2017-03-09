@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class MultiplayerGameFormationActivity extends NetworkingActivity {
 
     private WifiP2pListener listener;
-    private AtomicBoolean semafor = new AtomicBoolean(false);
+    private AtomicBoolean semaphore = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public abstract class MultiplayerGameFormationActivity extends NetworkingActivit
 
     public void waitForEmptyMessageQueue() {
         getReceiver().stop();
-        if (semafor.getAndSet(true)) return;
+        if (semaphore.getAndSet(true)) return;
         try {
             PoisonPillMessage die = new PoisonPillMessage();
             Sender.AddressedContent content = new Sender.AddressedContent(die, null);

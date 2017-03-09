@@ -253,19 +253,24 @@ public class GameActivity extends NetworkingActivity {
     }
 
     public void setNumberOfPlayersAlive(int players) {
-        Log.i("NPA", "2");
+        Log.i("NPA", "players:" + players);
         final int blueHeartEmojiUnicode = 0x1F499;
         Log.i("NPA", "unicode");
         final String blueHeartEmoji = new String(Character.toChars(blueHeartEmojiUnicode));
         Log.i("NPA", "string" + blueHeartEmoji);
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         Log.i("NPA", "string builder");
         sb.append(getString(R.string.num_players_alive));
         Log.i("NPA", "appended num of play");
         for (int i = 0; i < players; i++)
             sb.append(blueHeartEmoji);
         Log.i("NPA", "after cycle");
-        mPlayersAlive.setText(sb.toString());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mPlayersAlive.setText(sb.toString());
+            }
+        });
         Log.i("NPA", "set");
         mPlayersAlive.setVisibility(View.VISIBLE);
     }

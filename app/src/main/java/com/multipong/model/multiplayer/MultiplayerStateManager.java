@@ -79,8 +79,11 @@ public class MultiplayerStateManager implements Actor {
 
         // Update state
         boolean previousIsStillInGame = ballInfo.getStillInGame();
-        if (!previousIsStillInGame)
+        if (!previousIsStillInGame) {
             state.removePlayer(new Player((Integer) fields.get(BallInfoMessage.ID_FIELD)));
+            Log.i ("NPA", ""+ state.activePlayers.size());
+            activity.setNumberOfPlayersAlive(state.activePlayers.size());
+        }
         state.currentActivePlayer = new Player(ballInfo.getNextPlayer());
 
         //If I'm the last player in the game
@@ -102,7 +105,6 @@ public class MultiplayerStateManager implements Actor {
         Map<String, Object> fields = deathMessage.decode();
         Integer deadPlayer = (Integer) fields.get(DeathMessage.DEAD_FIELD);
         state.removePlayer(new Player(deadPlayer));
-        activity.setNumberOfPlayersAlive(state.activePlayers.size());
     }
 
     public Collection<Integer> getActivePlayers() {

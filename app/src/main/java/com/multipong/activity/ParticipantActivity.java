@@ -8,5 +8,5 @@ import java.util.List;
  * @since 0.01
  */
 public interface ParticipantActivity {
-    void receiveList(int hostID, String hostName, List<String> participants);
+    void receiveMatches(int hostID, String hostName, List<String> participants);
 }

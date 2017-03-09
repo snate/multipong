@@ -27,7 +27,7 @@ import java.util.List;
 public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivity implements ParticipantActivity  {
 
     private ListView matchesList;
-    private MatchAdapter adapter;
+    private BaseAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +51,14 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
     }
 
     @Override
-    public void receiveList(int hostID, String hostName, List<String> participants) {
-        adapter.addMatch(hostID, hostName, participants);
+    public void receiveMatches(int hostID, String hostName, List<String> participants) {
+        if (adapter instanceof MatchAdapter)
+            ((MatchAdapter)adapter).addMatch(hostID, hostName, participants);
+    }
+
+    public void receiveParticipants(List<String> participants) {
+        if (adapter instanceof ParticipantsAdapter)
+            ((ParticipantsAdapter)adapter).addParticipant(participants);
     }
 
     @Override
@@ -124,14 +130,14 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
                 public void onClick(View v) {
                     Participant participant = (Participant) getActor();
                     participant.join(match.hostId);
-                    Intent intent = new Intent(getApplicationContext(),
-                            MultiplayerGameParticipantsActivity.class);
-                    ArrayList<String> extra = new ArrayList<>(participants.size());
-                    extra.addAll(participants);
-                    intent.putStringArrayListExtra("participants", extra);
-                    intent.putExtra("hostName", matchName);
-                    intent.putExtra("hostID", ((Participant)getActor()).getCurrentHost());
-                    startActivity(intent);
+                    adapter = new ParticipantsAdapter(MultiplayerGameJoinActivity.this, participants);
+                    matchesList.setAdapter(adapter);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyDataSetChanged();
+                        }
+                    });
                 }
             });
 
@@ -148,6 +154,55 @@ public class MultiplayerGameJoinActivity extends MultiplayerGameFormationActivit
                 }
             });
 
+            return convertView;
+        }
+    }
+
+    private class ParticipantsAdapter extends BaseAdapter {
+
+        private List<String> participants;
+        private Activity activity;
+
+        public ParticipantsAdapter(Activity activity, List<String> participants) {
+            this.participants = participants;
+            this.activity = activity;
+        }
+
+        public void addParticipant(List<String> participants) {
+            this.participants = participants;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    notifyDataSetChanged();
+                }
+            });
+        }
+
+        @Override
+        public int getCount() {
+            return participants.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return participants.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if(convertView == null){
+                convertView = LayoutInflater.from(activity)
+                        .inflate(R.layout.row_participant_item, null);
+            }
+            final String participantName = (String) getItem(position);
+            TextView participantNameTextView =
+                    (TextView) convertView.findViewById(R.id.participant_name_text);
+            participantNameTextView.setText(participantName);
             return convertView;
         }
     }

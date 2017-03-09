@@ -7,7 +7,6 @@ import com.multipong.activity.GameActivity;
 import com.multipong.activity.MainActivity;
 import com.multipong.activity.MultiplayerGameFormationActivity;
 import com.multipong.activity.MultiplayerGameJoinActivity;
-import com.multipong.activity.MultiplayerGameParticipantsActivity;
 import com.multipong.model.Actor;
 import com.multipong.net.NameResolutor;
 import com.multipong.net.messages.Message;
@@ -127,10 +126,10 @@ public class Participant implements Actor {
 
         List<String> names = new ArrayList<>(participants.values());
 
-        if (activity instanceof MultiplayerGameJoinActivity)
-            ((MultiplayerGameJoinActivity)activity).receiveList(id, hostName, names);
-        else if (activity instanceof MultiplayerGameParticipantsActivity)
-            ((MultiplayerGameParticipantsActivity)activity).receiveParticipants(names);
+        if (activity instanceof MultiplayerGameJoinActivity) {
+            ((MultiplayerGameJoinActivity) activity).receiveMatches(id, hostName, names);
+            ((MultiplayerGameJoinActivity) activity).receiveParticipants(names);
+        }
     }
 
     private void onStartingMessageReceived(JSONObject message, InetAddress sender) {

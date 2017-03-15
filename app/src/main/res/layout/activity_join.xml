@@ -8,13 +8,20 @@
               android:orientation="vertical"
               tools:context="com.multipong.activity.MultiplayerGameFormationActivity">
 
-    <TextView
-            android:paddingLeft="10dp"
-            android:paddingStart="10dp"
-            android:layout_width="match_parent"
-            android:text="@string/list_of_matches"
-            android:layout_height="wrap_content"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
+        <TextView
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:layout_width="match_parent"
+                android:text="@string/list_of_matches"
+                android:layout_height="wrap_content"/>
 
+        <TextView android:layout_width="match_parent"
+                  android:id="@+id/forPassphrase"
+                  android:layout_height="wrap_content"/>
+    </LinearLayout>
     <ListView
             android:id="@+id/matches_list"
             android:layout_marginTop="5dp"

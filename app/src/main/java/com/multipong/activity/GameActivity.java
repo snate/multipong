@@ -33,6 +33,7 @@ import com.multipong.persistence.read.StatsReader;
 import com.multipong.persistence.save.StatsSaver;
 import com.multipong.utility.BytesLoggingUtility;
 import com.multipong.utility.PlayerNameUtility;
+import com.multipong.utility.TimeLoggingUtility;
 import com.multipong.view.PongView;
 
 import java.util.List;
@@ -62,6 +63,7 @@ public class GameActivity extends NetworkingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TimeLoggingUtility.setStartFor(AckUDPSender.UDP_LOGS_KEY);
         //Remove title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //Remove notification bar
@@ -221,6 +223,8 @@ public class GameActivity extends NetworkingActivity {
         gameEnded = true;
         Log.d(AckUDPSender.UDP_LOGS_KEY,
                 "Logged: " + BytesLoggingUtility.getLogsFor(AckUDPSender.UDP_LOGS_KEY));
+        Log.d(AckUDPSender.UDP_LOGS_KEY,
+                "In: " + TimeLoggingUtility.getElapsedTimeFor(AckUDPSender.UDP_LOGS_KEY));
         if (!win) {
             if (!isMultiplayer) {
                 Stats stats = new Stats().withModality(Stats.Modality.SINGLE_PLAYER)

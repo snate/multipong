@@ -16,6 +16,7 @@ import com.multipong.net.receive.Receiver;
 import com.multipong.net.receive.TCPReceiver;
 import com.multipong.net.send.Sender;
 import com.multipong.net.send.TCPSender;
+import com.multipong.utility.TimeLoggingUtility;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -32,6 +33,7 @@ public abstract class MultiplayerGameFormationActivity extends NetworkingActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TimeLoggingUtility.setStartFor(TCPSender.TCP_LOGS_KEY);
         Utils.setGameFormationActivity(this);
     }
 

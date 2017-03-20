@@ -21,6 +21,7 @@ import com.multipong.net.send.TCPSender;
 import com.multipong.utility.BytesLoggingUtility;
 import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.PlayerNameUtility;
+import com.multipong.utility.TimeLoggingUtility;
 
 import org.json.JSONObject;
 
@@ -74,6 +75,8 @@ public class Host implements Actor {
         activity.waitForEmptyMessageQueue();
         Log.d(TCPSender.TCP_LOGS_KEY,
                 "Logged: " + BytesLoggingUtility.getLogsFor(TCPSender.TCP_LOGS_KEY));
+        Log.d(TCPSender.TCP_LOGS_KEY,
+                "In: " + TimeLoggingUtility.getElapsedTimeFor(TCPSender.TCP_LOGS_KEY));
         activity = null;
     }
 

@@ -22,6 +22,7 @@ import com.multipong.net.send.Sender.AddressedContent;
 import com.multipong.net.send.TCPSender;
 import com.multipong.utility.BytesLoggingUtility;
 import com.multipong.utility.PlayerNameUtility;
+import com.multipong.utility.TimeLoggingUtility;
 
 import org.json.JSONObject;
 
@@ -144,6 +145,8 @@ public class Participant implements Actor {
         Log.d("Participant", "Starting...");
         Log.d(TCPSender.TCP_LOGS_KEY,
                 "Logged: " + BytesLoggingUtility.getLogsFor(TCPSender.TCP_LOGS_KEY));
+        Log.d(TCPSender.TCP_LOGS_KEY,
+                "In: " + TimeLoggingUtility.getElapsedTimeFor(TCPSender.TCP_LOGS_KEY));
         Intent intent = new Intent(activity.getApplicationContext(), GameActivity.class)
                 .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName())
                 .putExtra(MainActivity.IS_MULTI, true)

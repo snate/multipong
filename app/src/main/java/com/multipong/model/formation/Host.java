@@ -17,6 +17,8 @@ import com.multipong.net.messages.gameformation.StartingMessage;
 import com.multipong.net.messages.gameformation.TellIPMessage;
 import com.multipong.net.send.Sender;
 import com.multipong.net.send.Sender.AddressedContent;
+import com.multipong.net.send.TCPSender;
+import com.multipong.utility.BytesLoggingUtility;
 import com.multipong.utility.DeviceIdUtility;
 import com.multipong.utility.PlayerNameUtility;
 
@@ -70,6 +72,8 @@ public class Host implements Actor {
         });
         //block to start game
         activity.waitForEmptyMessageQueue();
+        Log.d(TCPSender.TCP_LOGS_KEY,
+                "Logged: " + BytesLoggingUtility.getLogsFor(TCPSender.TCP_LOGS_KEY));
         activity = null;
     }
 

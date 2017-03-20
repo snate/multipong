@@ -3,6 +3,7 @@ package com.multipong.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -25,10 +26,12 @@ import com.multipong.net.receive.AckUDPReceiver;
 import com.multipong.net.receive.Receiver;
 import com.multipong.net.send.AckUDPSender;
 import com.multipong.net.send.Sender;
+import com.multipong.net.send.TCPSender;
 import com.multipong.persistence.MultipongDatabase;
 import com.multipong.persistence.pojos.Stats;
 import com.multipong.persistence.read.StatsReader;
 import com.multipong.persistence.save.StatsSaver;
+import com.multipong.utility.BytesLoggingUtility;
 import com.multipong.utility.PlayerNameUtility;
 import com.multipong.view.PongView;
 
@@ -216,6 +219,8 @@ public class GameActivity extends NetworkingActivity {
     public void endGame(final int score, final boolean win) {
         makeBallDisappear();
         gameEnded = true;
+        Log.d(AckUDPSender.UDP_LOGS_KEY,
+                "Logged: " + BytesLoggingUtility.getLogsFor(AckUDPSender.UDP_LOGS_KEY));
         if (!win) {
             if (!isMultiplayer) {
                 Stats stats = new Stats().withModality(Stats.Modality.SINGLE_PLAYER)

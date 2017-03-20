@@ -19,6 +19,8 @@ import com.multipong.net.messages.gameformation.StartingMessage;
 import com.multipong.net.messages.gameformation.StartingMessage.StartingGameInfo;
 import com.multipong.net.send.Sender;
 import com.multipong.net.send.Sender.AddressedContent;
+import com.multipong.net.send.TCPSender;
+import com.multipong.utility.BytesLoggingUtility;
 import com.multipong.utility.PlayerNameUtility;
 
 import org.json.JSONObject;
@@ -140,6 +142,8 @@ public class Participant implements Actor {
             participants.put(sgi.getId(), sgi.getName());
         }
         Log.d("Participant", "Starting...");
+        Log.d(TCPSender.TCP_LOGS_KEY,
+                "Logged: " + BytesLoggingUtility.getLogsFor(TCPSender.TCP_LOGS_KEY));
         Intent intent = new Intent(activity.getApplicationContext(), GameActivity.class)
                 .putExtra(PLAYER_NAME, PlayerNameUtility.getPlayerName())
                 .putExtra(MainActivity.IS_MULTI, true)

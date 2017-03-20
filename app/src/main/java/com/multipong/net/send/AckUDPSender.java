@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.multipong.net.Utils;
 import com.multipong.net.messages.Message;
+import com.multipong.utility.BytesLoggingUtility;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -12,6 +13,8 @@ import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 
 public class AckUDPSender extends Sender {
+
+    public static final String UDP_LOGS_KEY = "UDP";
 
     private static final int UDP_TIMEOUT = 500;
 
@@ -25,6 +28,7 @@ public class AckUDPSender extends Sender {
                 DatagramSocket clientSocket = new DatagramSocket();
                 InetAddress addr = content.getAddress();
                 String message = content.getMessage().getMsg().toString();
+                BytesLoggingUtility.addLogsFor(UDP_LOGS_KEY, message.length());
                 byte[] data = new byte[message.length()];
                 byte[] receiveData = new byte[message.length()];
                 Log.d("AckUDPSender", "Sending " + message);

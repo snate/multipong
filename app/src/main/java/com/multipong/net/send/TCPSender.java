@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.multipong.net.Utils;
 import com.multipong.net.messages.Message;
+import com.multipong.utility.BytesLoggingUtility;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,6 +14,8 @@ import java.net.Socket;
 
 public class TCPSender extends Sender {
 
+    public static final String TCP_LOGS_KEY = "TCP";
+
     @Override
     public void send(AddressedContent content) {
         InetAddress address = content.getAddress();
@@ -20,6 +23,7 @@ public class TCPSender extends Sender {
         Log.d("Sender", "Sending new message with TCP");
         String host = address.getHostAddress();
         String jsonObjectString = message.getMsg().toString();
+        BytesLoggingUtility.addLogsFor(TCP_LOGS_KEY, jsonObjectString.length());
         Socket socket = new Socket();
         try {
             socket.bind(null);
@@ -33,13 +37,11 @@ public class TCPSender extends Sender {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (socket != null)
-                try {
-                    socket.close();
-                    socket = null;
-                    Log.d("Sender", "Socket closed.");
-                } catch (IOException e) {
-                }
+            try {
+                socket.close();
+                Log.d("Sender", "Socket closed.");
+            } catch (IOException ignored) {
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ import java.net.Socket;
 
 public class TCPSender extends Sender {
 
-    public static final String TCP_LOGS_KEY = "TCP";
+    public static final String TCP_LOGS_KEY = "TCP_LOG";
 
     @Override
     public void send(AddressedContent content) {

@@ -14,7 +14,7 @@ import java.net.SocketTimeoutException;
 
 public class AckUDPSender extends Sender {
 
-    public static final String UDP_LOGS_KEY = "UDP";
+    public static final String UDP_LOGS_KEY = "UDP_LOG";
 
     private static final int UDP_TIMEOUT = 500;
 

@@ -74,14 +74,16 @@ terms of battery consumption.
 
 %%% TRAFFIC FIGURE
 
-On the other hand, the figures about Wi-Fi traffic reveal that the number of
-packets exchanged among the devices increases with the number of players. Often
-the GO incurs less traffic than an NGO: we think this is because of iterated
-attempts made by the NGOs to concurrently communicate to the GO, whereas
-there is far less traffic (on average) when the GO has to send packets. In
-particular, we are referring to both the liveness checks and the protocol
-employed in the gameplay phase, since the GO has to spread information to all
-the participants, which are diligently waiting for it.
+Concerning to the game formation phase, the extent to which traffic grows with
+the number of players is striking. On the other hand, during the gameplay phase
+the amount of bytes per second is dramatically low since there are significant
+dead times (i.e. times where the ball is not in the player's screen) in which
+communication is almost null.
+It's interesting to notice how much the overhead the GO incurs is limited as
+the number of players rises; this fact leads us to suppose that we were not
+able to play matches with a high number of players due to Wi-Fi Direct's
+precariousness, rather than the overhead caused by the communication among the
+peers (which is indeed acceptable for a real-time application).
 
 \subsection{TCP and UDP comparison}
 

@@ -8,12 +8,13 @@ Lite.
 
 \subsection{TCP and UDP packet RTT and payload}
 We use TCP for message exchange during the game formation phase, thus an interesting metric lies in application packet's RTT\footnote{for RTT we mean the time, measured at application layer, to deliver a packet and receive the correspondent ack} and payload.
- 
-To measure the RTT we decided to send a test-packet to a host which send it
-back to the sender, then we obtain time delta between message start and
-delivery. This should be an appropriate approximation of the RTT. This method
-is affected by a little error due to network state variability and
-interference, so we decided to take several measures and then average them.
+
+We computed the RTT by measuring, each time a peer sends a message, the delta
+elapsed between the start of sending and an application-level confirmation of
+delivery . Even if it is done at the application level, we believe that this
+approach yields a realistic approximation of the RTT.
+However, this method is affected by the variability of the network and
+interferences, so we decided to take several measures and then average them.
 Also, there is an overhead due to the time spent by the operating system to
 manage the communication among devices.
 

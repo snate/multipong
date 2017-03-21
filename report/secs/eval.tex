@@ -27,26 +27,40 @@ As for the TCP packets, we are interested in UDP RTT and payload statistics, so 
 A more interesting evaluation is about general traffic over \wifi. The
 application was designed to minimize message exchange among peers, so we were
 interested in knowing how much traffic our application generates. To determine
-that, we decided to use, among the alternatives available on the market, an
-external monitoring application called \textit{3G Watchdog} (3GW from now on).
-This application is intended to monitor long-time traffic such as mobile
-connection over month/week, but it also keeps track of the time the
-application has run, so we were able to calculate both traffic and mean
-bandwidth allocation.
+that we decided to sum up the sizes of the packets peers exchanged among
+themselves.
+Though this approach works at the application layer, it is able to provide
+interesting insights into the amount of data exchanged by peers. We explored
+other solutions, but they were not suitable for our purposes for the following
+reasons:
+
+\begin{itemize}
+  \item 3GWatchdog and similar applications in the Google Play Store do not
+    provide accurate measurings compared to our solutions;
+  % add link to 3GWatchdog
+  \item tPacketCapture is an application that sets up a VPN to monitor traffic;
+    after setting up the VPN, we were not able to make the devices communicate
+    to each other even for the match formation;
+  % add link to tPacketCapture
+  \item PacketCapture is an application that monitors network traffic. Though
+    it is accurate and does not hinder playing the game, PacketCapture
+    generates one single log file per packet sent, so it was not a suitable
+    choice to run our experimental evaluation;
+  % add link to PacketCapture
+  \item phones require to be rooted in order to use \texttt{tcpdump} or
+    Wireshark directly by the phone (and we did not have this possibility);
+  \item despite we were able to connect to a \wifi{} Direct network from a
+    computer, we did not manage to sniff the communication by using Wireshark
+    since we were able to capture only the packets sent from and to the GO;
+  \item we did not have dedicated hardware (e.g. Alfa One) to sniff traffic
+    directly by the phone, but we believe that this approach would not have
+    resulted in a tangible gain in accuracy.
+\end{itemize}
 
 Multipong, anyway, generates different amounts of traffic in the various
 phases. In fact, during the game creation the traffic is way more variable than
 in the gameplay phase, mainly due to unstable number of peers and \wifi{}
-interferences.
-
-So, we decided to take measures of several game matches and then average them
-to get a minimal variation, applying the following workflow for each new match:
-
-\begin{enumerate} % TODO: was it better an itemize?
-  \item Start 3GW and reset its data counters
-  \item Start a new game and play, possibly trying to variate match duration
-  \item Annotate game transferred data and game duration
-\end{enumerate}
+interferences and so we decided to show these two phases separately.
 
 This approach made us able to minimize the variability due to interferences, but the number of peers was still affecting considerably these measurements. So, we decided to group them by number of peers; more precisely, we chose to make 2-, 3- and 4-player matches. The comparison among these groups reveals the influence of the pairing phase to the traffic.
 

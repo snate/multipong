@@ -35,18 +35,18 @@ other solutions, but they were not suitable for our purposes for the following
 reasons:
 
 \begin{itemize}
-  \item 3GWatchdog and similar applications in the Google Play Store do not
-    provide accurate measurings compared to our solutions;
-  % add link to 3GWatchdog
-  \item tPacketCapture is an application that sets up a VPN to monitor traffic;
-    after setting up the VPN, we were not able to make the devices communicate
-    to each other even for the match formation;
-  % add link to tPacketCapture
-  \item PacketCapture is an application that monitors network traffic. Though
-    it is accurate and does not hinder playing the game, PacketCapture
-    generates one single log file per packet sent, so it was not a suitable
-    choice to run our experimental evaluation;
-  % add link to PacketCapture
+  \item 3GWatchdog\footnote{\url{http://3gwatchdog.fr/}} and similar
+    applications in the Google Play Store do not provide accurate measurings
+    compared to our solutions;
+  \item tPacketCapture\footnote{\url{http://www.taosoftware.co.jp/en/android/packetcapture/}}
+    is an application that sets up a VPN to monitor traffic; after setting up
+    the VPN, we were not able to make the devices communicate to each other
+    even for the match formation;
+  \item PacketCapture\footnote{\url{https://play.google.com/store/apps/details?id=app.greyshirts.sslcapture}}
+    is an application that monitors network traffic. Though it is accurate and
+    does not hinder playing the game, PacketCapture generates one single log
+    file per packet sent, so it was not a suitable choice to run our
+    experimental evaluation;
   \item phones require to be rooted in order to use \texttt{tcpdump} or
     Wireshark directly by the phone (and we did not have this possibility);
   \item despite we were able to connect to a \wifi{} Direct network from a

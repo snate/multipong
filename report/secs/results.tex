@@ -52,15 +52,27 @@ The average power consumption and Wi-Fi Direct traffic can be seen in Figure
 %  \caption{GO/NGO comparison for energy and traffic}\label{fig:comparison}
 %\end{figure}
 
-We notice that we have a lot of variability in power consumption because of
-many factors, among which (1) the network instability, (2) user interaction
-(the more the user touches the screen, the more power is consumed) and (3)
-PowerTutor is not a truly reliable instrument to measure battery consumption in
-our case since we used different devices from the ones used to create
+%%% ENERGY FIGURE
+
+We were able to filter out the bias caused by the human user interaction with
+the screen thanks to the autoplay: in fact, in previous tests we found out
+that most of the power consumption was caused from moving the palette by hand.
+
+At a first glance, the figure \ref{fig:energy} shows counterintuitive data
+because energy consumption happens to be higher with a limited number of
+players. However, the plot represents the \textitP{average} battery consumption
+during the whole session; thus, we think that this is caused by the fact that
+the game formation phase is heavier than the gameplay one (which is much longer
+in matches with a bigger number of players).
+
+Still, PowerTutor is not a truly reliable tool to measure battery consumption in
+our case since we used different devices from the ones used to develop the
 PowerTutor's mathematical model. Hence, we can not say too much about how power
-consumption varies depending on the number of players. Still, we noticed that
-Multipong is quite light compared to other multimedia applications in terms of
-battery consumption.
+consumption varies depending on the number of players. Nonetheless, we noticed
+that Multipong is quite light compared to other multimedia applications in
+terms of battery consumption.
+
+%%% TRAFFIC FIGURE
 
 On the other hand, the figures about Wi-Fi traffic reveal that the number of
 packets exchanged among the devices increases with the number of players. Often

@@ -101,4 +101,3 @@ As it can be easily seen, acked UDP is very efficient compared to TCP and
 therefore we can acknowledge that acked UDP is the most suitable choice (between
 these two) in the gameplay phase, whilst TCP is fit for the game formation
 phase, when we do not need low latency but more reliable packet delivery.
-

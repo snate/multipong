@@ -7,10 +7,7 @@ S, 1 Honor 6, 1 Motorola Moto G 2013, 1 Motorola Moto X+1 2014, 1 Huawei P8
 Lite.
 
 \subsection{TCP and UDP packet RTT and payload}
-We use TCP for message exchange during the game formation phase, thus an 
-interesting metric lies in application packet's RTT\footnote{for RTT we mean the 
-time, measured at application layer, to deliver a packet and receive the correspondent
- ack} and payload.
+We use TCP for message exchange during the game formation phase, thus an interesting metric lies in application packet's RTT\footnote{for RTT we mean the time, measured at application layer, to deliver a packet and receive the correspondent ack} and payload.
 
 We computed the RTT by measuring, each time a peer sends a message, the delta
 elapsed between the start of sending and an application-level confirmation of
@@ -21,12 +18,9 @@ interferences, so we decided to take several measures and then average them.
 Also, there is an overhead due to the time spent by the operating system to
 manage the communication among devices.
 
-For the TCP payload evaluation, we generated some logs in the application to get
-the exact size of each type of message. Messages always carry the same data structure 
-and length, so in this case it is not necessary to calculate a mean value.
+For the TCP payload evaluation, we generated some logs in the application to get the exact size of each type of message. Messages always carry the same data structure and length, so in this case it is not necessary to calculate a mean value.
 
-As for the TCP packets, we are interested in UDP RTT and payload statistics, so we 
-measured them with the same approaches.
+As for the TCP packets, we are interested in UDP RTT and payload statistics, so we measured them with the same approaches.
 
 \subsection{\wifi{} traffic}
 
@@ -58,7 +52,7 @@ reasons:
   \item despite we were able to connect to a \wifi{} Direct network from a
     computer, we did not manage to sniff the communication by using Wireshark
     since we were able to capture only the packets sent from and to the GO;
-  \item we did not have dedicated hardware (i.e. a wireless network controller, 
+  \item we did not have dedicated hardware (e.g. a wirelesse network controller, 
     such as Alfa One) to sniff traffic directly by the phone, but we believe 
     that this approach would not have resulted in a tangible gain in accuracy.
 \end{itemize}
@@ -95,4 +89,3 @@ two scenarios.
 
 Also, in order to reduce the variability of the variance, we implemented an AI
 that plays a match, losing exactly after ten turns.
-

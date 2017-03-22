@@ -52,9 +52,9 @@ reasons:
   \item despite we were able to connect to a \wifi{} Direct network from a
     computer, we did not manage to sniff the communication by using Wireshark
     since we were able to capture only the packets sent from and to the GO;
-  \item we did not have dedicated hardware (e.g. Alfa One) to sniff traffic
-    directly by the phone, but we believe that this approach would not have
-    resulted in a tangible gain in accuracy.
+  \item we did not have dedicated hardware (e.g. a wireless network controller, 
+    such as Alfa One) to sniff traffic directly by the phone, but we believe 
+    that this approach would not have resulted in a tangible gain in accuracy.
 \end{itemize}
 
 Multipong, anyway, generates different amounts of traffic in the various
@@ -62,13 +62,30 @@ phases. In fact, during the game creation the traffic is way more variable than
 in the gameplay phase, mainly due to unstable number of peers and \wifi{}
 interferences and so we decided to show these two phases separately.
 
-This approach made us able to minimize the variability due to interferences, but the number of peers was still affecting considerably these measurements. So, we decided to group them by number of peers; more precisely, we chose to make 2-, 3- and 4-player matches. The comparison among these groups reveals the influence of the pairing phase to the traffic.
+This approach made us able to minimize the variability due to interferences, 
+but the number of peers was still affecting considerably these measurements. 
+So, we decided to group them by number of peers; more precisely, we chose to 
+make 2-, 3- and 4-player matches. The comparison among these groups reveals 
+the influence of the pairing phase to the traffic.
 
 \subsection{Battery Consumption}
 
-Usually, apps which do a massive use of \wifi{} are also highly energy-consuming. One of our minor purposes was to optimize the battery-life of the devices running our application, so we decided to track power consumption over the game. We identified a nice tool for energy monitoring in \textit{PowerTutor} (PT hereafter), a free application available on Google Play Store, widely used by the Android Development community. Clearly, this kind of applications are not able to do physical measures of the energy consumption, they just estimate it through a mathematical model created over results retrieved from some Android devices\footnote{in this case HTC G1, G2, G3 and Nexus One, though we were not able to run our application over these phones}.
+Usually, apps which do a massive use of \wifi{} are also highly energy-consuming. 
+One of our minor purposes was to optimize the battery-life of the devices 
+running our application, so we decided to track power consumption over the 
+game. We identified a nice tool for energy monitoring in \textit{PowerTutor} 
+(PT hereafter), a free application available on Google Play Store, widely used 
+by the Android Development community. Clearly, this kind of applications are not 
+able to do physical measures of the energy consumption, they just estimate it 
+through a mathematical model created over results retrieved from some Android 
+devices\footnote{in this case HTC G1, G2, G3 and Nexus One, though we were not 
+able to run our application over these phones}.
 
-This approach is however considered quite reliable in those cases where energy monitoring is not the core of the observation. Nevertheless, because of our communication minimization approach, we decided to compare energy consumption in multiplayer mode against the single-player mode, and because of different traffic on GOs and NGOs we also decided to consider separately these two scenarios.
+This approach is however considered quite reliable in those cases where energy 
+monitoring is not the core of the observation. We decided to compare energy 
+consumption in multiplayer mode with different number of players, and because of 
+different traffic on GOs and NGOs we also decided to consider separately these 
+two scenarios.
 
 Also, in order to reduce the variability of the variance, we implemented an AI
 that plays a match, losing exactly after ten turns.

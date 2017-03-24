@@ -4,6 +4,19 @@ In this section we will describe how we developed the Multipong application,
 focusing on some architectural and implementation choices we made to improve
 the game quality.
 
+\subsection{Overall architecture}
+
+Multipong architecture is mainly divided into two layers: the networking layer
+manages the connection among peers, whereas the game layer handles all the
+application logic. We believe the networking layer may be re-used for other
+application, since it is loosely coupled with the upper layer (i.e. the game
+layer).
+More precisely, the networking layer is able to figure out if the device is
+currently the GO or not, retrieve the addresses of the other peers and both
+send and receive data with other devices.
+On the other hand, the game layer is accountable for the application logic of
+the game formation and the gameplay.
+
 \subsection{Game description} % TODO: Better title?
 
 Multipong is a tribute to the Pong game, one of the first arcade videogames.

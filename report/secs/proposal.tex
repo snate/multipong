@@ -15,10 +15,15 @@ application logic. We believe the networking layer may be re-used for other
 application, since it is loosely coupled with the upper layer (i.e. the game
 layer).
 More precisely, the networking layer is able to figure out if the device is
-currently the GO or not, retrieve the addresses of the other peers and both
-send and receive data with other devices.
-On the other hand, the game layer is accountable for the application logic of
-the game formation and the gameplay.
+currently the GO or not and retrieve the IPs of the other peers
+(\texttt{Discovery}), bind those addresses to logical identifiers
+(\texttt{NameResolution}) and both send and receive data with other devices
+(\texttt{Communication}).
+On the other hand, the game layer is accountable for the application logic
+(\texttt{GameLogic}) and for displaying that info to the user
+(\texttt{GameView}).
+The two layers talk to each other by means of a \texttt{NetworkingInterface},
+which is a component that provides a mid-level abstraction.
 
 \begin{figure}[H]
   \centering\includegraphics[width=.7\columnwidth]{img/layered-architecture.eps}
